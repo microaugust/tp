@@ -338,7 +338,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Duplicate contacts**: Two contacts are said to be duplicates if they have an identical set of details, across all fields
 
 --------------------------------------------------------------------------------------------------------------------
 
