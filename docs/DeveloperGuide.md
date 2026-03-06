@@ -329,7 +329,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Non-Functional Requirements
 
-1. Should work on any mainstream OS (Windows, macOS, Linux) as long as it has Java 17 installed.
+1. Should work on any Mainstream OS (Windows, macOS, Linux) as long as it has Java 17 installed.
 2. Should be able to hold up to 1000 contacts without a noticeable drop in performance for typical usage.
 3. Should not require more than 200MB of total disk space, including the application and all stored data, for up to 1000 contacts.
 4. Should respond to any user command within 1 second on a machine with at least 1GB of RAM available.
@@ -342,6 +342,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
+* **Tutor**: Refers to a private tutor, which is a user of the EduConnect application
+* **Student**: Refers to a student who the tutor is teaching
+* **Parent**: Refers to a parent of a student who the tutor is teaching
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Duplicate contacts**: Two contacts are said to be duplicates if they have an identical set of details, across all fields
 
