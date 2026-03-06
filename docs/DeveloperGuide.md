@@ -337,8 +337,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
+* **Tutor**: Refers to a private tutor, which is a user of the EduConnect application
+* **Student**: Refers to a student who the tutor is teaching
+* **Parent**: Refers to a parent of a student who the tutor is teaching
 * **Duplicate contacts**: Two contacts are said to be duplicates if they have an identical set of details, across all fields
+* **Mainstream OS**: Windows, Linux, Unix, MacOS
 
 --------------------------------------------------------------------------------------------------------------------
 
