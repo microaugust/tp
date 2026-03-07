@@ -300,11 +300,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-**Use case: UC01 - Add Contact (Must have)**
+Use case: UC01 - Add Contact 
 
 System: EduConnect  
 Actor: User  
-Preconditions: EduConnect is running.  
 Guarantees:
 * A new contact is saved in the contact list.
 
@@ -332,11 +331,11 @@ Extensions:
   * 3a1. EduConnect shows a duplicate contact error.
   * Use case ends.
 
-**Use case: UC02 - Delete Contact (Must have)**
+Use case: UC02 - Delete Contact
 
 System: EduConnect  
 Actor: User  
-Preconditions: Contact list is displayed.  
+Preconditions: Contact has been added to the list before deletion  
 Guarantees:
 * The selected contact is removed from the contact list.
 
@@ -364,7 +363,7 @@ Extensions:
   * 2c1. EduConnect shows a message that there are no contacts to delete.
   * Use case ends.
 
-**Use case: UC03 - Tag Contact to Categorize (Must have)**
+Use case: UC03 - Tag Contact to Categorize
 
 System: EduConnect  
 Actor: User  
@@ -399,11 +398,10 @@ Extensions:
   * 3a1. EduConnect overwrites the existing tag with the new tag.
   * Use case resumes from step 4.
 
-**Use case: UC04 - View Phone Number and Address (Must have)**
+Use case: UC04 - View Phone Number and Address
 
 System: EduConnect  
-Actor: User  
-Preconditions: EduConnect is running.  
+Actor: User    
 Guarantees:
 * The current contact list view is displayed.
 
@@ -423,11 +421,10 @@ Extensions:
   * 2c1. EduConnect displays all matching contacts and lets the user choose the intended contact.
   * Use case ends.
 
-**Use case: UC05 - Search Contacts by Name (Nice-to-have)**
+Use case: UC05 - Search Contacts by Name
 
 System: EduConnect  
 Actor: User  
-Preconditions: EduConnect is running.  
 Guarantees:
 * EduConnect shows a filtered contact list matching the keywords.
 
