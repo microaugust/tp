@@ -2,10 +2,14 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
+import java.util.Set;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -20,8 +24,9 @@ public class TagCommand extends Command {
             + "Parameters: /index INDEX /tag CATEGORY\n"
             + "Example: " + COMMAND_WORD + " /index 1 /tag Student";
 
-    public static final String MESSAGE_NOT_YET_AVAILABLE =
-            "Tag command execution will be added in the next increment.";
+    public static final String MESSAGE_TAG_PERSON_SUCCESS =
+            "Alright, the tag %1$s has been added to contact number %2$d.";
+    public static final String MESSAGE_INVALID_PERSON_INDEX = "/index %1$d is not found in contact list.";
 
     private final Index targetIndex;
     private final Tag categoryTag;
@@ -39,7 +44,27 @@ public class TagCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        throw new CommandException(MESSAGE_NOT_YET_AVAILABLE);
+        List<Person> lastShownList = model.getFilteredPersonList();
+
+        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(String.format(MESSAGE_INVALID_PERSON_INDEX, targetIndex.getOneBased()));
+        }
+
+        Person personToTag = lastShownList.get(targetIndex.getZeroBased());
+        Person taggedPerson = createTaggedPerson(personToTag, categoryTag);
+        model.setPerson(personToTag, taggedPerson);
+
+        return new CommandResult(String.format(MESSAGE_TAG_PERSON_SUCCESS,
+                categoryTag.tagName, targetIndex.getOneBased()));
+    }
+
+    /**
+     * Returns a copy of {@code personToTag} that keeps the existing identity fields
+     * and replaces all current tags with the selected category tag.
+     */
+    private static Person createTaggedPerson(Person personToTag, Tag categoryTag) {
+        return new Person(personToTag.getName(), personToTag.getPhone(),
+                personToTag.getAddress(), Set.of(categoryTag));
     }
 
     @Override
