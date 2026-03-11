@@ -36,6 +36,12 @@ public class TagCommandParserTest {
     }
 
     @Test
+    public void parse_nonEmptyPreamble_throwsParseException() {
+        assertParseFailure(parser, " preamble /index 1 /tag Student",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+    }
+
+    @Test
     public void parse_duplicatePrefixes_throwsParseException() {
         assertParseFailure(parser, " /index 1 /index 2 /tag Student",
                 getErrorMessageForDuplicatePrefixes(PREFIX_INDEX));

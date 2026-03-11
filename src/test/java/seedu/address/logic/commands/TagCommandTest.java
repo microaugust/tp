@@ -90,12 +90,14 @@ public class TagCommandTest {
     public void equals() {
         TagCommand firstCommand = new TagCommand(INDEX_FIRST_PERSON, new Tag("Student"));
         TagCommand firstCommandCopy = new TagCommand(INDEX_FIRST_PERSON, new Tag("Student"));
+        TagCommand firstCommandDifferentTag = new TagCommand(INDEX_FIRST_PERSON, new Tag("Parent"));
         TagCommand secondCommand = new TagCommand(INDEX_SECOND_PERSON, new Tag("Tutor"));
 
         assertTrue(firstCommand.equals(firstCommand));
         assertTrue(firstCommand.equals(firstCommandCopy));
         assertFalse(firstCommand.equals(1));
         assertFalse(firstCommand.equals(null));
+        assertFalse(firstCommand.equals(firstCommandDifferentTag));
         assertFalse(firstCommand.equals(secondCommand));
     }
 
