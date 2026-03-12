@@ -40,7 +40,7 @@ public class NameContainsKeywordsPredicateTest {
     }
 
     @Test
-    public void test_nameContainsKeywords_returnsTrue() {
+    public void test_personContainsKeywords_returnsTrue() {
         // One keyword
         NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Collections.singletonList("Alice"));
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
@@ -56,6 +56,20 @@ public class NameContainsKeywordsPredicateTest {
         // Mixed-case keywords
         predicate = new NameContainsKeywordsPredicate(Arrays.asList("aLIce", "bOB"));
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
+
+        // Address keywords
+        predicate = new NameContainsKeywordsPredicate(Collections.singletonList("Clementi"));
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("123 Clementi Road")
+                .build()));
+
+        // Number keywords
+        predicate = new NameContainsKeywordsPredicate(Collections.singletonList("9435"));
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withPhone("94351253")
+                .build()));
     }
 
     @Test
@@ -68,10 +82,13 @@ public class NameContainsKeywordsPredicateTest {
         predicate = new NameContainsKeywordsPredicate(Arrays.asList("Carol"));
         assertFalse(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
 
-        // Keywords match phone and address, but does not match name
-        predicate = new NameContainsKeywordsPredicate(Arrays.asList("12345678", "Main", "Street"));
-        assertFalse(predicate.test(new PersonBuilder().withName("Alice").withPhone("12345678")
-                .withAddress("Main Street").build()));
+        // Non-matching keyword2
+        predicate = new NameContainsKeywordsPredicate(Arrays.asList("zzz"));
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withPhone("94351253")
+                .withAddress("123 Clementi Road")
+                .build()));
     }
 
     @Test
