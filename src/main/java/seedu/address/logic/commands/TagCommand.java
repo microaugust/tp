@@ -21,12 +21,12 @@ public class TagCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Tags the person identified by the index number "
             + "used in the displayed person list with a category.\n"
-            + "Parameters: /index INDEX /tag CATEGORY\n"
-            + "Example: " + COMMAND_WORD + " /index 1 /tag Student";
+            + "Parameters: INDEX /tag CATEGORY\n"
+            + "Example: " + COMMAND_WORD + " 1 /tag Student";
 
     public static final String MESSAGE_TAG_PERSON_SUCCESS =
             "Alright, the tag %1$s has been added to contact number %2$d.";
-    public static final String MESSAGE_INVALID_PERSON_INDEX = "/index %1$d is not found in contact list.";
+    public static final String MESSAGE_INVALID_PERSON_INDEX = "Index %1$d is not found in contact list.";
 
     private final Index targetIndex;
     private final Tag categoryTag;
