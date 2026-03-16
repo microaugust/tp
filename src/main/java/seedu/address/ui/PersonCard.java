@@ -74,7 +74,7 @@ public class PersonCard extends UiPart<Region> {
 
         if (phoneNumber.isEmpty()) {
             phoneLabel.setText(MESSAGE_MISSING_PHONE_NUMBER);
-            setTextToRed(phoneLabel);
+            addCssClass(phoneLabel, CSS_CLASS_MISSING_FIELD);
         } else {
             phoneLabel.setText(phoneNumber);
         }
@@ -85,13 +85,19 @@ public class PersonCard extends UiPart<Region> {
 
         if (address.isEmpty()) {
             addressLabel.setText(MESSAGE_MISSING_ADDRESS);
-            setTextToRed(addressLabel);
+            addCssClass(addressLabel, CSS_CLASS_MISSING_FIELD);
         } else {
             addressLabel.setText(address);
         }
     }
 
-    private void setTextToRed(Label label) {
-        label.getStyleClass().add(CSS_CLASS_MISSING_FIELD);
+    /**
+     * Sets CSS class for a particular {@code Label} object.
+     *
+     * @param label The label to add the CSS class to.
+     * @param cssClass The CSS class to add.
+     */
+    private void addCssClass(Label label, String cssClass) {
+        label.getStyleClass().add(cssClass);
     }
 }
