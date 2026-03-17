@@ -3,9 +3,6 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
@@ -17,12 +14,6 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new TagCommand object.
  */
 public class TagCommandParser implements Parser<TagCommand> {
-
-    private static final Map<String, String> SUPPORTED_CATEGORIES = createSupportedCategories();
-
-    static final String MESSAGE_INVALID_CATEGORY =
-            "Category must be one of the following values: "
-                    + String.join(", ", SUPPORTED_CATEGORIES.values()) + ".";
 
     /**
      * Parses the given {@code String} of arguments in the context of the TagCommand
@@ -41,30 +32,11 @@ public class TagCommandParser implements Parser<TagCommand> {
         argumentMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TAG);
 
         Index targetIndex = ParserUtil.parseIndex(argumentMultimap.getPreamble());
-        Tag categoryTag = parseCategoryTag(argumentMultimap.getValue(PREFIX_TAG).get());
+        Tag categoryTag = ParserUtil.parseCategoryTag(argumentMultimap.getValue(PREFIX_TAG).get());
         return new TagCommand(targetIndex, categoryTag);
     }
 
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
-
-    private static Map<String, String> createSupportedCategories() {
-        Map<String, String> supportedCategories = new LinkedHashMap<>();
-        supportedCategories.put("student", "Student");
-        supportedCategories.put("parent", "Parent");
-        supportedCategories.put("tutor", "Tutor");
-        return Collections.unmodifiableMap(supportedCategories);
-    }
-
-    private static Tag parseCategoryTag(String categoryValue) throws ParseException {
-        String trimmedCategory = categoryValue.trim();
-        String normalizedCategory = SUPPORTED_CATEGORIES.get(trimmedCategory.toLowerCase());
-
-        if (normalizedCategory == null) {
-            throw new ParseException(MESSAGE_INVALID_CATEGORY);
-        }
-
-        return new Tag(normalizedCategory);
     }
 }

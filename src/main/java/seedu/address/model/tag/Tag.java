@@ -3,6 +3,10 @@ package seedu.address.model.tag;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Represents a Tag in the address book.
  * Guarantees: immutable; name is valid as declared in {@link #isValidTagName(String)}
@@ -11,6 +15,10 @@ public class Tag {
 
     public static final String MESSAGE_CONSTRAINTS = "Tag names should be alphanumeric";
     public static final String VALIDATION_REGEX = "\\p{Alnum}+";
+    private static final Map<String, String> SUPPORTED_CATEGORY_TAGS = createSupportedCategoryTags();
+    public static final String MESSAGE_CATEGORY_CONSTRAINTS =
+            "Category must be one of the following values: "
+                    + String.join(", ", SUPPORTED_CATEGORY_TAGS.values()) + ".";
 
     public final String tagName;
 
@@ -30,6 +38,30 @@ public class Tag {
      */
     public static boolean isValidTagName(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns true if a given string is a supported category tag.
+     */
+    public static boolean isValidCategoryTagName(String test) {
+        requireNonNull(test);
+        return SUPPORTED_CATEGORY_TAGS.containsKey(test.toLowerCase());
+    }
+
+    /**
+     * Returns the normalized category tag name for a supported category tag.
+     */
+    public static String getNormalizedCategoryTagName(String test) {
+        requireNonNull(test);
+        return SUPPORTED_CATEGORY_TAGS.get(test.toLowerCase());
+    }
+
+    private static Map<String, String> createSupportedCategoryTags() {
+        Map<String, String> supportedCategoryTags = new LinkedHashMap<>();
+        supportedCategoryTags.put("student", "Student");
+        supportedCategoryTags.put("parent", "Parent");
+        supportedCategoryTags.put("tutor", "Tutor");
+        return Collections.unmodifiableMap(supportedCategoryTags);
     }
 
     @Override

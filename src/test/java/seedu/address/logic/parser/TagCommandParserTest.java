@@ -47,7 +47,7 @@ public class TagCommandParserTest {
 
     @Test
     public void parse_invalidCategory_throwsParseException() {
-        assertParseFailure(parser, " 1 t/Friend", TagCommandParser.MESSAGE_INVALID_CATEGORY);
+        assertParseFailure(parser, " 1 t/Friend", Tag.MESSAGE_CATEGORY_CONSTRAINTS);
     }
 
     @Test
