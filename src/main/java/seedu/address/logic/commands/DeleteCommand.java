@@ -32,7 +32,7 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_EMPTY_CONTACT_LIST = "The contact list is currently empty.";
 
-    public static final String MESSAGE_TOO_MANY_ARGUMENTS = "Too many arguments";
+    public static final String MESSAGE_TOO_MANY_ARGUMENTS = "Too many arguments\n%s";
 
     private final Index targetIndex;
 
