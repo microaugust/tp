@@ -39,6 +39,10 @@ public class PersonContainsKeywordsPredicateTest {
 
         // different person -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
+
+        PersonContainsKeywordsPredicate differentFlagsPredicate = new PersonContainsKeywordsPredicate(
+                firstPredicateKeywordList, false, true, true, false);
+        assertFalse(firstPredicate.equals(differentFlagsPredicate));
     }
 
     @Test

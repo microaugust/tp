@@ -20,7 +20,8 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
 public class FindCommandParser implements Parser<FindCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the FindCommand
+     * Parses the given {@code String} of arguments in the context of the
+     * FindCommand
      * and returns a FindCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
@@ -31,8 +32,8 @@ public class FindCommandParser implements Parser<FindCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_TAG);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS,
+                PREFIX_TAG);
 
         boolean hasPrefixes = arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_TAG);
 
@@ -43,7 +44,8 @@ public class FindCommandParser implements Parser<FindCommand> {
                     Arrays.asList(keywords), true, true, true, false));
         }
 
-        //  Prefixes are used, but there is unexpected text before them, return invalid format
+        // Prefixes are used, but there is unexpected text before them, return invalid
+        // format
         if (!argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
@@ -53,6 +55,8 @@ public class FindCommandParser implements Parser<FindCommand> {
         keywords.addAll(argMultimap.getAllValues(PREFIX_ADDRESS));
         keywords.addAll(argMultimap.getAllValues(PREFIX_PHONE));
         keywords.addAll(argMultimap.getAllValues(PREFIX_TAG));
+
+        keywords.removeIf(String::isBlank);
 
         if (keywords.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
@@ -67,7 +71,8 @@ public class FindCommandParser implements Parser<FindCommand> {
     }
 
     /**
-     * Returns true if any of the specified prefixes has at least one value in the given
+     * Returns true if any of the specified prefixes has at least one value in the
+     * given
      * {@code ArgumentMultimap}.
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {

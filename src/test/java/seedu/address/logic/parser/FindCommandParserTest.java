@@ -72,4 +72,22 @@ public class FindCommandParserTest {
         assertParseFailure(parser, "Alice " + PREFIX_PHONE + " 9435",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
+
+    @Test
+    public void parse_emptyNamePrefix_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_NAME,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_emptyPhonePrefix_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_PHONE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_emptyAddressPrefix_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_ADDRESS,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
 }
