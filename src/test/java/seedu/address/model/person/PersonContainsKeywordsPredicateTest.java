@@ -43,6 +43,22 @@ public class PersonContainsKeywordsPredicateTest {
         PersonContainsKeywordsPredicate differentFlagsPredicate = new PersonContainsKeywordsPredicate(
                 firstPredicateKeywordList, false, true, true, false);
         assertFalse(firstPredicate.equals(differentFlagsPredicate));
+
+        PersonContainsKeywordsPredicate differentNameFlag = new PersonContainsKeywordsPredicate(
+                firstPredicateKeywordList, false, true, true, false);
+        assertFalse(firstPredicate.equals(differentNameFlag));
+
+        PersonContainsKeywordsPredicate differentAddressFlag = new PersonContainsKeywordsPredicate(
+                firstPredicateKeywordList, true, false, true, false);
+        assertFalse(firstPredicate.equals(differentAddressFlag));
+
+        PersonContainsKeywordsPredicate differentPhoneFlag = new PersonContainsKeywordsPredicate(
+                firstPredicateKeywordList, true, true, false, false);
+        assertFalse(firstPredicate.equals(differentPhoneFlag));
+
+        PersonContainsKeywordsPredicate differentTagFlag = new PersonContainsKeywordsPredicate(
+                firstPredicateKeywordList, true, true, true, true);
+        assertFalse(firstPredicate.equals(differentTagFlag));
     }
 
     @Test
