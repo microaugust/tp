@@ -157,6 +157,12 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseCategoryTag_invalidFormat_throwsParseException() {
+        assertThrows(ParseException.class, Tag.MESSAGE_CONSTRAINTS, ()
+                -> ParserUtil.parseCategoryTag(INVALID_TAG));
+    }
+
+    @Test
     public void parseCategoryTag_validValueWithoutWhitespace_returnsTag() throws Exception {
         Tag expectedTag = new Tag("Student");
         assertEquals(expectedTag, ParserUtil.parseCategoryTag("student"));

@@ -101,12 +101,14 @@ public class ParserUtil {
      * @throws ParseException if the given {@code tag} is not a supported category.
      */
     public static Tag parseCategoryTag(String tag) throws ParseException {
-        requireNonNull(tag);
-        String trimmedTag = tag.trim();
-        if (!Tag.isValidCategoryTagName(trimmedTag)) {
+        Tag parsedTag = parseTag(tag);
+        String normalizedCategoryTagName = Tag.getNormalizedCategoryTagName(parsedTag.tagName);
+
+        if (normalizedCategoryTagName == null) {
             throw new ParseException(Tag.MESSAGE_CATEGORY_CONSTRAINTS);
         }
-        return new Tag(Tag.getNormalizedCategoryTagName(trimmedTag));
+
+        return new Tag(normalizedCategoryTagName);
     }
 
     /**
