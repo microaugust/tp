@@ -18,19 +18,19 @@ public class TagCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsTagCommand() {
-        assertParseSuccess(parser, " 1 t/student",
+        assertParseSuccess(parser, " 1 " + PREFIX_TAG + "student",
                 new TagCommand(INDEX_FIRST_PERSON, new Tag("Student")));
     }
 
     @Test
     public void parse_validArgsMixedCase_returnsNormalizedTagCommand() {
-        assertParseSuccess(parser, " 1 t/pArEnT",
+        assertParseSuccess(parser, " 1 " + PREFIX_TAG + "pArEnT",
                 new TagCommand(INDEX_FIRST_PERSON, new Tag("Parent")));
     }
 
     @Test
     public void parse_missingIndex_throwsParseException() {
-        assertParseFailure(parser, " t/Student",
+        assertParseFailure(parser, " " + PREFIX_TAG + "Student",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
     }
 
@@ -42,22 +42,22 @@ public class TagCommandParserTest {
 
     @Test
     public void parse_nonEmptyPreamble_throwsParseException() {
-        assertParseFailure(parser, " preamble t/Student", ParserUtil.MESSAGE_INVALID_INDEX);
+        assertParseFailure(parser, " preamble " + PREFIX_TAG + "Student", ParserUtil.MESSAGE_INVALID_INDEX);
     }
 
     @Test
     public void parse_duplicateCategoryPrefix_throwsParseException() {
-        assertParseFailure(parser, " 1 t/Student t/Tutor",
+        assertParseFailure(parser, " 1 " + PREFIX_TAG + "Student " + PREFIX_TAG + "Tutor",
                 getErrorMessageForDuplicatePrefixes(PREFIX_TAG));
     }
 
     @Test
     public void parse_invalidCategory_throwsParseException() {
-        assertParseFailure(parser, " 1 t/Friend", Tag.MESSAGE_CATEGORY_CONSTRAINTS);
+        assertParseFailure(parser, " 1 " + PREFIX_TAG + "Friend", Tag.MESSAGE_CATEGORY_CONSTRAINTS);
     }
 
     @Test
     public void parse_invalidIndex_throwsParseException() {
-        assertParseFailure(parser, " zero t/Student", ParserUtil.MESSAGE_INVALID_INDEX);
+        assertParseFailure(parser, " zero " + PREFIX_TAG + "Student", ParserUtil.MESSAGE_INVALID_INDEX);
     }
 }

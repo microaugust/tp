@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.List;
 import java.util.Set;
@@ -21,8 +22,8 @@ public class TagCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Tags the person identified by the index number "
             + "used in the displayed person list with a category.\n"
-            + "Parameters: INDEX t/CATEGORY\n"
-            + "Example: " + COMMAND_WORD + " 1 t/Student";
+            + "Parameters: INDEX " + PREFIX_TAG + "CATEGORY\n"
+            + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TAG + "Student";
 
     public static final String MESSAGE_TAG_PERSON_SUCCESS =
             "Alright, the tag %1$s has been added to contact number %2$d.";
