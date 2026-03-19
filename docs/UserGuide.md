@@ -30,7 +30,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
    * `add n/John Doe p/98765432 a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `del 3` : Deletes the 3rd contact shown in the current list.
 
    * `clear` : Deletes all contacts.
 
@@ -144,23 +144,26 @@ Notes:
 - If no prefixes are provided, the search is performed across all supported fields.
 - If prefixes are used, all search terms must be prefixed.
 
-### Deleting a person : `delete`
+### Deleting a person : `del`
 
 Deletes the specified person from the address book.
 
-Format: `delete INDEX`
+Format: `del INDEX`
 
 * Deletes the person at the specified `INDEX`.
 * The index refers to the index number shown in the displayed person list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `list` followed by `del 2` deletes the 2nd person in the address book.
+* `find Betsy` followed by `del 1` deletes the 1st person in the results of the `find` command.
+* `add n/Andrew` followed by `del 1` deletes the contact that was just added.
+* `add n/Andrew` followed by `del 2` will fail since the displayed list size is only 1.
+* `del 1` followed by `del 1` deletes the contact in index 1 of the contact list shown before the first `del` command.
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+Clears all entries from the address book. While displaying all the contact that have been removed.
 
 Format: `clear`
 
@@ -209,7 +212,7 @@ Action | Format, Examples
 --------|------------------
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** | `del INDEX`<br> e.g., `del 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List** | `list`
