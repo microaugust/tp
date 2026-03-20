@@ -64,7 +64,7 @@ public class TagCommand extends Command {
      * and replaces all current tags with the selected category tag.
      */
     private static Person createTaggedPerson(Person personToTag, Tag categoryTag) {
-        return new Person(personToTag.getName(), personToTag.getPhone(),
+        return new Person(personToTag.getId(), personToTag.getName(), personToTag.getPhone(),
                 personToTag.getAddress(), Set.of(categoryTag));
     }
 
