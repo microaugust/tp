@@ -34,6 +34,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
+    private Label index;
+    @FXML
     private Label name;
     @FXML
     private Label id;
@@ -51,7 +53,10 @@ public class PersonCard extends UiPart<Region> {
         super(FXML);
         this.person = person;
 
-        renderId(displayedIndex, id);
+        // to produce a numbered list
+        renderIndex(displayedIndex, index);
+
+        renderId(person, id);
         renderName(person, name);
         renderPhone(person, phone);
         renderAddress(person, address);
@@ -61,8 +66,13 @@ public class PersonCard extends UiPart<Region> {
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
-    private void renderId(int displayedIndex, Label idLabel) {
-        idLabel.setText(displayedIndex + ". ");
+    private void renderIndex(int displayedIndex, Label indexLabel) {
+        indexLabel.setText(displayedIndex + ". ");
+    }
+
+    private void renderId(Person person, Label idLabel) {
+        int idValue = person.getId().value;
+        idLabel.setText("ID: " + idValue);
     }
 
     private void renderName(Person person, Label nameLabel) {

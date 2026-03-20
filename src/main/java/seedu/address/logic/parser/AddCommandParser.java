@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -21,6 +22,11 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new AddCommand object
  */
 public class AddCommandParser implements Parser<AddCommand> {
+    private final Id currentMaxId;
+
+    public AddCommandParser(Id currentMaxId) {
+        this.currentMaxId = currentMaxId;
+    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
@@ -39,6 +45,12 @@ public class AddCommandParser implements Parser<AddCommand> {
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS);
+
+        // find the new id for the new person to be added,
+        // based on the maximum id that is saved in the address book currently
+        Id id = Id.fromCurrentMaxId(currentMaxId);
+
+        // parse other details
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).orElse(Parser.DEFAULT_EMPTY_STRING));
         Address address = ParserUtil.parseAddress(
@@ -46,7 +58,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         );
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        Person person = new Person(name, phone, address, tagList);
+        Person person = new Person(id, name, phone, address, tagList);
 
         return new AddCommand(person);
     }

@@ -15,24 +15,31 @@ import seedu.address.model.tag.Tag;
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Person {
+    // The id will be used to refer to this specific person in user inputs
+    private final Id id;
 
     // Identity fields
     private final Name name;
     private final Phone phone;
+    private final Address address;
 
     // Data fields
-    private final Address address;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, address, tags);
+    public Person(Id id, Name name, Phone phone, Address address, Set<Tag> tags) {
+        requireAllNonNull(id, name, phone, address, tags);
+        this.id = id;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.tags.addAll(tags);
+    }
+
+    public Id getId() {
+        return id;
     }
 
     public Name getName() {
@@ -56,7 +63,7 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same name, phone number and address.
+     * Returns true if both persons have the same identity fields.
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
@@ -71,7 +78,7 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same identity and data fields.
+     * Returns true if both persons have the same identity fields and data fields.
      * This defines a stronger notion of equality between two persons.
      */
     @Override
@@ -101,6 +108,7 @@ public class Person {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .add("id", id)
                 .add("name", name)
                 .add("phone", phone)
                 .add("address", address)

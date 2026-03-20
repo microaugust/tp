@@ -98,6 +98,16 @@ public class UniquePersonList implements Iterable<Person> {
     }
 
     /**
+     * Returns the maximum {@code Id} found in the list.
+     */
+    public Id findMaxId() {
+        return internalList.stream()
+                .map(person -> person.getId())
+                .max((id1, id2) -> id1.compareTo(id2))
+                .orElse(Id.minimumPossible());
+    }
+
+    /**
      * Returns the backing list as an unmodifiable {@code ObservableList}.
      */
     public ObservableList<Person> asUnmodifiableObservableList() {

@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 
 /**
@@ -116,6 +117,11 @@ public class ModelManager implements Model {
 
         addressBook.setPerson(target, editedPerson);
         displayPersons.setAll(filteredPersons);
+    }
+
+    @Override
+    public Id findMaxId() {
+        return addressBook.findMaxId();
     }
 
     //=========== Filtered Person List Accessors =============================================================
