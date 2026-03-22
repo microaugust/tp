@@ -25,13 +25,6 @@ public class Phone {
         checkArgument(isValidPhone(phone), MESSAGE_CONSTRAINTS);
 
         value = phone;
-
-        // if (phone.equals(EMPTY_STRING)) {
-        //     value = EMPTY_STRING;
-        // } else {
-        //     checkArgument(isValidPhone(phone), MESSAGE_CONSTRAINTS);
-        //     value = phone;
-        // }
     }
 
     /**
