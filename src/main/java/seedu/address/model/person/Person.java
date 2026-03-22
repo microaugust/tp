@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -20,7 +21,7 @@ public class Person {
 
     // Identity fields
     private final Name name;
-    private final Phone phone;
+    private final Optional<Phone> phone;
     private final Address address;
 
     // Data fields
@@ -31,6 +32,17 @@ public class Person {
      */
     public Person(Id id, Name name, Phone phone, Address address, Set<Tag> tags) {
         requireAllNonNull(id, name, phone, address, tags);
+        this.id = id;
+        this.name = name;
+        this.phone = Optional.ofNullable(phone);
+        this.address = address;
+        this.tags.addAll(tags);
+    }
+
+    /**
+     * Creates a Person object with an overload constructor.
+     */
+    public Person(Id id, Name name, Optional<Phone> phone, Address address, Set<Tag> tags) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -46,7 +58,7 @@ public class Person {
         return name;
     }
 
-    public Phone getPhone() {
+    public Optional<Phone> getPhone() {
         return phone;
     }
 

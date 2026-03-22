@@ -22,20 +22,35 @@ public class Phone {
      */
     public Phone(String phone) {
         requireNonNull(phone);
+        checkArgument(isValidPhone(phone), MESSAGE_CONSTRAINTS);
 
-        if (phone.equals(EMPTY_STRING)) {
-            value = EMPTY_STRING;
-        } else {
-            checkArgument(isValidPhone(phone), MESSAGE_CONSTRAINTS);
-            value = phone;
-        }
+        value = phone;
+
+        // if (phone.equals(EMPTY_STRING)) {
+        //     value = EMPTY_STRING;
+        // } else {
+        //     checkArgument(isValidPhone(phone), MESSAGE_CONSTRAINTS);
+        //     value = phone;
+        // }
     }
 
     /**
      * Returns true if a given string is a valid phone number.
      */
     public static boolean isValidPhone(String test) {
-        return test.equals(EMPTY_STRING) || test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Checks if phone is valid when parsing from JSON.
+     * As the absent phone numbers will be stored as empty strings in the JSON file,
+     * use this method to check validity when reading from a JSON file instead.
+     *
+     * @param phoneString phone number in string read from JSON file.
+     * @return true if phone read from JSON file is valid else false.
+     */
+    public static boolean isValidPhoneFromJson(String phoneString) {
+        return phoneString.equals(EMPTY_STRING) || phoneString.matches(VALIDATION_REGEX);
     }
 
     @Override

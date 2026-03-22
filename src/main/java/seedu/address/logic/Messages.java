@@ -38,7 +38,7 @@ public class Messages {
         final StringBuilder builder = new StringBuilder();
         builder.append(person.getName())
                 .append("; Phone: ")
-                .append(person.getPhone())
+                .append(person.getPhone().get())
                 .append("; Address: ")
                 .append(person.getAddress())
                 .append("; Tags: ");
