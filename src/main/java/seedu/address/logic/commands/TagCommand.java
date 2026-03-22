@@ -20,13 +20,13 @@ public class TagCommand extends Command {
     public static final String COMMAND_WORD = "tag";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a categorical tag to the person with"
-            + " the specified id.\n"
+            + " the specified ID.\n"
             + "Parameters: ID " + PREFIX_TAG + "CATEGORY\n"
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TAG + "Student";
 
     public static final String MESSAGE_TAG_PERSON_SUCCESS =
-            "Alright, the tag %1$s has been added to the contact with id %2$d.";
-    public static final String MESSAGE_INVALID_PERSON_ID = "Id %1$d is not found in contact list.";
+            "Alright, the tag %1$s has been added to the contact with ID %2$d.";
+    public static final String MESSAGE_INVALID_PERSON_ID = "ID %1$d is not found in contact list.";
 
     private final Id targetId;
     private final Tag categoryTag;

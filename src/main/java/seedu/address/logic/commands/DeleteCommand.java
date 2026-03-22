@@ -10,14 +10,14 @@ import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Deletes a person with a given id from the address book.
  */
 public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "del";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the person with the specified id.\n"
+            + ": Deletes the person with the specified ID.\n"
             + "Parameters: ID (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
@@ -25,7 +25,7 @@ public class DeleteCommand extends Command {
             + "from your list!";
 
     public static final String MESSAGE_INVALID_ID = "That contact does not exist, "
-            + "please enter a valid id.";
+            + "please enter a valid ID.";
 
     public static final String MESSAGE_SINGLE_CONTACT_ONLY = "The contact list size is only 1";
 

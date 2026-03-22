@@ -516,7 +516,7 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: The contact with `id` 1 is deleted from the address book. Details of the deleted contact shown as a person card. Timestamp in the status bar is updated.
+      Expected: The contact with `ID` 1 is deleted from the address book. Details of the deleted contact shown as a person card. Timestamp in the status bar is updated.
 
    1. Test case: `delete 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.

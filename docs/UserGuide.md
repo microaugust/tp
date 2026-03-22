@@ -30,7 +30,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
    * `add n/John Doe p/98765432 a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
-   * `del 3` : Deletes the contact with an `id` of 3.
+   * `del 3` : Deletes the contact with an `ID` of 3.
 
    * `clear` : Deletes all contacts.
 
@@ -112,8 +112,8 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
     specifying any tags after it.
 
 Examples:
-*  `edit 1 p/91234567` Edits the phone number of the person with `id` 1, changing it to `91234567`.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the person with `id` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
+*  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
+*  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 
 ### Locating persons: `find`
 
@@ -154,10 +154,10 @@ Format: `del ID`
 * `ID` **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `del 2` deletes the person with `id` 2 from the address book.
-* `find Betsy` followed by `del 1` deletes the person with `id` 1 from the address book. Note that it does not delete the first person in the results of the `find` command.
-* `add n/Andrew` followed by `del 1` deletes the person with `id` 1 from the address book. Note that it does not delete the contact that was just added.
-* `add n/Andrew` followed by `del 1` will fail if there is no person with `id` 1 in the address book.
+* `del 2` deletes the person with `ID` 2 from the address book.
+* `find Betsy` followed by `del 1` deletes the person with `ID` 1 from the address book. Note that it does not delete the first person in the results of the `find` command.
+* `add n/Andrew` followed by `del 1` deletes the person with `ID` 1 from the address book. Note that it does not delete the contact that was just added.
+* `add n/Andrew` followed by `del 1` will fail if there is no person with `ID` 1 in the address book.
 
 ### Clearing all entries : `clear`
 

@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public class Id implements Comparable<Id> {
     public static final String MESSAGE_CONSTRAINTS =
-            "Ids should not be blank, and must be a positive integer.";
+            "IDs should not be blank, and must be a positive integer.";
     private static final int SMALLEST_VALUE = 1;
     private final int value;
 
