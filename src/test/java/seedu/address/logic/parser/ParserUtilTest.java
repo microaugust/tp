@@ -106,6 +106,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parsePhone_emptyStringInOptional_returnsOptionalEmpty() throws Exception {
+        assertEquals(Optional.empty(), ParserUtil.parsePhone(Optional.of("")));
+    }
+
+    @Test
     public void parseAddress_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((String) null));
     }
