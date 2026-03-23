@@ -28,18 +28,6 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
 
     /**
-     * Every field must be present and not null.
-     */
-    public Person(Id id, Name name, Phone phone, Address address, Set<Tag> tags) {
-        requireAllNonNull(id, name, phone, address, tags);
-        this.id = id;
-        this.name = name;
-        this.phone = Optional.ofNullable(phone);
-        this.address = address;
-        this.tags.addAll(tags);
-    }
-
-    /**
      * Creates a Person object with an overload constructor.
      */
     public Person(Id id, Name name, Optional<Phone> phone, Address address, Set<Tag> tags) {
