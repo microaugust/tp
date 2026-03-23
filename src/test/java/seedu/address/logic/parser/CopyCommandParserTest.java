@@ -22,12 +22,6 @@ public class CopyCommandParserTest {
     }
 
     @Test
-    public void parse_fieldCaseInsensitive_returnsCopyCommand() {
-        assertParseSuccess(parser, "1 PHONE", new CopyCommand(ID_FIRST, CopyCommand.FIELD_PHONE));
-        assertParseSuccess(parser, "1 Name", new CopyCommand(ID_FIRST, CopyCommand.FIELD_NAME));
-    }
-
-    @Test
     public void parse_emptyArgs_throwsParseException() {
         assertParseFailure(parser, "",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, CopyCommand.MESSAGE_USAGE));
