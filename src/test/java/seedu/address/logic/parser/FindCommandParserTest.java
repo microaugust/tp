@@ -4,6 +4,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -59,11 +60,28 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_tagPrefix_returnsFindCommand() {
+        FindCommand expectedFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Arrays.asList("friend"),
+                        false, false, false, true));
+        assertParseSuccess(parser, " " + PREFIX_TAG + "friend", expectedFindCommand);
+    }
+
+    @Test
     public void parse_nameAndAddressPrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "Clementi"),
                         true, true, false, false));
         assertParseSuccess(parser, " " + PREFIX_NAME + "Alice " + PREFIX_ADDRESS + "Clementi",
+                expectedFindCommand);
+    }
+
+    @Test
+    public void parse_nameAndTagPrefix_returnsFindCommand() {
+        FindCommand expectedFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "friend"),
+                        true, false, false, true));
+        assertParseSuccess(parser, " " + PREFIX_NAME + "Alice " + PREFIX_TAG + "friend",
                 expectedFindCommand);
     }
 

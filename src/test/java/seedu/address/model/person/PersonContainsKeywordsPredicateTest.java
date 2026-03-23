@@ -115,6 +115,22 @@ public class PersonContainsKeywordsPredicateTest {
                 .withName("Alice Bob")
                 .withPhone("94351253")
                 .build()));
+
+        // Tag keyword
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("friend"),
+                false, false, false, true);
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withTags("friend")
+                .build()));
+
+        // Case-insensitive tag keyword
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("fRiEnD"),
+                false, false, false, true);
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withTags("Friend")
+                .build()));
     }
 
     @Test
@@ -155,6 +171,14 @@ public class PersonContainsKeywordsPredicateTest {
                 .withName("Alice Bob")
                 .withPhone("94351253")
                 .withAddress("123 Clementi Road")
+                .build()));
+
+        // Tag search disabled
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("friend"),
+                true, false, false, false);
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withTags("friend")
                 .build()));
     }
 
