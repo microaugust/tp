@@ -21,6 +21,9 @@ public class PersonCard extends UiPart<Region> {
 
     private static final String CSS_CLASS_MISSING_FIELD = "missing-field";
 
+    private static final String PHONE_ICON = "\uD83D\uDCDE";
+    private static final String ADDRESS_ICON = "\uD83C\uDFE0";
+
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -77,10 +80,10 @@ public class PersonCard extends UiPart<Region> {
         String phoneNumber = person.getPhone().value;
 
         if (phoneNumber.isEmpty()) {
-            phoneLabel.setText(MESSAGE_MISSING_PHONE_NUMBER);
+            phoneLabel.setText(PHONE_ICON + " " + MESSAGE_MISSING_PHONE_NUMBER);
             addCssClass(phoneLabel, CSS_CLASS_MISSING_FIELD);
         } else {
-            phoneLabel.setText(phoneNumber);
+            phoneLabel.setText(PHONE_ICON + " " + phoneNumber);
         }
     }
 
@@ -88,10 +91,10 @@ public class PersonCard extends UiPart<Region> {
         String address = person.getAddress().value;
 
         if (address.isEmpty()) {
-            addressLabel.setText(MESSAGE_MISSING_ADDRESS);
+            addressLabel.setText(ADDRESS_ICON + " " + MESSAGE_MISSING_ADDRESS);
             addCssClass(addressLabel, CSS_CLASS_MISSING_FIELD);
         } else {
-            addressLabel.setText(address);
+            addressLabel.setText(ADDRESS_ICON + " " + address);
         }
     }
 
