@@ -17,13 +17,6 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     private final boolean searchTag;
 
     /**
-     * Creates a predicate that searches across all default searchable fields.
-     */
-    public PersonContainsKeywordsPredicate(List<String> keywords) {
-        this(keywords, true, true, true, false);
-    }
-
-    /**
      * Creates a predicate that searches only the specified fields.
      */
     public PersonContainsKeywordsPredicate(List<String> keywords,
