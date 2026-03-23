@@ -37,8 +37,7 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         boolean hasPrefixes = arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_TAG);
 
-        // If Prefixes are not presented or prefixes are used,
-        // but there is unexpected text before themreturn invalid format
+        // Reject unprefixed input and any unexpected preamble before the first prefix.
         if (!hasPrefixes || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
