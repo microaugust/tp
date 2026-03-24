@@ -102,15 +102,18 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS]`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
 
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
+* You can remove all the person’s tags by typing `t/` without
+    specifying any tags after it.
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
-*  `edit 2 n/Betsy Crower a/New address` Edits the name and address of the person with `ID` 2.
+*  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 
 ### Locating persons: `find`
 
@@ -208,7 +211,7 @@ Action | Format, Examples
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​` <br> e.g., `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Student`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS]`<br> e.g.,`edit 2 n/James Lee`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List** | `list`
 **Help** | `help`
