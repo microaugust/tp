@@ -17,7 +17,7 @@ public class FindCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds persons whose specified fields "
             + "contain any of the given keywords.\n"
-            + "Format: " + COMMAND_WORD + " [n/NAME] [a/ADDRESS] [p/PHONE] [t/TAG]\n"
+            + "Format: " + COMMAND_WORD + ": [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...\n"
             + "Examples: " + COMMAND_WORD + " n/Ali n/August\n"
             + "          " + COMMAND_WORD + " a/119224\n"
             + "          " + COMMAND_WORD + " n/Clement p/9234\n"
