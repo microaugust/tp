@@ -159,6 +159,22 @@ Examples:
 * `add n/Andrew` followed by `del 1` deletes the person with `ID` 1 from the address book. Note that it does not delete the contact that was just added.
 * `add n/Andrew` followed by `del 1` will fail if there is no person with `ID` 1 in the address book.
 
+### Copying a person information; `copy`
+
+Copy a specified field of a person from the address book to the user clipboard.
+
+Format: `copy ID field`
+
+* Copies the `field` data for the person with the specified `ID` to the user clipboard.
+* Possible fields include `n/` for name, `p/` for phone number, and `a/` for address
+* If the person's field is empty, then nothing will be copy to the clipboard.
+
+Examples:
+* `copy 6 n/` copy the name of the person with `ID` 6 to the clipboard.
+* `copy 7 p/` copy the phone number of the person with `ID` 7 to the clipboard.
+* `copy 9 a/` copy the address of the person with `ID` 9 to the clipboard .
+* `copy 1 p/` will fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book, whilst displaying all the contacts that have been removed.
