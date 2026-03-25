@@ -20,7 +20,7 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
-    // defensive programming & abstration
+    // Defensive programming and abstraction
     private static List<String> getSanitizedKeywords(List<String> keywords) {
         requireNonNull(keywords);
         List<String> sanitizedKeywords = new ArrayList<>(keywords);
