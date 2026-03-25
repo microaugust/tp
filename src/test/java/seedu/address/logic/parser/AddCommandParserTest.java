@@ -151,9 +151,14 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
                 new AddCommand(expectedPersonNoAddressOnly));
 
-        // there is an address prefix, but no phone number
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " " + PREFIX_ADDRESS,
+        // there is an address prefix, but no address - phone numbers and tags present
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " "
+                        + PREFIX_ADDRESS + TAG_DESC_STUDENT,
                 new AddCommand(expectedPersonNoAddressOnly));
+
+        // there is an address prefix, but no address - no phone numbers or tags present
+        assertParseSuccess(parser, NAME_DESC_AMY + " " + PREFIX_ADDRESS,
+                new AddCommand(expectedPersonNoOptionalFields));
     }
 
     @Test

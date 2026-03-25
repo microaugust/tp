@@ -37,6 +37,7 @@ public class AddCommandIntegrationTest {
                 AddCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
+    @Test
     public void execute_newPersonWithoutPhoneAndAddress_success() {
         Person validPerson = new PersonBuilder()
                 .withId(8)
