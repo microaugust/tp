@@ -10,6 +10,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
@@ -98,7 +100,18 @@ public class AddressBookParserTest {
                         + PREFIX_NAME + String.join(" " + PREFIX_NAME, keywords),
                 currentMaxId);
         assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
-                keywords, true, false, false, false)), command);
+                keywords, Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), MatchMode.OR)), command);
+    }
+
+    @Test
+    public void parseCommand_findTag() throws Exception {
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + PREFIX_TAG + "Student",
+                currentMaxId);
+        assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.singletonList("Student"), MatchMode.OR)), command);
     }
 
     @Test
