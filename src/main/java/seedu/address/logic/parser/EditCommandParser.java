@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -76,8 +77,18 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (tags.isEmpty()) {
             return Optional.empty();
         }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
+        Collection<String> tagNames = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
+        Set<Tag> parsedTags = new HashSet<>();
+
+        for (String tagName : tagNames) {
+            String trimmedTagName = tagName.trim();
+            if (!Tag.isValidTagName(trimmedTagName)) {
+                throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+            }
+            parsedTags.add(new Tag(trimmedTagName));
+        }
+
+        return Optional.of(parsedTags);
     }
 
 }
