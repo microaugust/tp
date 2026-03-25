@@ -117,26 +117,57 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_optionalFieldsMissing_success() {
+        // no optional fields
+        Person expectedPersonNoOptionalFields = new PersonBuilder(AMY)
+                .withoutPhone()
+                .withAddress("")
+                .withTags()
+                .build();
+        assertParseSuccess(parser, NAME_DESC_AMY,
+                new AddCommand(expectedPersonNoOptionalFields));
+
         // zero tags
-        Person expectedPersonNoTags = new PersonBuilder(AMY).withTags().build();
+        Person expectedPersonNoTagsOnly = new PersonBuilder(AMY).withTags().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY,
-                new AddCommand(expectedPersonNoTags));
+                new AddCommand(expectedPersonNoTagsOnly));
 
         // no phone number prefix and no phone number
-        Person expectedPersonNoPhone = new PersonBuilder(AMY).withoutPhone().build();
+        Person expectedPersonNoPhoneOnly = new PersonBuilder(AMY).withoutPhone().build();
         assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY + TAG_DESC_STUDENT,
-                new AddCommand(expectedPersonNoPhone));
+                new AddCommand(expectedPersonNoPhoneOnly));
 
-        // there is a phone number prefix, but no phone number
+        // there is a phone number prefix, but no phone number - address and tags are present
         assertParseSuccess(parser, NAME_DESC_AMY + " " + PREFIX_PHONE + ADDRESS_DESC_AMY + TAG_DESC_STUDENT,
-                new AddCommand(expectedPersonNoPhone));
+                new AddCommand(expectedPersonNoPhoneOnly));
+
+        // there is a phone number prefix, but no phone number - no address or tags present
+        assertParseSuccess(parser, NAME_DESC_AMY + " " + PREFIX_PHONE,
+                new AddCommand(expectedPersonNoOptionalFields));
 
         // no address
-        Person expectedPersonNoAddress = new PersonBuilder(AMY)
+        Person expectedPersonNoAddressOnly = new PersonBuilder(AMY)
                 .withAddress("")
                 .build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
-                new AddCommand(expectedPersonNoAddress));
+                new AddCommand(expectedPersonNoAddressOnly));
+
+        // there is an address prefix, but no phone number
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " " + PREFIX_ADDRESS,
+                new AddCommand(expectedPersonNoAddressOnly));
+    }
+
+    @Test
+    public void parse_withCurrentMaxId_assignsNextId() {
+        AddCommandParser parserWithCurrentMaxId = new AddCommandParser(Optional.of(Id.of(5)));
+        Person expectedPerson = new PersonBuilder()
+                .withId(6)
+                .withName("Amy Bee")
+                .withoutPhone()
+                .withAddress("")
+                .build();
+
+        assertParseSuccess(parserWithCurrentMaxId, NAME_DESC_AMY,
+                new AddCommand(expectedPerson));
     }
 
     @Test

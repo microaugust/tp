@@ -37,6 +37,21 @@ public class AddCommandIntegrationTest {
                 AddCommand.MESSAGE_SUCCESS, expectedModel);
     }
 
+    public void execute_newPersonWithoutPhoneAndAddress_success() {
+        Person validPerson = new PersonBuilder()
+                .withId(8)
+                .withName("No Phone")
+                .withoutPhone()
+                .withAddress("")
+                .build();
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.addPerson(validPerson);
+
+        assertCommandSuccess(new AddCommand(validPerson), model,
+                AddCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
     @Test
     public void execute_duplicatePersonAllFieldsSame_throwsCommandException() {
         Person personInList = model.getAddressBook().getPersonList().get(0);
