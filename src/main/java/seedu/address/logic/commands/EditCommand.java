@@ -148,6 +148,8 @@ public class EditCommand extends Command {
          * A defensive copy of {@code tags} is used internally.
          */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
+            assert toCopy != null;
+
             setName(toCopy.name);
             setPhone(toCopy.phone, toCopy.phoneChanged);
             setAddress(toCopy.address);
@@ -166,6 +168,8 @@ public class EditCommand extends Command {
          * Sets the edited name.
          */
         public void setName(Name name) {
+            assert name != null;
+
             this.name = name;
         }
 
@@ -181,11 +185,9 @@ public class EditCommand extends Command {
          * For public use.
          */
         public void setPhone(Optional<Phone> phone) {
-            if (phone == null) {
-                setPhone(Optional.empty(), false);
-            } else {
-                setPhone(phone, true);
-            }
+            Optional.ofNullable(phone)
+                .ifPresentOrElse(p -> setPhone(p, true), () ->
+                        setPhone(Optional.empty(), false));
         }
 
         /**
@@ -193,6 +195,10 @@ public class EditCommand extends Command {
          * For private use.
          */
         private void setPhone(Optional<Phone> phone, boolean phoneChanged) {
+            // boolean not checked here because boolean cannot be null
+            // while interestingly, Boolean can be null
+            assert phone != null;
+
             this.phone = phone;
             this.phoneChanged = phoneChanged;
         }
@@ -208,16 +214,18 @@ public class EditCommand extends Command {
          * Returns the edited phone if it was provided.
          */
         public Optional<Phone> getPhone() {
-            if (phone == null) {
-                return Optional.empty();
-            }
-            return phone;
+            // if phone null return Optional.empty
+            // else return Optional<Phone>
+            return Optional.ofNullable(phone)
+                .flatMap(phone -> phone);
         }
 
         /**
          * Sets the edited address.
          */
         public void setAddress(Address address) {
+            assert address != null;
+
             this.address = address;
         }
 
