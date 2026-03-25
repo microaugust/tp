@@ -15,6 +15,9 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.commands.CommandTestUtil.UNSUPPORTED_TAG_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_STUDENT;
@@ -115,9 +118,9 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Person expectedPerson = new PersonBuilder(AMY).withTags().build();
+        Person expectedPersonNoTags = new PersonBuilder(AMY).withTags().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY,
-                new AddCommand(expectedPerson));
+                new AddCommand(expectedPersonNoTags));
 
         // no phone prefix
         Person expectedPersonWithoutPhone = new PersonBuilder()
