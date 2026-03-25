@@ -82,6 +82,7 @@ public class EditCommandTest {
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
+
     @Test
     public void execute_idInAddressBookNoFieldSpecified_success() {
         EditCommand editCommand = new EditCommand(ID_FIRST, new EditPersonDescriptor());

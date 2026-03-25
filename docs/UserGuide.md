@@ -107,12 +107,13 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
+* When editing tags, the new tags are added to the person's existing tags.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
+*  `edit 1 t/Parent` Adds the `Parent` tag to the person with `ID` 1's existing tags.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 
 ### Locating persons: `find`
