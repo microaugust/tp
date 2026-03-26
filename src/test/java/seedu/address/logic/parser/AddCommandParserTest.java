@@ -155,9 +155,9 @@ public class AddCommandParserTest {
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + ADDRESS_DESC_BOB
                 + CATEGORY_DESC_PARENT + CATEGORY_DESC_STUDENT, Phone.MESSAGE_CONSTRAINTS);
 
-        // invalid tag format
+        // invalid tag input
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_TAG_DESC + CATEGORY_DESC_STUDENT, Tag.MESSAGE_CONSTRAINTS);
+                + INVALID_TAG_DESC + CATEGORY_DESC_STUDENT, Tag.MESSAGE_CATEGORY_CONSTRAINTS);
 
         // unsupported category
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB

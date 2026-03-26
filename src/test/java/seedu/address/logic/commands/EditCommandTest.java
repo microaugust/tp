@@ -120,19 +120,27 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_idInAddressBookNoFieldSpecified_success() {
-        EditCommand editCommand = new EditCommand(ID_FIRST, new EditPersonDescriptor());
+    public void execute_idInAddressBookAppendExistingTag_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags("Student").build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
 
         Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
         assertTrue(personToEditFound.isPresent());
-        Person editedPerson = personToEditFound.get();
+        Person personToEdit = personToEditFound.get();
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(editedPerson));
+                Messages.format(personToEdit));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, personToEdit);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_idInAddressBookNoFieldSpecified_failure() {
+        EditCommand editCommand = new EditCommand(ID_FIRST, new EditPersonDescriptor());
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_NOT_EDITED);
     }
 
     @Test

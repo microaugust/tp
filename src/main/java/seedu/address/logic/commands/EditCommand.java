@@ -66,6 +66,9 @@ public class EditCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        if (!editPersonDescriptor.isAnyFieldEdited()) {
+            throw new CommandException(MESSAGE_NOT_EDITED);
+        }
 
         Person personToEdit = model.findPersonById(id)
                 .orElseThrow(() -> new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID,
@@ -88,7 +91,8 @@ public class EditCommand extends Command {
      * existing tags, unless the edited tag set is empty, which clears all tags.
      */
     private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        assert personToEdit != null;
+        requireNonNull(personToEdit);
+        requireNonNull(editPersonDescriptor);
 
         Id personId = personToEdit.getId();
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -102,17 +106,25 @@ public class EditCommand extends Command {
     }
 
     private static Set<Tag> createUpdatedTags(Set<Tag> existingTags, EditPersonDescriptor editPersonDescriptor) {
-        return editPersonDescriptor.getTags()
-                .map(tagsToApply -> {
-                    if (tagsToApply.isEmpty()) {
-                        return Collections.<Tag>emptySet();
-                    }
+        requireNonNull(existingTags);
+        requireNonNull(editPersonDescriptor);
 
-                    Set<Tag> combinedTags = new HashSet<>(existingTags);
-                    combinedTags.addAll(tagsToApply);
-                    return combinedTags;
-                })
+        return editPersonDescriptor.getTags()
+                .map(tagsToApply -> mergeTags(existingTags, tagsToApply))
                 .orElse(existingTags);
+    }
+
+    private static Set<Tag> mergeTags(Set<Tag> existingTags, Set<Tag> tagsToApply) {
+        requireNonNull(existingTags);
+        requireNonNull(tagsToApply);
+
+        if (tagsToApply.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        Set<Tag> combinedTags = new HashSet<>(existingTags);
+        combinedTags.addAll(tagsToApply);
+        return combinedTags;
     }
 
     @Override
@@ -208,6 +220,7 @@ public class EditCommand extends Command {
          * For private use.
          */
         private void setPhone(Optional<Phone> phone, boolean phoneChanged) {
+            requireNonNull(phone);
             this.phone = phone;
             this.phoneChanged = phoneChanged;
         }
