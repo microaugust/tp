@@ -50,10 +50,10 @@ EduConnect is a **desktop application that enables private tutors to manage thei
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/CATEGORY]` can be used as `n/John Doe t/Student` or as `n/John Doe`.
+  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/Student` or as `n/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/CATEGORY]…​` can be used as ` ` (i.e. 0 times), `t/Student`, `t/Student t/Parent` etc.
+  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/Student`, `t/Student t/Parent` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -77,19 +77,26 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`
+Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of categories (including 0)
+A person can have any number of tags (including 0)
 </div>
 
 * Only `n/NAME` is required.
 * `p/PHONE_NUMBER`, `a/ADDRESS`, and `t/TAG` are optional.
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
+* Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
 
 Examples:
 * `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01`
+* `add n/John Doe a/John street, block 123, #01-01 t/Parent t/Tutor`
 * `add n/Jane Doe p/98765432`
+* `add n/Jane Doe p/`
+* `add n/Jane Doe a/`
+
+The first example gives the following expected output:
+  ![result for 'add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01'](images/AddCommandResult.png)
 
 ### Listing all persons : `list`
 
@@ -173,9 +180,9 @@ Format: `copy ID field`
 * If the person's field is empty, then nothing will be copy to the clipboard.
 
 Examples:
-* `copy 6 n/` copy the name of the person with `ID` 6 to the clipboard.
-* `copy 7 p/` copy the phone number of the person with `ID` 7 to the clipboard.
-* `copy 9 a/` copy the address of the person with `ID` 9 to the clipboard.
+* `copy 6 n/` copies the name of the person with `ID` 6 to the clipboard.
+* `copy 7 p/` copies the phone number of the person with `ID` 7 to the clipboard.
+* `copy 9 a/` copies the address of the person with `ID` 9 to the clipboard.
 * `copy 1 p/` will fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
 
 ### Clearing all entries : `clear`
@@ -227,7 +234,7 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
