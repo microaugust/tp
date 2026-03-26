@@ -311,7 +311,7 @@ Guarantees:
 * If the operation fails, the stored contacts remain unchanged.
 
 MSS:
-1. User requests to add a contact by providing a name, and optionally a phone number and address.
+1. User requests to add a contact by providing a name. Optionally, he can also provide a phone number, an address and a list of tags.
 2. EduConnect validates the provided details.
 3. EduConnect adds the contact.
 4. EduConnect shows a success message with the added contact details.
@@ -323,7 +323,7 @@ Extensions:
   * 1a2. User re-enters the contact details.
   * Steps 1a1-1a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2a. User provides an invalid phone number format.
+* 2a. User provides an invalid format for at least one of the fields.
   * 2a1. EduConnect shows an error message.
   * 2a2. User re-enters the contact details.
   * Steps 2a1-2a2 are repeated until valid input is provided.
@@ -333,7 +333,7 @@ Extensions:
   * 2b2. User re-enters the contact details.
   * Steps 2b1-2b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2c. The contact duplicates an existing contact.
+* 2c. The new contact is a duplicate of an existing contact.
   * 2c1. EduConnect shows a duplicate contact error.
   * 2c2. User re-enters the contact details.
   * Steps 2c1-2c2 are repeated until valid input is provided.
@@ -486,25 +486,25 @@ Extensions:
 Actor: User
 
 Guarantees:
-* On successful completion, EduConnect shows the filtered contacts whose names, addresses, phone numbers, or tags match at least one provided prefixed keyword, together with the number of matches.
+* On successful completion, EduConnect shows only those contacts which have a field (ie. name / address / phone number / tags) matching at least one provided keyword, for that corresponding field. EduConnect also displays the number of contacts found.
 * Each matching contact appears at most once in the filtered results.
 * If no contacts match, EduConnect shows an empty filtered result.
 * If the operation fails, the currently displayed contacts remain unchanged.
 
 MSS:
-1. User requests to search contacts by entering one or more prefixed keywords.
-2. EduConnect finds contacts whose specified fields match at least one of the keywords.
+1. User requests to search contacts by entering one or more keywords, each marked with a specific field.
+2. EduConnect finds contacts which has a field that correspondingly matches at least one of the keywords, associated with that field.
 3. EduConnect shows the filtered results and match count.
 Use case ends.
 
 Extensions:
 * 1a. User provides no keyword.
-  * 1a1. EduConnect shows an error message and requests at least one prefixed keyword.
+  * 1a1. EduConnect shows an error message and requests at least one keyword.
   * 1a2. User re-enters the search input.
   * Steps 1a1-1a2 are repeated until at least one keyword is provided.
   * Use case resumes from step 2.
-* 1b. User provides unprefixed input or mixes prefixed and unprefixed input.
-  * 1b1. EduConnect shows an error message explaining the required prefixed format.
+* 1b. User provides a keyword that is not marked with a field.
+  * 1b1. EduConnect shows an error message explaining the required input format.
   * 1b2. User re-enters the search input.
   * Use case resumes from step 2.
 * 2a. No contacts match the keywords.
@@ -568,13 +568,13 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
+   1. Test case: `del 1`<br>
       Expected: The contact with `ID` 1 is deleted from the address book. Details of the deleted contact shown as a person card. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   1. Test case: `del 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete this`, `delete -1`, `delete x`, `...` (where `x` is not found in the address book)<br>
+   1. Other incorrect delete commands to try: `del`, `del this`, `del -1`, `del x`, `...` (where `x` is not found in the address book)<br>
       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
