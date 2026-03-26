@@ -77,6 +77,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (tags.isEmpty()) {
             return Optional.empty();
         }
+
+        // A bare t/ clears all tags, but it cannot be combined with category values.
         if (isTagReset(tags)) {
             return Optional.of(Collections.emptySet());
         }
