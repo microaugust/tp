@@ -28,7 +28,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 a/1A Kent Ridge Rd, 119224` : Adds a contact named `John Doe` with a phone number and address to the Address Book.
+   * `add n/John Doe p/98765432 a/1A Kent Ridge Rd, 119224` : Adds a contact named `John Doe` with a phone number `98765432` and address `1A Kent Ridge Rd, 119224` to the Address Book.
 
    * `del 3` : Deletes the contact with an `ID` of 3.
 
@@ -110,42 +110,41 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
+* When editing tags, the new tags are added to the person's existing tags.
 * You can remove all the person’s tags by typing `t/` without
     specifying any tags after it.
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
+*  `edit 1 t/Parent` Adds the `Parent` tag to the person with `ID` 1's existing tags.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 
 ### Locating persons: `find`
 
-Finds persons whose name, address, or phone number contains any of the given keywords.
+Finds persons whose specified fields contain any of the given keywords.
 
-Format: `find KEYWORD [MORE_KEYWORDS]...`
-or `find [n/NAME] [a/ADDRESS] [p/PHONE]`
+Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`
 
-* The search is case-insensitive for names and addresses. e.g. `hans` will match `Hans`
-* Partial matches are supported. e.g. `Han` will match `Hans`
-* If no prefixes are provided, all supported fields are searched.
-* `n/` restricts the search to names only.
-* `a/` restricts the search to addresses only.
-* `p/` restricts the search to phone numbers only.
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Ali Clementi` will return persons whose name, address, or phone number contains either `Ali` or `Clementi`
-* If prefixes are used, all search terms must be prefixed.
+* At least one prefixed keyword must be provided.
+* Unprefixed input is not allowed. e.g. `find Ali` is invalid.
+* `n/` searches names, `a/` searches addresses, `p/` searches phone numbers, and `t/` searches tags.
+* The search is case-insensitive for names, addresses, and tags. e.g. `n/hans` will match `Hans` and `t/student` will match `Student`
+* Phone matching is digit-based substring matching. e.g. `p/9435` will match a phone number containing `9435`
+* Partial matches are supported. e.g. `n/Han` will match `Hans`
+* Persons matching at least one prefixed keyword will be returned (i.e. `OR` search across all provided fields and keywords).
+* Repeating the same prefix is allowed. e.g. `find n/Ali n/August`
 
 Examples:
-* `find Ali` returns persons whose name, address, or phone number contains `Ali`
 * `find a/119224` returns persons whose address contains `119224`
 * `find n/Clement` returns persons whose name contains `Clement`
 * `find p/9435` returns persons whose phone number contains `9435`
 * `find n/aleX a/seran` returns persons whose name contains `aleX` or whose address contains `seran`
-  ![result for 'find n/aleX a/seran'](images/find_AlexSeranResult.png)
+* `find t/student` returns persons whose tags contain `student`
+* `find n/Ali n/August` returns persons whose names contain `Ali` or `August`
 
 Notes:
-- If no prefixes are provided, the search is performed across all supported fields.
-- If prefixes are used, all search terms must be prefixed.
+- Every search term must be attached to a prefix.
+- Contacts matching multiple keywords still appear only once in the filtered list.
 
 ### Deleting a person : `del`
 
@@ -158,7 +157,7 @@ Format: `del ID`
 
 Examples:
 * `del 2` deletes the person with `ID` 2 from the address book.
-* `find Betsy` followed by `del 1` deletes the person with `ID` 1 from the address book. Note that it does not delete the first person in the results of the `find` command.
+* `find n/Betsy` followed by `del 1` deletes the person with `ID` 1 from the address book. Note that it does not delete the first person in the results of the `find` command.
 * `add n/Andrew` followed by `del 1` deletes the person with `ID` 1 from the address book. Note that it does not delete the contact that was just added.
 * `add n/Andrew` followed by `del 1` will fail if there is no person with `ID` 1 in the address book.
 
@@ -227,10 +226,10 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`

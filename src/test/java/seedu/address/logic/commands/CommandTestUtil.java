@@ -54,7 +54,7 @@ public class CommandTestUtil {
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     // public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS;
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
-    public static final String UNSUPPORTED_TAG_DESC = " " + PREFIX_TAG + "Friend"; //
+    public static final String UNSUPPORTED_TAG_DESC = " " + PREFIX_TAG + "Friend";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
