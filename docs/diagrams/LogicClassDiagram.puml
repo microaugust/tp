@@ -30,12 +30,13 @@ HiddenOutside ..> Logic
 LogicManager .right.|> Logic
 LogicManager -right->"1" ParserClasses
 ParserClasses ..> XYZCommand : <<create>>
+note right of ParserClasses: Parser Classes = AddCommandParser, \nEditCommandParser, etc
 
 XYZCommand -up-|> Command
 LogicManager .left.> Command : <<call>>
 
-LogicManager --> Model
-LogicManager --> Storage
+LogicManager "1" -up-> "0..1" HiddenModel
+LogicManager "1" -right-> "0..1" Storage
 Storage --[hidden] Model
 Command .[hidden]up.> Storage
 Command .right.> Model
