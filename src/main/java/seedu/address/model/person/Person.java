@@ -45,22 +45,6 @@ public class Person {
         this.remark = remark;
     }
 
-    // TODO: remove this constructor in the future
-    public Person(
-        Id id,
-        Name name,
-        Optional<Phone> phone,
-        Address address,
-        Set<Tag> tags
-    ) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-        this.tags.addAll(tags);
-        this.remark = Optional.empty();
-    }
-
     public Id getId() {
         return id;
     }

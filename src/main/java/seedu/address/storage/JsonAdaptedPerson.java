@@ -16,6 +16,7 @@ import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -31,6 +32,7 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String address;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final String remark;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -40,7 +42,8 @@ class JsonAdaptedPerson {
             @JsonProperty("name") String name,
             @JsonProperty("phone") String phone,
             @JsonProperty("address") String address,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("remark") String remark) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -48,6 +51,7 @@ class JsonAdaptedPerson {
         if (tags != null) {
             this.tags.addAll(tags);
         }
+        this.remark = remark;
     }
 
     /**
@@ -62,6 +66,8 @@ class JsonAdaptedPerson {
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+        remark = source.getRemark().map(x -> x.value)
+            .orElse(EMPTY_STRING);
     }
 
     /**
@@ -108,7 +114,12 @@ class JsonAdaptedPerson {
         final Address modelAddress = new Address(address);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelId, modelName, modelPhone, modelAddress, modelTags);
+
+        final Optional<Remark> modelRemark = remark.isEmpty()
+            ? Optional.empty()
+            : Optional.of(new Remark(remark));
+
+        return new Person(modelId, modelName, modelPhone, modelAddress, modelTags, modelRemark);
     }
 
 }
