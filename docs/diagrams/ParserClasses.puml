@@ -28,6 +28,18 @@ AddressBookParser ..> Command : <<use>>
 XYZCommandParser .up.|> Parser
 XYZCommandParser ..> ArgumentMultimap
 XYZCommandParser ..> ArgumentTokenizer
+note top of XYZCommandParser
+  XYZCommandParser represents
+  parsers such as
+  AddCommandParser,
+  FindCommandParser, etc.
+end note
+
+note bottom of CliSyntax
+  Defines commonly used CLI prefixes
+  for command parsing,
+  such as n/, p/, a/, and t/.
+end note
 ArgumentTokenizer .left.> ArgumentMultimap
 XYZCommandParser ..> CliSyntax
 CliSyntax ..> Prefix
