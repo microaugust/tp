@@ -41,7 +41,8 @@ public class FindCommandParserTest {
     public void parse_multipleNamePrefixes_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Arrays.asList(VALID_NAME_AMY, VALID_NAME_BOB),
-                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB, expectedFindCommand);
 
         assertParseSuccess(parser, " " + PREFIX_NAME + "  " + VALID_NAME_AMY + NAME_DESC_BOB + "  \t",
@@ -52,7 +53,8 @@ public class FindCommandParserTest {
     public void parse_phonePrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
-                        Collections.singletonList(VALID_PHONE_AMY), Collections.emptyList(), MatchMode.OR));
+                        Collections.singletonList(VALID_PHONE_AMY), Collections.emptyList(),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, PHONE_DESC_AMY, expectedFindCommand);
     }
 
@@ -60,7 +62,8 @@ public class FindCommandParserTest {
     public void parse_namePrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Arrays.asList(VALID_NAME_AMY),
-                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY, expectedFindCommand);
     }
 
@@ -69,7 +72,8 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(),
                         Collections.singletonList(VALID_ADDRESS_AMY),
-                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+                                Collections.emptyList(), Collections.emptyList(),
+                                        Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, ADDRESS_DESC_AMY, expectedFindCommand);
     }
 
@@ -77,7 +81,8 @@ public class FindCommandParserTest {
     public void parse_tagPrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
-                        Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT), MatchMode.OR));
+                        Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, TAG_DESC_STUDENT, expectedFindCommand);
     }
 
@@ -86,7 +91,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.emptyList(),
-                        Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY,
                 expectedFindCommand);
     }
@@ -96,7 +101,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
-                        Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, PHONE_DESC_AMY + ADDRESS_DESC_AMY,
                 expectedFindCommand);
     }
@@ -105,7 +110,8 @@ public class FindCommandParserTest {
     public void parse_nameAndTagPrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY), Collections.emptyList(),
-                        Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT), MatchMode.OR));
+                        Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + TAG_DESC_STUDENT,
                 expectedFindCommand);
     }
@@ -114,7 +120,8 @@ public class FindCommandParserTest {
     public void parse_multipleTagPrefixes_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
-                        Collections.emptyList(), Arrays.asList(VALID_TAG_STUDENT, VALID_TAG_PARENT), MatchMode.OR));
+                        Collections.emptyList(), Arrays.asList(VALID_TAG_STUDENT, VALID_TAG_PARENT),
+                        Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, TAG_DESC_STUDENT + TAG_DESC_PARENT,
                 expectedFindCommand);
     }
@@ -124,7 +131,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
-                        Collections.singletonList(VALID_TAG_STUDENT), MatchMode.OR));
+                                Collections.singletonList(VALID_TAG_STUDENT), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
                 expectedFindCommand);
     }

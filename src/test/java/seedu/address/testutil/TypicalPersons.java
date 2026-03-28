@@ -6,6 +6,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_BOB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,27 +23,36 @@ public class TypicalPersons {
             .withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111")
             .withPhone("94351253")
-            .withTags("Student").build();
+            .withTags("Student").withoutRemark().build();
     public static final Person BENSON = new PersonBuilder().withId(2)
             .withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withPhone("98765432")
-            .withTags("Parent").build();
+            .withTags("Parent").withoutRemark().build();
     public static final Person CARL = new PersonBuilder().withId(3)
             .withName("Carl Kurz").withPhone("95352563")
-            .withAddress("wall street").withTags("Parent").build();
+            .withAddress("wall street").withTags("Parent")
+            .withoutRemark().build();
     public static final Person DANIEL = new PersonBuilder().withId(4)
             .withName("Daniel Meier").withPhone("87652533")
-            .withAddress("10th street").withTags("Student").build();
+            .withAddress("10th street").withTags("Student")
+            .withoutRemark().build();
     public static final Person ELLE = new PersonBuilder().withId(5)
             .withName("Elle Meyer").withPhone("94822247")
-            .withAddress("michegan ave").withTags("Tutor").build();
+            .withAddress("michegan ave").withTags("Tutor")
+            .withoutRemark().build();
     public static final Person FIONA = new PersonBuilder().withId(6)
             .withName("Fiona Kunz").withPhone("93724277")
-            .withAddress("little tokyo").withTags("Parent").build();
+            .withAddress("little tokyo").withTags("Parent")
+            .withoutRemark().build();
     public static final Person GEORGE = new PersonBuilder().withId(7)
             .withName("George Best").withPhone("94812442")
-            .withAddress("4th street").withTags("Tutor").build();
+            .withAddress("4th street").withTags("Tutor")
+            .withoutRemark().build();
+    public static final Person JIM = new PersonBuilder().withId(10)
+            .withName("Jim Wilson").withPhone("92311245")
+            .withAddress("10th street").withRemark("New student")
+            .build();
 
     // Used for test cases in JsonAddressBookStorage
     // These persons are manually added to an existing address book
@@ -60,7 +70,8 @@ public class TypicalPersons {
             .withAddress(VALID_ADDRESS_AMY).withTags("Student").build();
     public static final Person BOB = new PersonBuilder().withId(1)
             .withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
-            .withAddress(VALID_ADDRESS_BOB).withTags("Parent").build();
+            .withAddress(VALID_ADDRESS_BOB).withTags("Parent")
+            .withRemark(VALID_REMARK_BOB).build();
 
     private TypicalPersons() {} // prevents instantiation
 

@@ -4,11 +4,13 @@
     "name": "Alice Pauline",
     "phone": "94351253",
     "address": "123, Jurong West Ave 6, #08-111",
-    "tags": [ "friends" ]
+    "tags": [ "friends" ],
+    "remark" : ""
   }, {
     "id": 2,
     "name": "Alice Pauline",
     "phone": "94351253",
-    "address": "123, Jurong West Ave 6, #08-111"
+    "address": "123, Jurong West Ave 6, #08-111",
+    "remark" : ""
   } ]
 }

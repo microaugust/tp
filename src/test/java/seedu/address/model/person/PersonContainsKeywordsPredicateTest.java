@@ -53,7 +53,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         PersonContainsKeywordsPredicate differentTagFlag = new PersonContainsKeywordsPredicate(
                 firstPredicateKeywordList, Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), MatchMode.AND);
+                Collections.emptyList(), Collections.emptyList(), MatchMode.AND);
         assertFalse(firstPredicate.equals(differentTagFlag));
     }
 
@@ -98,7 +98,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // Multiple enabled fields
         predicate = predicate(Arrays.asList("Alice"), Collections.emptyList(),
-                Collections.singletonList("9435"), Collections.emptyList());
+                Collections.singletonList("9435"), Collections.emptyList(), Collections.emptyList());
         assertTrue(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withPhone("94351253")
@@ -120,7 +120,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // OR semantics across fields
         predicate = predicate(Collections.singletonList("zzz"), Collections.singletonList("Clementi"),
-                Collections.emptyList(), Collections.emptyList());
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         assertTrue(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withAddress("123 Clementi Road")
@@ -131,7 +131,7 @@ public class PersonContainsKeywordsPredicateTest {
     public void test_personDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         PersonContainsKeywordsPredicate predicate = predicate(Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList());
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));
 
         // Name search enabled, but keyword only appears in address
@@ -143,7 +143,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // Field-specific keywords should not match the wrong field
         predicate = predicate(Collections.singletonList("Geylang"), Collections.singletonList("Anything"),
-                Collections.emptyList(), Collections.emptyList());
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withAddress("123 Geylang Road")
@@ -151,7 +151,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // Address and phone keywords should not match each other's fields
         predicate = predicate(Collections.emptyList(), Collections.singletonList("Anything"),
-                Collections.singletonList("123"), Collections.emptyList());
+                Collections.singletonList("123"), Collections.emptyList(), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withAddress("123 Geylang Road")
@@ -160,7 +160,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // Name and tag keywords should not match each other's fields
         predicate = predicate(Collections.singletonList("Student"), Collections.emptyList(),
-                Collections.emptyList(), Collections.singletonList("Alice"));
+                Collections.emptyList(), Collections.singletonList("Alice"), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withTags("Student")
@@ -168,7 +168,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // Phone keyword should not match address
         predicate = predicate(Collections.emptyList(), Collections.emptyList(),
-                Collections.singletonList("Clementi"), Collections.emptyList());
+                Collections.singletonList("Clementi"), Collections.emptyList(), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withAddress("123 Clementi Road")
@@ -177,7 +177,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // Tag keyword should not match address
         predicate = predicate(Collections.emptyList(), Collections.singletonList("zzz"),
-                Collections.emptyList(), Collections.singletonList("Clementi"));
+                Collections.emptyList(), Collections.singletonList("Clementi"), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withAddress("123 Clementi Road")
@@ -219,7 +219,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // No enabled field contains the keyword
         predicate = predicate(Collections.singletonList("zzz"), Collections.singletonList("zzz"),
-                Collections.singletonList("zzz"), Collections.emptyList());
+                Collections.singletonList("zzz"), Collections.emptyList(), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withPhone("94351253")
@@ -228,14 +228,14 @@ public class PersonContainsKeywordsPredicateTest {
 
         // Name search disabled
         predicate = predicate(Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList());
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .build()));
 
         // Address search disabled
         predicate = predicate(Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList());
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withAddress("123 Clementi Road")
@@ -243,7 +243,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         // Phone search disabled
         predicate = predicate(Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList());
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withPhone("94351253")
@@ -264,29 +264,38 @@ public class PersonContainsKeywordsPredicateTest {
 
         String expected = PersonContainsKeywordsPredicate.class.getCanonicalName()
                 + "{nameKeywords=" + keywords + ", addressKeywords=[], phoneKeywords=[], "
-                + "tagKeywords=[], matchWord=OR}";
+                + "tagKeywords=[], remarkKeywords=[], matchWord=OR}";
         assertEquals(expected, predicate.toString());
     }
 
     private PersonContainsKeywordsPredicate predicate(List<String> nameKeywords, List<String> addressKeywords,
-            List<String> phoneKeywords, List<String> tagKeywords) {
+            List<String> phoneKeywords, List<String> tagKeywords, List<String> remarkKeywords) {
         return new PersonContainsKeywordsPredicate(nameKeywords, addressKeywords, phoneKeywords, tagKeywords,
-                MatchMode.OR);
+                remarkKeywords, MatchMode.OR);
     }
 
     private PersonContainsKeywordsPredicate namePredicate(List<String> keywords) {
-        return predicate(keywords, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+        return predicate(keywords, Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList());
     }
 
     private PersonContainsKeywordsPredicate addressPredicate(List<String> keywords) {
-        return predicate(Collections.emptyList(), keywords, Collections.emptyList(), Collections.emptyList());
+        return predicate(Collections.emptyList(), keywords, Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList());
     }
 
     private PersonContainsKeywordsPredicate phonePredicate(List<String> keywords) {
-        return predicate(Collections.emptyList(), Collections.emptyList(), keywords, Collections.emptyList());
+        return predicate(Collections.emptyList(), Collections.emptyList(), keywords,
+                Collections.emptyList(), Collections.emptyList());
     }
 
     private PersonContainsKeywordsPredicate tagPredicate(List<String> keywords) {
-        return predicate(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), keywords);
+        return predicate(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                keywords, Collections.emptyList());
+    }
+
+    private PersonContainsKeywordsPredicate remarkPredicate(List<String> keywords) {
+        return predicate(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), keywords);
     }
 }
