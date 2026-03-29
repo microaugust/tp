@@ -5,12 +5,14 @@ import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
@@ -166,6 +168,36 @@ public class FindCommandParserTest {
     public void parse_emptyRemarkPrefix_throwsParseException() {
         assertParseFailure(parser, " " + PREFIX_REMARK,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_validRemarkPrefix_returnsFindCommand() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.singletonList(VALID_REMARK_AMY),
+                MatchMode.OR
+        );
+        FindCommand expectedFindCommand = new FindCommand(predicate);
+        assertParseSuccess(parser, REMARK_DESC_AMY,
+                expectedFindCommand);
+    }
+
+    @Test
+    public void parse_remarkAndPhonePrefix_returnsFindCommand() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.singletonList(VALID_PHONE_AMY),
+                Collections.emptyList(),
+                Collections.singletonList(VALID_REMARK_AMY),
+                MatchMode.OR
+        );
+        FindCommand expectedFindCommand = new FindCommand(predicate);
+        assertParseSuccess(parser, REMARK_DESC_AMY + PHONE_DESC_AMY,
+                expectedFindCommand);
     }
 
     @Test

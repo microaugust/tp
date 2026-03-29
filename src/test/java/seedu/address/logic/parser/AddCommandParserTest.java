@@ -111,6 +111,10 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY + TAG_DESC_STUDENT + REMARK_DESC_AMY,
                 new AddCommand(expectedPersonNoPhoneOnly));
 
+        Person expectedPersonNoRemarkOnly = new PersonBuilder(AMY).withoutRemark().build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY + TAG_DESC_STUDENT,
+                new AddCommand(expectedPersonNoRemarkOnly));
+
         assertParseSuccess(parser,
                 NAME_DESC_AMY + " " + PREFIX_PHONE + ADDRESS_DESC_AMY + TAG_DESC_STUDENT + REMARK_DESC_AMY,
                         new AddCommand(expectedPersonNoPhoneOnly));
