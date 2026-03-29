@@ -79,9 +79,6 @@ public class PersonContainsKeywordsPredicateTest {
         // different keywords -> returns false
         assertFalse(firstPredicate.equals(secondPredicate));
 
-        PersonContainsKeywordsPredicate differentFlagsPredicate = addressPredicate(firstPredicateKeywordList);
-        assertFalse(firstPredicate.equals(differentFlagsPredicate));
-
         PersonContainsKeywordsPredicate differentNameFlag = addressPredicate(firstPredicateKeywordList);
         assertFalse(firstPredicate.equals(differentNameFlag));
 
@@ -95,6 +92,9 @@ public class PersonContainsKeywordsPredicateTest {
                 firstPredicateKeywordList, Collections.emptyList(), Collections.emptyList(),
                 Collections.emptyList(), Collections.emptyList(), MatchMode.AND);
         assertFalse(firstPredicate.equals(differentTagFlag));
+
+        PersonContainsKeywordsPredicate differentRemarkFlag = remarkPredicate(firstPredicateKeywordList);
+        assertFalse(firstPredicate.equals(differentRemarkFlag));
     }
 
     @Test
