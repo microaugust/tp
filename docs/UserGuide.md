@@ -117,6 +117,7 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/CATEGORY]…​`
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* You can remove the person’s address by typing `a/` without specifying any address after it.
 * Use this command for all category updates. EduConnect does not provide a separate `tag` command.
 * When editing tags, the provided categories will be appended to the person’s existing tags.
 * Only the supported categories may be used as edit tags: `Student`, `Parent`, `Tutor`.
@@ -126,6 +127,7 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/CATEGORY]…​`
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
+*  `edit 1 a/` Clears the address of the person with `ID` 1.
 *  `edit 2 t/Parent` Appends the tag `Parent` to the person with `ID` 2.
 *  `edit 2 t/Parent t/Tutor` Appends both `Parent` and `Tutor` to the person with `ID` 2.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
@@ -156,6 +158,7 @@ Examples:
 Notes:
 - Every search term must be attached to a prefix.
 - Contacts matching multiple keywords still appear only once in the filtered list.
+- Contacts without an address will not match `a/` keywords.
 
 ### Deleting a person : `del`
 
@@ -240,7 +243,7 @@ Action | Format, Examples
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`<br> e.g.,`edit 2 t/Parent t/Tutor`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`<br> e.g.,`edit 2 a/`, `edit 2 t/Parent t/Tutor`
 **Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`
