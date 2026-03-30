@@ -87,6 +87,7 @@ A person can have any number of tags (including 0)
 * `p/PHONE_NUMBER`, `a/ADDRESS`, and `t/TAG` are optional.
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
 * Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
+* If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
 
 Examples:
 * `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01`
