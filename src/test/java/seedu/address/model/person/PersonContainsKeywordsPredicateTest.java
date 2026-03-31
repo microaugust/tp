@@ -298,6 +298,19 @@ public class PersonContainsKeywordsPredicateTest {
     }
 
     @Test
+    public void test_andMode_ignoresDisabledFields() {
+        PersonContainsKeywordsPredicate predicate = predicate(Collections.singletonList("Alice"),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.AND);
+
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("No matching address needed")
+                .withPhone("99999999")
+                .withTags("Parent")
+                .build()));
+    }
+
+    @Test
     public void toStringMethod() {
         List<String> keywords = List.of("keyword1", "keyword2");
         PersonContainsKeywordsPredicate predicate = namePredicate(keywords);
