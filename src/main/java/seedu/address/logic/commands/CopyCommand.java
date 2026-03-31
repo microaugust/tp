@@ -5,6 +5,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
+import java.util.Set;
+
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import seedu.address.commons.util.ToStringBuilder;
@@ -18,6 +20,9 @@ import seedu.address.model.person.Person;
  * Copies a field of a person identified by their unique ID to the clipboard.
  */
 public class CopyCommand extends Command {
+
+    private static final Set<String> VALID_FIELDS = Set.of(
+            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix());
 
     public static final String COMMAND_WORD = "copy";
 
@@ -47,6 +52,12 @@ public class CopyCommand extends Command {
      * @param field the field to copy
      */
     public CopyCommand(Id targetId, String field) {
+        // Defensive Programming
+        requireNonNull(targetId);
+        requireNonNull(field);
+        if (!VALID_FIELDS.contains(field)) {
+            throw new IllegalArgumentException("Invalid field: " + field);
+        }
         this.targetId = targetId;
         this.field = field;
     }
@@ -85,8 +96,7 @@ public class CopyCommand extends Command {
         } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return person.getAddress().value;
         } else {
-            assert false : "Invalid field: " + field;
-            return EMPTY_STRING;
+            throw new IllegalStateException("Unexpected invalid field: " + field);
         }
     }
 
@@ -98,8 +108,7 @@ public class CopyCommand extends Command {
         } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return "address";
         } else {
-            assert false : "Invalid field: " + field;
-            return EMPTY_STRING;
+            throw new IllegalStateException("Unexpected invalid field: " + field);
         }
     }
 
