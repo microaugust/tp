@@ -380,7 +380,7 @@ Guarantees:
 MSS:
 1. User requests to edit a contact's categories.
 2. EduConnect validates the contact reference and category value.
-3. EduConnect appends the provided categories to the selected contact.
+3. EduConnect applies the requested category additions and deletions to the selected contact.
 4. EduConnect shows a success message.
 Use case ends.
 
@@ -405,16 +405,24 @@ Extensions:
   * 2b2. User re-submits the edit request.
   * Steps 2b1-2b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2c. The user combines `t/` with one or more category values.
+* 2c. The user combines `t/` with one or more category values or `tdel/` values.
   * 2c1. EduConnect shows an error message.
   * 2c2. User re-submits the edit request.
   * Steps 2c1-2c2 are repeated until valid input is provided.
   * Use case resumes from step 2.
+* 2d. The user tries to add and delete the same category in one command.
+  * 2d1. EduConnect shows an error message.
+  * 2d2. User re-submits the edit request.
+  * Steps 2d1-2d2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
 * 3a. The selected contact already has one or more categories.
-  * 3a1. EduConnect appends any missing categories and keeps existing categories unchanged.
+  * 3a1. EduConnect appends any missing categories and removes any specified categories that are present.
   * Use case resumes from step 4.
 * 3b. The user enters `t/` with no category value.
   * 3b1. EduConnect clears all existing categories for the selected contact.
+  * Use case resumes from step 4.
+* 3c. The user specifies a category to delete that the selected contact does not have.
+  * 3c1. EduConnect leaves the existing categories unchanged.
   * Use case resumes from step 4.
 
 #### Use case: UC04 - View Phone Number and Address

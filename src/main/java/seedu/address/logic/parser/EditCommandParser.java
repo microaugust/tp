@@ -113,7 +113,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(tagsToAdd);
         requireNonNull(tagsToDelete);
 
-        if (isTagReset(tagsToAdd) && tagsToDelete.isPresent()) {
+        if (isTagResetRequested(tagsToAdd) && tagsToDelete.isPresent()) {
             throw new ParseException(EditCommand.MESSAGE_INVALID_TAG_RESET);
         }
 
@@ -122,7 +122,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
     }
 
-    private static boolean isTagReset(Optional<Set<Tag>> tagsToAdd) {
+    private static boolean isTagResetRequested(Optional<Set<Tag>> tagsToAdd) {
         return tagsToAdd.isPresent() && tagsToAdd.get().isEmpty();
     }
 
