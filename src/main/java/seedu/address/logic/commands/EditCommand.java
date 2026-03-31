@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Collections;
@@ -34,22 +35,27 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person with "
             + "the specified ID. "
-            + "Existing values will be overwritten by the input values, except tags which are appended.\n"
+            + "Existing values will be overwritten by the input values, except tags which are appended "
+            + "with t/ and deleted with tdel/.\n"
             + "Parameters: ID (must be a positive integer) "
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_TAG + "CATEGORY]...\n"
+            + "[" + PREFIX_TAG + "CATEGORY]... "
+            + "[" + PREFIX_TAG_DELETE + "CATEGORY]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_TAG + "Student\n"
+            + PREFIX_TAG + "Student "
+            + PREFIX_TAG_DELETE + "Parent\n"
             + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG;
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
     public static final String MESSAGE_INVALID_TAG_RESET =
-            "The tag reset prefix t/ cannot be combined with category values.";
+            "The tag reset prefix t/ cannot be combined with category or tdel/ values.";
+    public static final String MESSAGE_CONFLICTING_TAG_EDITS =
+            "A category cannot be both added and deleted in the same command.";
 
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -91,7 +97,8 @@ public class EditCommand extends Command {
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}. Provided tags are appended to the
-     * existing tags, unless the edited tag set is empty, which clears all tags.
+     * existing tags, specified deleted tags are removed, and an empty edited tag
+     * set clears all tags.
      */
     private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(personToEdit);
@@ -112,9 +119,13 @@ public class EditCommand extends Command {
         requireNonNull(existingTags);
         requireNonNull(editPersonDescriptor);
 
-        return editPersonDescriptor.getTags()
+        Set<Tag> tagsAfterAdditions = editPersonDescriptor.getTags()
                 .map(tagsToApply -> mergeTags(existingTags, tagsToApply))
                 .orElse(existingTags);
+
+        return editPersonDescriptor.getTagsToDelete()
+                .map(tagsToDelete -> removeTags(tagsAfterAdditions, tagsToDelete))
+                .orElse(tagsAfterAdditions);
     }
 
     private static Set<Tag> mergeTags(Set<Tag> existingTags, Set<Tag> tagsToApply) {
@@ -128,6 +139,15 @@ public class EditCommand extends Command {
         Set<Tag> combinedTags = new HashSet<>(existingTags);
         combinedTags.addAll(tagsToApply);
         return combinedTags;
+    }
+
+    private static Set<Tag> removeTags(Set<Tag> existingTags, Set<Tag> tagsToDelete) {
+        requireNonNull(existingTags);
+        requireNonNull(tagsToDelete);
+
+        Set<Tag> remainingTags = new HashSet<>(existingTags);
+        remainingTags.removeAll(tagsToDelete);
+        return remainingTags;
     }
 
     @Override
@@ -156,7 +176,7 @@ public class EditCommand extends Command {
 
     /**
      * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person, except tags which will be appended.
+     * corresponding field value of the person, except tags which may be appended or deleted.
      */
     public static class EditPersonDescriptor {
         private Name name;
@@ -164,6 +184,7 @@ public class EditCommand extends Command {
         private boolean phoneChanged;
         private Address address;
         private Set<Tag> tags;
+        private Set<Tag> tagsToDelete;
 
         /**
          * Creates an empty descriptor with no edited fields.
@@ -184,13 +205,14 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone, toCopy.phoneChanged);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
+            setTagsToDelete(toCopy.tagsToDelete);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, address, tags)
+            return CollectionUtil.isAnyNonNull(name, address, tags, tagsToDelete)
                     || phoneChanged;
         }
 
@@ -276,6 +298,25 @@ public class EditCommand extends Command {
             return (tags != null) ? Optional.of(Collections.unmodifiableSet(tags)) : Optional.empty();
         }
 
+        /**
+         * Sets {@code tagsToDelete} to this object's {@code tagsToDelete}.
+         * A defensive copy of {@code tagsToDelete} is used internally.
+         */
+        public void setTagsToDelete(Set<Tag> tagsToDelete) {
+            this.tagsToDelete = (tagsToDelete != null) ? new HashSet<>(tagsToDelete) : null;
+        }
+
+        /**
+         * Returns an unmodifiable tag deletion set, which throws {@code UnsupportedOperationException}
+         * if modification is attempted.
+         * Returns {@code Optional#empty()} if {@code tagsToDelete} is null.
+         */
+        public Optional<Set<Tag>> getTagsToDelete() {
+            return (tagsToDelete != null)
+                    ? Optional.of(Collections.unmodifiableSet(tagsToDelete))
+                    : Optional.empty();
+        }
+
         @Override
         public boolean equals(Object other) {
             if (other == this) {
@@ -292,7 +333,8 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && phoneChanged == otherEditPersonDescriptor.phoneChanged
                     && Objects.equals(address, otherEditPersonDescriptor.address)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                    && Objects.equals(tagsToDelete, otherEditPersonDescriptor.tagsToDelete);
         }
 
         @Override
@@ -302,6 +344,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("address", address)
                     .add("tags", tags)
+                    .add("tagsToDelete", tagsToDelete)
                     .toString();
         }
     }
