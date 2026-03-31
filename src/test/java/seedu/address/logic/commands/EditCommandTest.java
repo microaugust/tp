@@ -160,6 +160,67 @@ public class EditCommandTest {
     }
 
     @Test
+    public void execute_idInAddressBookDeleteSpecificTag_success() {
+        Person alanTuring = new PersonBuilder().withId(42).withName("Alan Turing")
+                .withPhone("91234567").withAddress("Computing Avenue")
+                .withTags(VALID_TAG_STUDENT, VALID_TAG_TUTOR).build();
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(alanTuring);
+        Model modelWithAlan = new ModelManager(addressBook, new UserPrefs());
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTagsToDelete(VALID_TAG_STUDENT)
+                .build();
+        EditCommand editCommand = new EditCommand(Id.of(42), descriptor);
+
+        Person editedPerson = new PersonBuilder(alanTuring).withTags(VALID_TAG_TUTOR).build();
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(modelWithAlan.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(alanTuring, editedPerson);
+
+        assertCommandSuccess(editCommand, modelWithAlan, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_idInAddressBookAddAndDeleteTags_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTags(VALID_TAG_TUTOR)
+                .withTagsToDelete(VALID_TAG_STUDENT)
+                .build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
+
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+        Person editedPerson = new PersonBuilder(personToEdit).withTags(VALID_TAG_TUTOR).build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_idInAddressBookDeleteMissingTag_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTagsToDelete(VALID_TAG_PARENT).build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
+
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+                Messages.format(personToEdit));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, personToEdit);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_idInAddressBookNoFieldSpecified_failure() {
         EditCommand editCommand = new EditCommand(ID_FIRST, new EditPersonDescriptor());
         assertCommandFailure(editCommand, model, EditCommand.MESSAGE_NOT_EDITED);
