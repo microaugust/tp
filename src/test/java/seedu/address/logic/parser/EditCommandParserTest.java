@@ -11,7 +11,7 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
-import static seedu.address.logic.commands.CommandTestUtil.UNSUPPORTED_TAG_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
@@ -68,7 +68,7 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
-        assertParseFailure(parser, "1" + UNSUPPORTED_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
+        assertParseFailure(parser, "1" + INVALID_UNLISTED_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
 
         assertParseFailure(parser, "1" + TAG_DESC_STUDENT + TAG_DESC_PARENT + TAG_EMPTY,
                 EditCommand.MESSAGE_INVALID_TAG_RESET);

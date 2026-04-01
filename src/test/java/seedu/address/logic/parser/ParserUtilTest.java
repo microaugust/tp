@@ -25,7 +25,7 @@ public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_TAG = "#friend";
-    private static final String UNSUPPORTED_TAG = "friend";
+    private static final String INVALID_UNLISTED_TAG = "friend";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "12345678";
@@ -144,9 +144,9 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseTag_unsupportedTag_throwsParseException() {
+    public void parseTag_invalidUnlistedTag_throwsParseException() {
         assertThrows(ParseException.class, Tag.MESSAGE_TAG_CONSTRAINTS, () ->
-                ParserUtil.parseTag(UNSUPPORTED_TAG));
+                ParserUtil.parseTag(INVALID_UNLISTED_TAG));
     }
 
     @Test
@@ -180,9 +180,9 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseTags_collectionWithUnsupportedTags_throwsParseException() {
+    public void parseTags_collectionWithInvalidUnlistedTags_throwsParseException() {
         assertThrows(ParseException.class, Tag.MESSAGE_TAG_CONSTRAINTS, () ->
-                ParserUtil.parseTags(Arrays.asList(VALID_TAG_1, UNSUPPORTED_TAG)));
+                ParserUtil.parseTags(Arrays.asList(VALID_TAG_1, INVALID_UNLISTED_TAG)));
     }
 
     @Test
