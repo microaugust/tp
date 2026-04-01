@@ -41,6 +41,7 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 public class EditCommandParserTest {
 
+    private static final String PHONE_EMPTY = " " + PREFIX_PHONE;
     private static final String TAG_EMPTY = " " + PREFIX_TAG;
 
     private static final String MESSAGE_INVALID_FORMAT =
@@ -150,6 +151,32 @@ public class EditCommandParserTest {
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
                 .withName(VALID_NAME_AMY).withTags().build();
+        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_resetPhone_success() {
+        Id targetId = ID_SECOND;
+        String userInput = targetId.getValue() + PHONE_EMPTY;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withoutPhone().build();
+        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_resetPhoneWithOtherField_success() {
+        Id targetId = ID_SECOND;
+        String userInput = targetId.getValue() + NAME_DESC_AMY + PHONE_EMPTY;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withName(VALID_NAME_AMY)
+                .withoutPhone()
+                .build();
         EditCommand expectedCommand = new EditCommand(targetId, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);

@@ -142,6 +142,24 @@ public class EditCommandTest {
     }
 
     @Test
+    public void execute_idInAddressBookClearPhone_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withoutPhone().build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
+
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+        Person editedPerson = new PersonBuilder(personToEdit).withoutPhone().build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_idInAddressBookClearAddress_success() {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withoutAddress().build();
         EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
