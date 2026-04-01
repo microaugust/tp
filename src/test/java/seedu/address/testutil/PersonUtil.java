@@ -13,7 +13,6 @@ import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.Prefix;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -50,11 +49,7 @@ public class PersonUtil {
     public static String getEditPersonDescriptorDetails(EditPersonDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
         descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name.fullName).append(" "));
-        if (descriptor.isPhoneChanged()) {
-            Runnable appendClearedPhone = () -> appendClearedEditDetail(sb, PREFIX_PHONE);
-            descriptor.getPhone().ifPresentOrElse(
-                    phone -> appendPhoneEditDetail(sb, phone), appendClearedPhone);
-        }
+        descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
         if (descriptor.isAddressChanged()) {
             Runnable appendClearedAddress = () -> appendClearedEditDetail(sb, PREFIX_ADDRESS);
             descriptor.getAddress().ifPresentOrElse(
@@ -70,10 +65,6 @@ public class PersonUtil {
         }
         descriptor.getRemark().ifPresent(remark -> sb.append(PREFIX_REMARK).append(remark.value));
         return sb.toString();
-    }
-
-    private static void appendPhoneEditDetail(StringBuilder sb, Phone phone) {
-        sb.append(PREFIX_PHONE).append(phone.value).append(" ");
     }
 
     private static void appendAddressEditDetail(StringBuilder sb, Address address) {
