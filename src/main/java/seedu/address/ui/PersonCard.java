@@ -126,7 +126,7 @@ public class PersonCard extends UiPart<Region> {
     }
 
     private void renderDate(Person person, Label dateLabel) {
-        person.getDate().ifPresentOrElse(dateValue -> dateLabel.setText(DATE_ICON + " " + dateValue.value), () -> {
+        person.getDate().ifPresentOrElse(dateValue -> dateLabel.setText(DATE_ICON + " " + dateValue), () -> {
             dateLabel.setText(DATE_ICON + " " + MESSAGE_MISSING_DATE);
             addCssClass(dateLabel, CSS_CLASS_MISSING_FIELD);
         });

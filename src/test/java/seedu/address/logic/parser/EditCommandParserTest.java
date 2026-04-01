@@ -212,4 +212,15 @@ public class EditCommandParserTest {
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
+
+    @Test
+    public void parse_alternateDateFormat_success() {
+        Id targetId = ID_SECOND;
+        String userInput = targetId.getValue() + " " + PREFIX_DATE + "2/4/2026";
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withDate("2026-04-02").build();
+        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
 }

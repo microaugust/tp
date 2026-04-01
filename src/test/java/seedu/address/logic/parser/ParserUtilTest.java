@@ -33,6 +33,7 @@ public class ParserUtilTest {
     private static final String VALID_PHONE = "12345678";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
     private static final String VALID_DATE = "2026-04-02";
+    private static final String VALID_DATE_ALTERNATE = "2/4/2026";
     private static final String VALID_TAG_1 = "Student";
     private static final String VALID_TAG_2 = "Parent";
 
@@ -149,6 +150,12 @@ public class ParserUtilTest {
     public void parseDate_validValueWithoutWhitespace_returnsDate() throws Exception {
         Optional<Date> expectedDate = Optional.of(new Date(VALID_DATE));
         assertEquals(expectedDate, ParserUtil.parseDate(Optional.of(VALID_DATE)));
+    }
+
+    @Test
+    public void parseDate_alternateValidValueWithoutWhitespace_returnsCanonicalDate() throws Exception {
+        Optional<Date> expectedDate = Optional.of(new Date(VALID_DATE));
+        assertEquals(expectedDate, ParserUtil.parseDate(Optional.of(VALID_DATE_ALTERNATE)));
     }
 
     @Test

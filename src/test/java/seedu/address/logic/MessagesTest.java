@@ -52,7 +52,7 @@ public class MessagesTest {
 
         String formatted = Messages.format(person);
 
-        assertEquals("Alice; Phone: 91234567; Address: 123, Jurong West Ave 6; Date: 2026-04-01;"
+        assertEquals("Alice; Phone: 91234567; Address: 123, Jurong West Ave 6; Date: Apr 1 2026;"
                 + " Tags: [Student]; Remark: first student", formatted);
     }
 

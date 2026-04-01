@@ -118,8 +118,9 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DATE] [t/CATEGORY]…​`
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* `d/DATE` updates the stored date for that contact. The accepted format is `yyyy-MM-dd`.
+* `d/DATE` updates the stored date for that contact. The accepted input formats are `yyyy-MM-dd` and `d/M/yyyy`.
 * You can remove the stored date by typing `d/` without specifying any value after it.
+* Dates are displayed in EduConnect as `MMM d yyyy`. For example, `2026-04-02` is shown as `Apr 2 2026`.
 * Use this command for all category updates. EduConnect does not provide a separate `tag` command.
 * When editing tags, the provided categories will be appended to the person’s existing tags.
 * Only the supported categories may be used as edit tags: `Student`, `Parent`, `Tutor`.
