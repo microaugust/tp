@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Date;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -36,6 +37,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
         descriptor.setAddress(person.getAddress());
+        descriptor.setDate(person.getDate());
         descriptor.setTags(person.getTags());
         descriptor.setRemark(person.getRemark());
     }
@@ -61,6 +63,22 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withAddress(String address) {
         descriptor.setAddress(new Address(address));
+        return this;
+    }
+
+    /**
+     * Sets the {@code Date} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withDate(String date) {
+        descriptor.setDate(Optional.of(new Date(date)));
+        return this;
+    }
+
+    /**
+     * Clears the {@code Date} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withoutDate() {
+        descriptor.setDate(Optional.empty());
         return this;
     }
 

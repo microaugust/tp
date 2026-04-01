@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
@@ -42,12 +43,15 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_DATE + "DATE] "
             + "[" + PREFIX_TAG + "CATEGORY] "
             + "[" + PREFIX_REMARK + "REMARK]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
+            + PREFIX_DATE + "2026-04-02 "
             + PREFIX_TAG + "Student " + PREFIX_REMARK + "needs additional practices\n"
-            + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG;
+            + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG + "\n"
+            + "To clear the stored date, use " + COMMAND_WORD + " 1 " + PREFIX_DATE;
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -107,7 +111,9 @@ public class EditCommand extends Command {
             ? editPersonDescriptor.getPhone()
             : personToEdit.getPhone();
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Optional<Date> updatedDate = personToEdit.getDate();
+        Optional<Date> updatedDate = editPersonDescriptor.isDateChanged()
+                ? editPersonDescriptor.getDate()
+                : personToEdit.getDate();
         Set<Tag> updatedTags = createUpdatedTags(personToEdit.getTags(), editPersonDescriptor);
         Optional<Remark> updatedRemark = editPersonDescriptor.isRemarkChanged()
             ? editPersonDescriptor.getRemark()
@@ -171,6 +177,8 @@ public class EditCommand extends Command {
         private Optional<Phone> phone;
         private boolean phoneChanged;
         private Address address;
+        private Optional<Date> date;
+        private boolean dateChanged;
         private Set<Tag> tags;
         private Optional<Remark> remark;
         private boolean remarkChanged;
@@ -181,6 +189,9 @@ public class EditCommand extends Command {
         public EditPersonDescriptor() {
             this.phoneChanged = false;
             this.phone = Optional.empty();
+
+            this.dateChanged = false;
+            this.date = Optional.empty();
 
             this.remarkChanged = false;
             this.remark = Optional.empty();
@@ -196,6 +207,7 @@ public class EditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone, toCopy.phoneChanged);
             setAddress(toCopy.address);
+            setDate(toCopy.date, toCopy.dateChanged);
             setTags(toCopy.tags);
             setRemark(toCopy.remark, toCopy.remarkChanged);
         }
@@ -206,6 +218,7 @@ public class EditCommand extends Command {
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(name, address, tags)
                     || phoneChanged
+                    || dateChanged
                     || remarkChanged;
         }
 
@@ -274,6 +287,42 @@ public class EditCommand extends Command {
          */
         public Optional<Address> getAddress() {
             return Optional.ofNullable(address);
+        }
+
+        /**
+         * Sets the edited date value.
+         * For public use.
+         */
+        public void setDate(Optional<Date> date) {
+            Optional.ofNullable(date)
+                    .ifPresentOrElse(d -> setDate(d, true), () -> setDate(Optional.empty(), false));
+        }
+
+        /**
+         * Sets edited date value and explicit edit state.
+         * For private use.
+         */
+        private void setDate(Optional<Date> date, boolean dateChanged) {
+            requireNonNull(date);
+            requireNonNull(dateChanged);
+
+            this.date = date;
+            this.dateChanged = dateChanged;
+        }
+
+        /**
+         * Returns true if date field was explicitly edited by the user.
+         */
+        public boolean isDateChanged() {
+            return dateChanged;
+        }
+
+        /**
+         * Returns the edited date if it was provided.
+         */
+        public Optional<Date> getDate() {
+            return Optional.ofNullable(date)
+                    .flatMap(dateValue -> dateValue);
         }
 
         /**
@@ -347,7 +396,11 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && phoneChanged == otherEditPersonDescriptor.phoneChanged
                     && Objects.equals(address, otherEditPersonDescriptor.address)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(date, otherEditPersonDescriptor.date)
+                    && dateChanged == otherEditPersonDescriptor.dateChanged
+                    && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                    && Objects.equals(remark, otherEditPersonDescriptor.remark)
+                    && remarkChanged == otherEditPersonDescriptor.remarkChanged;
         }
 
         @Override
@@ -356,7 +409,9 @@ public class EditCommand extends Command {
                     .add("name", name)
                     .add("phone", phone)
                     .add("address", address)
+                    .add("date", date)
                     .add("tags", tags)
+                    .add("remark", remark)
                     .toString();
         }
     }

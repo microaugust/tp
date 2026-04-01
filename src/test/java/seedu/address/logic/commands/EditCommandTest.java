@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_DATE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
@@ -80,6 +81,44 @@ public class EditCommandTest {
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personWithMaxId, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_idInAddressBookSetDate_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withDate(VALID_DATE_AMY).build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
+
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+        Person editedPerson = new PersonBuilder(personToEdit).withDate(VALID_DATE_AMY).build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_idInAddressBookClearDate_success() {
+        Optional<Person> originalPersonFound = model.findPersonById(ID_FIRST);
+        assertTrue(originalPersonFound.isPresent());
+        Person originalPerson = originalPersonFound.get();
+        Person personWithDate = new PersonBuilder(originalPerson).withDate(VALID_DATE_AMY).build();
+        model.setPerson(originalPerson, personWithDate);
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withoutDate().build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
+        Person editedPerson = new PersonBuilder(personWithDate).withoutDate().build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personWithDate, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
