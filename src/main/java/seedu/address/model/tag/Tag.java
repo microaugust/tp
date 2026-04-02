@@ -15,10 +15,10 @@ public class Tag {
 
     public static final String MESSAGE_CONSTRAINTS = "Tag names should be alphanumeric";
     public static final String VALIDATION_REGEX = "\\p{Alnum}+";
-    private static final Map<String, String> SUPPORTED_CATEGORY_TAGS = createSupportedCategoryTags();
+    private static final Map<String, String> SUPPORTED_TAG_NAMES = createSupportedTagNames();
     public static final String MESSAGE_TAG_CONSTRAINTS =
-            "Category must be one of the following values: "
-                    + String.join(", ", SUPPORTED_CATEGORY_TAGS.values()) + ".";
+            "Tag must be one of the following values: "
+                    + String.join(", ", SUPPORTED_TAG_NAMES.values()) + ".";
 
     public final String tagName;
 
@@ -42,19 +42,19 @@ public class Tag {
     }
 
     /**
-     * Returns the normalized category tag name for a supported category tag.
+     * Returns the normalized tag name for a valid tag, or {@code null} if invalid.
      */
-    public static String getNormalizedCategoryTagName(String test) {
+    public static String getNormalizedTagName(String test) {
         requireNonNull(test);
-        return SUPPORTED_CATEGORY_TAGS.get(test.toLowerCase());
+        return SUPPORTED_TAG_NAMES.get(test.toLowerCase());
     }
 
-    private static Map<String, String> createSupportedCategoryTags() {
-        Map<String, String> supportedCategoryTags = new LinkedHashMap<>();
-        supportedCategoryTags.put("student", "Student");
-        supportedCategoryTags.put("parent", "Parent");
-        supportedCategoryTags.put("tutor", "Tutor");
-        return Collections.unmodifiableMap(supportedCategoryTags);
+    private static Map<String, String> createSupportedTagNames() {
+        Map<String, String> supportedTagNames = new LinkedHashMap<>();
+        supportedTagNames.put("student", "Student");
+        supportedTagNames.put("parent", "Parent");
+        supportedTagNames.put("tutor", "Tutor");
+        return Collections.unmodifiableMap(supportedTagNames);
     }
 
     @Override

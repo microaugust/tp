@@ -89,7 +89,7 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_editWithCategories() throws Exception {
+    public void parseCommand_editWithTags() throws Exception {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "

@@ -6,6 +6,7 @@ import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
@@ -17,7 +18,6 @@ import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_TUTOR;
-import static seedu.address.logic.commands.CommandTestUtil.UNSUPPORTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
@@ -174,7 +174,7 @@ public class AddCommandParserTest {
                 + INVALID_TAG_DESC + TAG_DESC_STUDENT, Tag.MESSAGE_TAG_CONSTRAINTS);
 
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB
-                + UNSUPPORTED_TAG_DESC + TAG_DESC_STUDENT, Tag.MESSAGE_TAG_CONSTRAINTS);
+                + INVALID_UNLISTED_TAG_DESC + TAG_DESC_STUDENT, Tag.MESSAGE_TAG_CONSTRAINTS);
 
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB
                 + ADDRESS_DESC_BOB + TAG_DESC_PARENT + TAG_DESC_STUDENT,

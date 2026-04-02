@@ -370,17 +370,17 @@ Extensions:
   * Steps 2b1-2b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
   
-#### Use case: UC03 - Update Contact Categories
+#### Use case: UC03 - Update Contact Tags
 Actor: User
 
 Guarantees:
-* On successful completion, the selected contact has the updated category tags.
+* On successful completion, the selected contact has the updated tags.
 * If the operation fails, no contact is modified.
 
 MSS:
-1. User requests to edit a contact's categories.
-2. EduConnect validates the contact reference and category value.
-3. EduConnect appends the provided categories to the selected contact.
+1. User requests to edit a contact's tags.
+2. EduConnect validates the contact reference and tag value.
+3. EduConnect appends the provided tags to the selected contact.
 4. EduConnect shows a success message.
 Use case ends.
 
@@ -400,21 +400,21 @@ Extensions:
   * 2a2. User re-submits the edit request.
   * Steps 2a1-2a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2b. The provided category is not a supported category.
+* 2b. The provided tag is not a valid tag.
   * 2b1. EduConnect shows an error message.
   * 2b2. User re-submits the edit request.
   * Steps 2b1-2b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2c. The user combines `t/` with one or more category values.
+* 2c. The user requests to clear all tags and also provides one or more tag values.
   * 2c1. EduConnect shows an error message.
   * 2c2. User re-submits the edit request.
   * Steps 2c1-2c2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 3a. The selected contact already has one or more categories.
-  * 3a1. EduConnect appends any missing categories and keeps existing categories unchanged.
+* 3a. The selected contact already has one or more tags.
+  * 3a1. EduConnect appends any missing tags and keeps existing tags unchanged.
   * Use case resumes from step 4.
-* 3b. The user enters `t/` with no category value.
-  * 3b1. EduConnect clears all existing categories for the selected contact.
+* 3b. The user requests to clear all existing tags.
+  * 3b1. EduConnect clears all existing tags for the selected contact.
   * Use case resumes from step 4.
 
 #### Use case: UC04 - View Phone Number and Address
@@ -437,7 +437,7 @@ Extensions:
 * 2b. A contact is missing a phone number or address.
   * 2b1. EduConnect displays a missing-field indicator for that field.
   * Use case resumes from step 2.
-* 2c. Multiple contacts share the same name and category tag.
+* 2c. Multiple contacts share the same name and tag.
   * 2c1. EduConnect displays all matching contacts distinctly so the user can differentiate them.
   * Use case resumes from step 2.
 

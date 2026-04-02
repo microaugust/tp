@@ -41,7 +41,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_TAG + "CATEGORY] "
+            + "[" + PREFIX_TAG + "TAG]...\n"
             + "[" + PREFIX_REMARK + "REMARK]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -52,7 +52,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
     public static final String MESSAGE_INVALID_TAG_RESET =
-            "The tag reset prefix t/ cannot be combined with category values.";
+            "The tag reset prefix t/ cannot be combined with tag values.";
 
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;

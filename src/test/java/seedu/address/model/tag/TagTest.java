@@ -25,13 +25,13 @@ public class TagTest {
     }
 
     @Test
-    public void getNormalizedCategoryTagName_nullTagName_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> Tag.getNormalizedCategoryTagName(null));
+    public void getNormalizedTagName_nullTagName_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> Tag.getNormalizedTagName(null));
     }
 
     @Test
-    public void getNormalizedCategoryTagName_validTagName_returnsNormalizedCategory() {
-        assertEquals("Student", Tag.getNormalizedCategoryTagName("student"));
+    public void getNormalizedTagName_validTagName_returnsNormalizedTag() {
+        assertEquals("Student", Tag.getNormalizedTagName("student"));
     }
 
 }

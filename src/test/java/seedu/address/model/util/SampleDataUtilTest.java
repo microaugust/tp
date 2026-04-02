@@ -39,7 +39,7 @@ public class SampleDataUtilTest {
     }
 
     @Test
-    public void getTagSet_validCategories_returnsExpectedTags() {
+    public void getTagSet_validTags_returnsExpectedTags() {
         Set<Tag> tags = SampleDataUtil.getTagSet("Student", "Parent");
 
         assertEquals(Set.of(new Tag("Student"), new Tag("Parent")), tags);
