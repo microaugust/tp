@@ -64,7 +64,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         String remark = person.getRemark()
             .map(remarkValue -> remarkValue.value.toLowerCase())
             .orElse(EMPTY_STRING);
-            
+
         boolean isAndMode = matchWord == MatchMode.AND;
 
         boolean matchesName = matchesKeywords(nameKeywords,
