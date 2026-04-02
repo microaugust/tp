@@ -113,14 +113,16 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [ti/TIME] [t/CATEGORY]…​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [h/TIME] [t/CATEGORY]…​`
 
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* `ti/TIME` updates the stored meeting time for that contact. The accepted input formats are `HH:mm` and `HHmm`.
-* You can remove the stored time by typing `ti/` without specifying any value after it.
-* Times are displayed in EduConnect as `HH:mm`. For example, `1800` is shown as `18:00`.
+* `h/TIME` updates the stored meeting time for that contact. You can store either a single time or a duration.
+* The accepted input formats are `HH:mm`, `HHmm`, `HH:mm - HH:mm`, and `HHmm - HHmm`.
+* You can remove the stored time by typing `h/` without specifying any value after it.
+* Times are displayed in EduConnect in normalized form. For example, `1800` is shown as `18:00`, while
+  `1800 - 1930` is shown as `18:00 - 19:30`.
 * Use this command for all category updates. EduConnect does not provide a separate `tag` command.
 * When editing tags, the provided categories will be appended to the person’s existing tags.
 * Only the supported categories may be used as edit tags: `Student`, `Parent`, `Tutor`.
@@ -130,11 +132,12 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [ti/TIME] [t/CATEGORY]…​`
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
-*  `edit 1 ti/18:00` Updates the stored meeting time of the person with `ID` 1 to `18:00`.
+*  `edit 1 h/18:00` Updates the stored meeting time of the person with `ID` 1 to `18:00`.
+*  `edit 1 h/1800 - 1930` Updates the stored meeting time of the person with `ID` 1 to `18:00 - 19:30`.
 *  `edit 2 t/Parent` Appends the tag `Parent` to the person with `ID` 2.
 *  `edit 2 t/Parent t/Tutor` Appends both `Parent` and `Tutor` to the person with `ID` 2.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
-*  `edit 2 ti/` Clears the stored time of the person with `ID` 2.
+*  `edit 2 h/` Clears the stored time of the person with `ID` 2.
 
 ### Locating persons: `find`
 
@@ -246,7 +249,7 @@ Action | Format, Examples
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [ti/TIME] [t/CATEGORY]…​`<br> e.g.,`edit 2 ti/18:00`, `edit 2 t/Parent t/Tutor`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [h/TIME] [t/CATEGORY]…​`<br> e.g.,`edit 2 h/18:00`, `edit 2 t/Parent t/Tutor`
 **Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`

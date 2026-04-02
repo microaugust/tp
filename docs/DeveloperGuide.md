@@ -447,7 +447,8 @@ Actor: User
 Guarantees:
 * On successful completion, the specified contact is updated with the provided values.
 * Name, phone, address, and time replace their previous values when provided.
-* Time inputs are accepted in `HH:mm` or `HHmm` format and displayed in normalized `HH:mm` form.
+* Time inputs are accepted in `HH:mm`, `HHmm`, `HH:mm - HH:mm`, or `HHmm - HHmm` format and displayed in
+  normalized `HH:mm` or `HH:mm - HH:mm` form.
 * Provided tags are added cumulatively to the contact's existing tags, unless the user explicitly requests to clear all tags.
 * If the operation fails, the stored contacts remain unchanged.
 
