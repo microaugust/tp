@@ -3,6 +3,9 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
+import static seedu.address.testutil.TypicalIds.ID_SECOND;
+
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +25,9 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {
-        assertParseSuccess(parser, "1", new DeleteCommand(ID_FIRST));
+        ArrayList<Id> ids = new ArrayList<Id>();
+        ids.add(ID_FIRST);
+        assertParseSuccess(parser, "1", new DeleteCommand(ids));
     }
 
     @Test
@@ -31,8 +36,10 @@ public class DeleteCommandParserTest {
     }
 
     @Test
-    public void parse_tooManyArguments_throwsParseException() {
-        assertParseFailure(parser, "1 2", String.format(
-                DeleteCommand.MESSAGE_TOO_MANY_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+    public void parse_manyArgs_throwsParseException() {
+        ArrayList<Id> ids = new ArrayList<Id>();
+        ids.add(ID_FIRST);
+        ids.add(ID_SECOND);
+        assertParseSuccess(parser, "1 2", new DeleteCommand(ids));
     }
 }
