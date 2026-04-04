@@ -305,6 +305,97 @@ public class PersonContainsKeywordsPredicateTest {
     }
 
     @Test
+    public void test_andMode_requiresAllKeywordsWithinEnabledField() {
+        PersonContainsKeywordsPredicate predicate = predicate(Arrays.asList("Ali", "Lim"),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), MatchMode.AND);
+
+        assertTrue(predicate.test(new PersonBuilder().withName("Ali Lim").build()));
+        assertFalse(predicate.test(new PersonBuilder().withName("Ali Tan").build()));
+    }
+
+    @Test
+    public void test_andMode_requiresAllEnabledFields() {
+        PersonContainsKeywordsPredicate predicate = predicate(Collections.singletonList("Ali"),
+                Collections.emptyList(), Collections.singletonList("345"),
+                Collections.emptyList(), Collections.emptyList(), MatchMode.AND);
+
+        assertTrue(predicate.test(new PersonBuilder().withName("Ali Lim").withPhone("12345678").build()));
+        assertFalse(predicate.test(new PersonBuilder().withName("Ali Lim").withPhone("99999999").build()));
+    }
+
+    @Test
+    public void test_andMode_requiresAllEnabledFieldsIncludingTags() {
+        PersonContainsKeywordsPredicate predicate = predicate(Collections.singletonList("Alice"),
+                Collections.singletonList("Clementi"), Collections.singletonList("9435"),
+                Collections.singletonList("Student"), Collections.emptyList(), MatchMode.AND);
+
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("123 Clementi Road")
+                .withPhone("94351253")
+                .withTags("Student")
+                .build()));
+
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("123 Clementi Road")
+                .withPhone("94351253")
+                .withTags("Parent")
+                .build()));
+    }
+
+    @Test
+    public void test_andMode_ignoresDisabledFields() {
+        PersonContainsKeywordsPredicate predicate = predicate(Collections.singletonList("Alice"),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), MatchMode.AND);
+
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("No matching address needed")
+                .withPhone("99999999")
+                .withTags("Parent")
+                .build()));
+    }
+
+    @Test
+    public void test_andMode_requiresAllKeywordsWithinRemarkField() {
+        PersonContainsKeywordsPredicate predicate = predicate(Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), Collections.singletonList("friendly"),
+                MatchMode.AND);
+
+        assertTrue(predicate.test(new PersonBuilder().withRemark("friendly student").build()));
+        assertFalse(predicate.test(new PersonBuilder().withRemark("quiet student").build()));
+    }
+
+    @Test
+    public void test_andMode_requiresAllEnabledFieldsIncludingRemark() {
+        PersonContainsKeywordsPredicate predicate = predicate(Collections.singletonList("Alice"),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.singletonList("friendly"), MatchMode.AND);
+
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withRemark("friendly student")
+                .build()));
+
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withRemark("quiet student")
+                .build()));
+    }
+
+    @Test
+    public void test_orMode_remarkMatchesAnyKeyword() {
+        PersonContainsKeywordsPredicate predicate = predicate(Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), Arrays.asList("quiet", "friendly"));
+
+        assertTrue(predicate.test(new PersonBuilder().withRemark("friendly student").build()));
+        assertFalse(predicate.test(new PersonBuilder().withRemark("helpful student").build()));
+    }
+
+    @Test
     public void toStringMethod() {
         List<String> keywords = List.of("keyword1", "keyword2");
         PersonContainsKeywordsPredicate predicate = namePredicate(keywords);
@@ -317,8 +408,13 @@ public class PersonContainsKeywordsPredicateTest {
 
     private PersonContainsKeywordsPredicate predicate(List<String> nameKeywords, List<String> addressKeywords,
             List<String> phoneKeywords, List<String> tagKeywords, List<String> remarkKeywords) {
+        return predicate(nameKeywords, addressKeywords, phoneKeywords, tagKeywords, remarkKeywords, MatchMode.OR);
+    }
+
+    private PersonContainsKeywordsPredicate predicate(List<String> nameKeywords, List<String> addressKeywords,
+            List<String> phoneKeywords, List<String> tagKeywords, List<String> remarkKeywords, MatchMode matchMode) {
         return new PersonContainsKeywordsPredicate(nameKeywords, addressKeywords, phoneKeywords, tagKeywords,
-                remarkKeywords, MatchMode.OR);
+                remarkKeywords, matchMode);
     }
 
     private PersonContainsKeywordsPredicate namePredicate(List<String> keywords) {
