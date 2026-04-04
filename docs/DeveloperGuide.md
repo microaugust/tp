@@ -405,7 +405,7 @@ Extensions:
   * 2b2. User re-submits the edit request.
   * Steps 2b1-2b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2c. The user requests to clear all tags and also provides one or more tag values or `tdel/` values.
+* 2c. The user requests to clear all tags and also specifies one or more tags to add or remove.
   * 2c1. EduConnect shows an error message.
   * 2c2. User re-submits the edit request.
   * Steps 2c1-2c2 are repeated until valid input is provided.
