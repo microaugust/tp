@@ -247,6 +247,6 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​ [r/REMARK]`<br> e.g.,`edit 2 t/Parent t/Tutor`
-**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]`<br> e.g., `find n/James t/Student`
+**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`
