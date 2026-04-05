@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.model.person.MeetingLink;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
@@ -28,6 +29,7 @@ public class PersonCard extends UiPart<Region> {
     private static final String PHONE_ICON = "\u260E";
     private static final String ADDRESS_ICON = "\u2302";
     private static final String REMARK_ICON = "\u270E";
+    private static final String MEETING_LINK_ICON = "\u26D3";
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -52,6 +54,8 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane tags;
     @FXML
     private Label remark;
+    @FXML
+    private Label meetingLink;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -68,6 +72,15 @@ public class PersonCard extends UiPart<Region> {
         renderAddress(person, address);
         renderTags(person);
         renderRemark(person, remark);
+        renderMeetingLink(person, meetingLink);
+    }
+
+    private void renderMeetingLink(Person person, Label meetingLinkLabel) {
+        Optional<MeetingLink> link = person.getMeetingLink();
+        link.ifPresentOrElse(l -> meetingLinkLabel.setText(MEETING_LINK_ICON + " " + l.value), () -> {
+            meetingLinkLabel.setVisible(false);
+            meetingLinkLabel.setManaged(false);
+        });
     }
 
     private void renderRemark(Person person, Label remarkLabel) {

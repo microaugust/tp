@@ -113,7 +113,7 @@ public class EditCommand extends Command {
             ? editPersonDescriptor.getRemark()
             : personToEdit.getRemark();
 
-        return new Person(personId, updatedName, updatedPhone, updatedAddress, updatedTags, updatedRemark);
+        return new Person(personId, updatedName, updatedPhone, updatedAddress, updatedTags, updatedRemark, Optional.empty());
     }
 
     private static Set<Tag> createUpdatedTags(Set<Tag> existingTags, EditPersonDescriptor editPersonDescriptor) {
