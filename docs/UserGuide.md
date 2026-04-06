@@ -120,15 +120,20 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [t/TAG]…​`
 * `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* You can remove the stored address by typing `a/` without specifying any value after it.
-* `d/DAY_TIME` updates the stored meeting schedule for that contact. You can store either a single time or a duration, both with a weekday.
-* The accepted input formats are `Day HH:mm`, `Day HHmm`, `Day HH:mm - HH:mm`, and `Day HHmm - HHmm`.
-* The accepted weekday values are `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, and `Sunday`.
-* You can remove the stored time by typing `d/` without specifying any value after it.
+* `p/PHONE` updates the stored phone number. You can remove the stored phone number by typing `p/`
+  without specifying any value after it.
+* `a/ADDRESS` updates the stored address. You can remove the stored address by typing `a/` without
+  specifying any value after it.
+* `d/DAY_TIME` updates the stored meeting schedule. You can store either a single time or a duration,
+  both with a weekday.
+* `d/DAY_TIME` accepts `Day HH:mm`, `Day HHmm`, `Day HH:mm - HH:mm`, and `Day HHmm - HHmm`.
+* `d/DAY_TIME` accepts the weekday values `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`,
+  `Saturday`, and `Sunday`.
+* You can remove the stored meeting schedule by typing `d/` without specifying any value after it.
 * Schedules are displayed in EduConnect in normalized form. For example, `monday 1800` is shown as `Monday 18:00`, while
   `wednesday 1800 - 1930` is shown as `Wednesday 18:00 - 19:30`.
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
-* When editing tags, the provided tags will be appended to the person’s existing tags.
+* `t/TAG` appends the provided tags to the person’s existing tags.
 * Only valid tags may be used: `Student`, `Parent`, `Tutor`.
 * Repeating an existing tag has no effect because duplicate tags are not stored.
 * You can remove all the person’s tags by typing `t/` without specifying any tag after it.
