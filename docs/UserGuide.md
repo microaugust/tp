@@ -77,27 +77,29 @@ Format: `help`
 
 Add a person to the address book.
 
-Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`
+Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​ [r/REMARK]`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 * Only `n/NAME` is required.
-* `p/PHONE_NUMBER`, `a/ADDRESS`, and `t/TAG` are optional.
+* `p/PHONE_NUMBER`, `a/ADDRESS`, `t/TAG`, `r/REMARK` are optional.
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
 * Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
+* This behaviour is similar for remark. `add n/John Doe` and `add n/John Doe r/` are both valid. Both create a contact without a remark.
 * If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
 
 Examples:
-* `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01`
+* `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student`
 * `add n/John Doe a/John street, block 123, #01-01 t/Parent t/Tutor`
 * `add n/Jane Doe p/98765432`
 * `add n/Jane Doe p/`
 * `add n/Jane Doe a/`
 
 The first example gives the following expected output:
-  ![result for 'add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01'](images/AddCommandResult.png)
+
+  ![result for 'add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student'](images/AddCommandResult.png)
 
 ### Listing all persons: `list`
 
@@ -105,42 +107,48 @@ Show a list of all persons in the address book.
 
 Format: `list`
 
-* Since phone number and address fields are optional, the UI alerts the user if a particular person has no phone number or address:
+* Since phone number, address and remark fields are optional, the UI alerts the user if a particular person has no phone number or address:
 
-  ![result for 'list' with no phone number and address](images/missingPhoneNumberAndAddress.png)
+  ![result for 'list' with no phone number, address and remark](images/missingPhoneNumberAddressAndRemark.png)
 
 ### Editing a person: `edit`
 
 Edit an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]… [tdel/TAG]… [r/REMARK]​`
 
 * `ID` specifies the person to be edited.
 * `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
-* When editing tags, the provided tags will be appended to the person’s existing tags.
+* When editing tags, `t/` appends the provided tags to the person’s existing tags.
+* `tdel/` removes the provided tags from the person’s existing tags.
 * Only valid tags may be used: `Student`, `Parent`, `Tutor`.
 * Repeating an existing tag has no effect because duplicate tags are not stored.
+* Deleting a tag that the person does not currently have has no effect.
 * You can remove all the person’s tags by typing `t/` without specifying any tag after it.
-* `t/` must be used on its own. Do not combine `t/` with tag values in the same command.
+* When used to clear tags, bare `t/` must not be combined with tag values or `tdel/` values in the same command.
+  It may still be combined with non-tag edits such as `n/`, `p/`, or `a/`.
+* The same tag cannot be added and deleted in the same command.
 
 Examples:
 *  `edit 1 p/91234567`: Edit the phone number of the person with `ID` 1, changing it to `91234567`.
-*  `edit 2 t/Parent`: Append the tag `Parent` to the person with `ID` 2.
-*  `edit 2 t/Parent t/Tutor`: Append both `Parent` and `Tutor` to the person with `ID` 2.
+*  `edit 1 t/Parent`: Append the tag `Parent` to the person with `ID` 1.
+*  `edit 1 t/Parent t/Tutor`: Append both `Parent` and `Tutor` to the person with `ID` 1.
+*  `edit 1 tdel/Student`: Delete the tag `Student` from the person with `ID` 1.
+*  `edit 1 t/Tutor tdel/Student`: Append the tag `Tutor` and delete the tag `Student` for the person with `ID` 1.
 *  `edit 2 n/Betsy Crower t/`: Edit the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 
 ### Locating persons: `find`
 
 Find persons whose specified fields contain any of the given keywords.
 
-Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`
+Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`
 
 * At least one prefixed keyword must be provided.
 * Unprefixed input is not allowed. e.g. `find Ali` is invalid.
-* `n/` searches names, `a/` searches addresses, `p/` searches phone numbers, and `t/` searches tags.
+* `n/` searches names, `a/` searches addresses, `p/` searches phone numbers, `t/` searches tags and `r/` searches remarks.
 * The search is case-insensitive for names, addresses, and tags. e.g. `n/hans` will match `Hans` and `t/student` will match `Student`
 * Phone matching is digit-based substring matching. e.g. `p/9435` will match a phone number containing `9435`
 * Partial matches are supported. e.g. `n/Han` will match `Hans`
@@ -148,12 +156,13 @@ Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`
 * Repeating the same prefix is allowed. e.g. `find n/Ali n/August`
 
 Examples:
-* `find a/119224`: Return persons whose address contains `119224`.
-* `find n/Clement`: Return persons whose name contains `Clement`.
-* `find p/9435`: Return persons whose phone number contains `9435`.
-* `find n/aleX a/seran`: Return persons whose name contains `aleX` or whose address contains `seran`.
-* `find t/student`: Return persons whose tags contain `student`.
-* `find n/Ali n/August`: Return persons whose names contain `Ali` or `August`.
+* `find a/119224` returns persons whose address contains `119224`
+* `find n/Clement` returns persons whose name contains `Clement`
+* `find p/9435` returns persons whose phone number contains `9435`
+* `find n/aleX a/seran` returns persons whose name contains `aleX` or whose address contains `seran`
+* `find t/student` returns persons whose tags contain `student`
+* `find n/Ali n/August` returns persons whose names contain `Ali` or `August`
+* `find r/first` returns persons whose remarks contain `first` or `First` (note that the search in case-insensitive)
 
 Notes:
 - Every search term must be attached to a prefix.
@@ -182,13 +191,14 @@ Copy a specified field of a person from the address book to the user clipboard.
 Format: `copy ID FIELD`
 
 * Possible fields include `n/` for name, `p/` for phone number, and `a/` for address
-* If the person's field is empty, then nothing will be copied to the clipboard.
+* Copy is not supported for the remark field. The `r/` field is invalid for this command.
+* If the person's field is empty, then nothing will be copy to the clipboard.
 
 Examples:
 * `copy 6 n/`: Copy the name of the person with `ID` 6 to the clipboard.
 * `copy 7 p/`: Copy the phone number of the person with `ID` 7 to the clipboard.
 * `copy 9 a/`: Copy the address of the person with `ID` 9 to the clipboard.
-* `copy 1 p/`: Fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
+* `copy 1 p/`: Fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty.
 
 ### Clearing all entries: `clear`
 
@@ -239,10 +249,10 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]… [r/REMARK]​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor r/new student`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 t/Parent t/Tutor`
-**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`<br> e.g., `find n/James t/Student`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​ [tdel/TAG]…​ [r/REMARK]`<br> e.g., `edit 2 t/Parent tdel/Tutor`
+**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`
