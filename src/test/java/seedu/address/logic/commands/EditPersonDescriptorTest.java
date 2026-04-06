@@ -11,6 +11,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_MEETING_LINK_BO
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 
 import org.junit.jupiter.api.Test;
 
@@ -113,6 +114,7 @@ public class EditPersonDescriptorTest {
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_PARENT).build();
         assertFalse(DESC_AMY.equals(editedAmy));
 
+
         // different meeting link -> returns false
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withMeetingLink(VALID_MEETING_LINK_AMY).build();
         assertFalse(DESC_AMY.equals(editedAmy));
@@ -123,6 +125,11 @@ public class EditPersonDescriptorTest {
         EditPersonDescriptor withOtherLink = new EditPersonDescriptorBuilder(DESC_AMY)
                 .withMeetingLink(VALID_MEETING_LINK_BOB).build();
         assertFalse(withLink.equals(withOtherLink));
+
+        // different tags to delete -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTagsToDelete(VALID_TAG_STUDENT).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
     }
 
     @Test
@@ -132,7 +139,8 @@ public class EditPersonDescriptorTest {
                 + editPersonDescriptor.getName().orElse(null) + ", phone="
                 + editPersonDescriptor.getPhone() + ", address="
                 + editPersonDescriptor.getAddress() + ", tags="
-                + editPersonDescriptor.getTags().orElse(null) + ", remark="
+                + editPersonDescriptor.getTags().orElse(null) + ", tagsToDelete="
+                + editPersonDescriptor.getTagsToDelete().orElse(null) + ", remark="
                 + editPersonDescriptor.getRemark() + "}";
         assertEquals(expected, editPersonDescriptor.toString());
     }
