@@ -145,6 +145,9 @@ public class ParserUtil {
         requireNonNull(tag);
         String trimmedTag = tag.trim();
         String normalizedTagName = Tag.getNormalizedTagName(trimmedTag);
+        if (normalizedTagName == null) {
+            throw new ParseException(Tag.MESSAGE_TAG_CONSTRAINTS);
+        }
 
         return new Tag(normalizedTagName);
     }

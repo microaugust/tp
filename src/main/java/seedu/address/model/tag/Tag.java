@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import seedu.address.logic.parser.exceptions.ParseException;
-
 /**
  * Represents a Tag in the address book.
  * Guarantees: immutable; name is valid as declared in {@link #isValidTagName(String)}
@@ -45,18 +43,10 @@ public class Tag {
 
     /**
      * Returns the normalized tag name for a valid tag.
-     *
-     * @throws ParseException if the given {@code String} is invalid.
      */
-    public static String getNormalizedTagName(String test) throws ParseException {
+    public static String getNormalizedTagName(String test) {
         requireNonNull(test);
-        String normalizedTagName = SUPPORTED_TAG_NAMES.get(test.toLowerCase());
-
-        if (normalizedTagName == null) {
-            throw new ParseException(Tag.MESSAGE_TAG_CONSTRAINTS);
-        }
-
-        return normalizedTagName;
+        return SUPPORTED_TAG_NAMES.get(test.toLowerCase());
     }
 
     private static Map<String, String> createSupportedTagNames() {
