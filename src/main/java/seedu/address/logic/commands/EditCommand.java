@@ -45,17 +45,16 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_REMARK + "REMARK] "
+            + "[" + PREFIX_MEETING_LINK + "MEETING_LINK] "
             + "[" + PREFIX_TAG + "TAG]... "
             + "[" + PREFIX_TAG_DELETE + "TAG]...\n"
-            + "[" + PREFIX_REMARK + "REMARK] "
-            + "[" + PREFIX_MEETING_LINK + "MEETING_LINK]\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
+            + PREFIX_REMARK + "Needs additional practices "
             + PREFIX_TAG + "Student "
-            + PREFIX_TAG_DELETE + "Parent "
-            + PREFIX_REMARK + "needs additional practices\n"
-            + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG + "\n"
-            + "To clear meeting link, use " + COMMAND_WORD + " 1 " + PREFIX_MEETING_LINK;
+            + PREFIX_TAG_DELETE + "Parent\n"
+            + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG;
 
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;

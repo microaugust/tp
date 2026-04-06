@@ -107,7 +107,7 @@ Show a list of all persons in the address book.
 
 Format: `list`
 
-* Since phone number, address and remark fields are optional, the UI alerts the user if a particular person has no phone number or address:
+* Since phone number, address and remark fields are optional, the UI alerts the user if these fields are empty for a particular person:
 
   ![result for 'list' with no phone number, address and remark](images/missingPhoneNumberAddressAndRemark.png)
 
@@ -149,7 +149,7 @@ Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`
 * At least one prefixed keyword must be provided.
 * Unprefixed input is not allowed. e.g. `find Ali` is invalid.
 * `n/` searches names, `a/` searches addresses, `p/` searches phone numbers, `t/` searches tags and `r/` searches remarks.
-* The search is case-insensitive for names, addresses, and tags. e.g. `n/hans` will match `Hans` and `t/student` will match `Student`
+* The search is case-insensitive for names, addresses, tags and remarks. e.g. `n/hans` will match `Hans` and `t/student` will match `Student`
 * Phone matching is digit-based substring matching. e.g. `p/9435` will match a phone number containing `9435`
 * Partial matches are supported. e.g. `n/Han` will match `Hans`
 * Persons matching at least one prefixed keyword will be returned (i.e. `OR` search across all provided fields and keywords).
@@ -249,10 +249,10 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]… [r/REMARK]​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor r/new student`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 r/new student t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​ [tdel/TAG]…​ [r/REMARK]`<br> e.g., `edit 2 t/Parent tdel/Tutor`
-**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`<br> e.g., `find n/James t/Student`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g.,`edit 2 t/Parent tdel/Tutor`
+**Find** | `find [n/NAME]…​ [a/ADDRESS]…​ [p/PHONE]…​ [r/REMARK]…​ [t/TAG]…​`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`

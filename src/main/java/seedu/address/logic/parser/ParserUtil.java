@@ -114,23 +114,6 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a valid {@code Tag}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code tag} is invalid.
-     */
-    public static Tag parseTag(String tag) throws ParseException {
-        requireNonNull(tag);
-        String trimmedTag = tag.trim();
-        String normalizedTagName = Tag.getNormalizedTagName(trimmedTag);
-        if (normalizedTagName == null) {
-            throw new ParseException(Tag.MESSAGE_TAG_CONSTRAINTS);
-        }
-
-        return new Tag(normalizedTagName);
-    }
-
-    /**
      * Parses a {@code String remark} into a {@code Remark}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -153,6 +136,23 @@ public class ParserUtil {
                 .orElseThrow(() -> new ParseException(Remark.MESSAGE_CONSTRAINTS));
 
         return Optional.of(parsedRemark);
+    }
+
+    /**
+     * Parses a {@code String tag} into a valid {@code Tag}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code tag} is invalid.
+     */
+    public static Tag parseTag(String tag) throws ParseException {
+        requireNonNull(tag);
+        String trimmedTag = tag.trim();
+        String normalizedTagName = Tag.getNormalizedTagName(trimmedTag);
+        if (normalizedTagName == null) {
+            throw new ParseException(Tag.MESSAGE_TAG_CONSTRAINTS);
+        }
+
+        return new Tag(normalizedTagName);
     }
 
     /**
