@@ -446,9 +446,7 @@ Actor: User
 
 Guarantees:
 * On successful completion, the specified contact is updated with the provided values.
-* Name, phone, address, and time replace their previous values when provided.
-* Time inputs are accepted in `HH:mm`, `HHmm`, `HH:mm - HH:mm`, or `HHmm - HHmm` format and displayed in
-  normalized `HH:mm` or `HH:mm - HH:mm` form.
+* Name, phone, address, and meeting schedule replace their previous values when provided.
 * Provided tags are added cumulatively to the contact's existing tags, unless the user explicitly requests to clear all tags.
 * If the operation fails, the stored contacts remain unchanged.
 
@@ -474,7 +472,6 @@ Extensions:
   * 2a2. User re-submits the edit request.
   * Use case resumes from step 2.
 * 2b. The user provides an invalid field value.
-  * Example: `d/18:00` without a weekday, or `d/Funday 18:00`.
   * 2b1. EduConnect shows an error message.
   * 2b2. User re-submits the edit request.
   * Use case resumes from step 2.
@@ -485,7 +482,7 @@ Extensions:
   * 3b1. EduConnect clears all tags from the contact.
   * Use case resumes from step 4.
 * 3c. The user requests to clear the stored meeting schedule.
-  * 3c1. EduConnect removes the stored time from the contact.
+  * 3c1. EduConnect removes the stored meeting schedule from the contact.
   * Use case resumes from step 4.
 
 #### Use case: UC06 - Search Contacts by Specified Fields
