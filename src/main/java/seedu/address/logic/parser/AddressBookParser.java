@@ -126,5 +126,4 @@ public class AddressBookParser {
             throw new ParseException(MESSAGE_CANNOT_USE_MODE);
         }
     }
-
 }
