@@ -151,6 +151,18 @@ public class PersonTest {
     }
 
     @Test
+    public void hashCode_equalPersons_sameHashCode() {
+        Person aliceCopy = new PersonBuilder(ALICE).build();
+        assertEquals(ALICE.hashCode(), aliceCopy.hashCode());
+    }
+
+    @Test
+    public void hashCode_personWithMeetingLink_differentFromPersonWithout() {
+        Person aliceWithLink = new PersonBuilder(ALICE).withMeetingLink("https://zoom.us/randomLink").build();
+        assertFalse(ALICE.hashCode() == aliceWithLink.hashCode());
+    }
+
+    @Test
     public void toStringMethod() {
         String expected = Person.class.getCanonicalName()
                 + "{id=" + ALICE.getId()

@@ -125,6 +125,21 @@ public class CopyCommandTest {
     }
 
     @Test
+    public void getFieldLabel_allValidFields_returnsCorrectLabel() throws Exception {
+        Method getFieldLabelMethod = CopyCommand.class.getDeclaredMethod("getFieldLabel");
+        getFieldLabelMethod.setAccessible(true);
+
+        assertEquals("name",
+                getFieldLabelMethod.invoke(new CopyCommand(ID_FIRST, PREFIX_NAME.getPrefix())).toString());
+        assertEquals("phone number",
+                getFieldLabelMethod.invoke(new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix())).toString());
+        assertEquals("address",
+                getFieldLabelMethod.invoke(new CopyCommand(ID_FIRST, PREFIX_ADDRESS.getPrefix())).toString());
+        assertEquals("meeting link",
+                getFieldLabelMethod.invoke(new CopyCommand(ID_FIRST, PREFIX_MEETING_LINK.getPrefix())).toString());
+    }
+
+    @Test
     public void constructor_invalidField_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new CopyCommand(ID_FIRST, "email"));
     }
