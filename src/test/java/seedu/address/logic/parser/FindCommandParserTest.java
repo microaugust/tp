@@ -1,6 +1,8 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_MODE;
+import static seedu.address.logic.Messages.getErrorMessageForDuplicatePrefixes;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
@@ -16,6 +18,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
@@ -141,6 +144,43 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_andModeWithMultipleNamePrefixes_returnsFindCommand() {
+        FindCommand expectedFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Arrays.asList(VALID_NAME_AMY, VALID_NAME_BOB),
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                        Collections.emptyList(), MatchMode.AND));
+        assertParseSuccess(parser, " " + PREFIX_MODE + "and" + NAME_DESC_AMY + NAME_DESC_BOB, expectedFindCommand);
+    }
+
+    @Test
+    public void parse_andModeWithMultipleEnabledFields_returnsFindCommand() {
+        FindCommand expectedFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
+                        Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
+                        Collections.singletonList(VALID_TAG_STUDENT), Collections.emptyList(), MatchMode.AND));
+        assertParseSuccess(parser,
+                " " + PREFIX_MODE + "and" + NAME_DESC_AMY + ADDRESS_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
+                expectedFindCommand);
+    }
+
+    @Test
+    public void parse_modeVariants_returnsFindCommand() {
+        // No mode prefix falls back to OR behavior, while explicit OR and AND are accepted.
+        FindCommand expectedOrFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                        Collections.emptyList(), MatchMode.OR));
+        FindCommand expectedAndFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                        Collections.emptyList(), MatchMode.AND));
+
+        assertParseSuccess(parser, NAME_DESC_AMY, expectedOrFindCommand);
+        assertParseSuccess(parser, " " + PREFIX_MODE + "  oR " + NAME_DESC_AMY, expectedOrFindCommand);
+        assertParseSuccess(parser, " " + PREFIX_MODE + "   aNd " + NAME_DESC_AMY, expectedAndFindCommand);
+    }
+
+    @Test
     public void parse_preambleBeforePrefix_throwsParseException() {
         assertParseFailure(parser, VALID_NAME_AMY + PHONE_DESC_AMY,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
@@ -165,6 +205,27 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_invalidMode_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_MODE,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+
+        assertParseFailure(parser, " " + PREFIX_MODE + "xor" + NAME_DESC_AMY,
+                String.format(MESSAGE_INVALID_MODE, FindCommand.MESSAGE_USAGE));
+
+        assertParseFailure(parser, " " + PREFIX_MODE + NAME_DESC_AMY,
+                String.format(MESSAGE_INVALID_MODE, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_multipleModes_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_MODE + "and " + PREFIX_MODE + "or" + NAME_DESC_AMY,
+                getErrorMessageForDuplicatePrefixes(PREFIX_MODE));
+
+        assertParseFailure(parser, " " + PREFIX_MODE + "and " + PREFIX_MODE + NAME_DESC_AMY,
+                getErrorMessageForDuplicatePrefixes(PREFIX_MODE));
+    }
+
+    @Test
     public void parse_emptyRemarkPrefix_throwsParseException() {
         assertParseFailure(parser, " " + PREFIX_REMARK,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
@@ -186,6 +247,21 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_andModeWithRemarkPrefix_returnsFindCommand() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.singletonList(VALID_REMARK_AMY),
+                MatchMode.AND
+        );
+        FindCommand expectedFindCommand = new FindCommand(predicate);
+        assertParseSuccess(parser, " " + PREFIX_MODE + "AnD " + REMARK_DESC_AMY,
+                expectedFindCommand);
+    }
+
+    @Test
     public void parse_remarkAndPhonePrefix_returnsFindCommand() {
         PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(
                 Collections.emptyList(),
@@ -198,6 +274,12 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(predicate);
         assertParseSuccess(parser, REMARK_DESC_AMY + PHONE_DESC_AMY,
                 expectedFindCommand);
+    }
+
+    @Test
+    public void parse_explicitOrWithoutSearchPrefixes_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_MODE + "or",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
     @Test

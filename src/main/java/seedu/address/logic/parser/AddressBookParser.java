@@ -1,7 +1,9 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_CANNOT_USE_MODE;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -31,6 +33,9 @@ public class AddressBookParser {
      * Used for initial separation of command word and args.
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+    // Reject any m/... token for commands that do not accept trailing arguments.
+    private static final Pattern MODE_PREFIX_PATTERN =
+            Pattern.compile("(^|\\s)" + Pattern.quote(PREFIX_MODE.getPrefix()) + "\\S*");
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
 
     /**
@@ -58,35 +63,52 @@ public class AddressBookParser {
         switch (commandWord) {
 
         case AddCommand.COMMAND_WORD:
+            verifyNoModePrefix(arguments);
             return new AddCommandParser(currentMaxId).parse(arguments);
 
         case EditCommand.COMMAND_WORD:
+            verifyNoModePrefix(arguments);
             return new EditCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
+            verifyNoModePrefix(arguments);
             return new DeleteCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
+            verifyNoModePrefix(arguments);
             return new ClearCommand();
 
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
         case ListCommand.COMMAND_WORD:
+            verifyNoModePrefix(arguments);
             return new ListCommand();
 
         case CopyCommand.COMMAND_WORD:
             return new CopyCommandParser().parse(arguments);
 
         case ExitCommand.COMMAND_WORD:
+            verifyNoModePrefix(arguments);
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
+            verifyNoModePrefix(arguments);
             return new HelpCommand();
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+        }
+    }
+
+    private static boolean containsModePrefix(String arguments) {
+        return MODE_PREFIX_PATTERN.matcher(arguments).find();
+    }
+
+    private static void verifyNoModePrefix(String arguments) throws ParseException {
+        if (containsModePrefix(arguments)) {
+            throw new ParseException(MESSAGE_CANNOT_USE_MODE);
         }
     }
 

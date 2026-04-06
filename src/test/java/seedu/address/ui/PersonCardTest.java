@@ -51,10 +51,10 @@ public class PersonCardTest {
 
         assertEquals("3. ", getLabelText(personCard, "index"));
         assertEquals("Bart Bass (ID: 2)", getLabelText(personCard, "nameWithId"));
-        assertEquals("\uD83D\uDCDE 91234567", getLabelText(personCard, "phone"));
-        assertEquals("\uD83C\uDFE0 1 Upper East Side", getLabelText(personCard, "address"));
+        assertEquals("\u260E 91234567", getLabelText(personCard, "phone"));
+        assertEquals("\u2302 1 Upper East Side", getLabelText(personCard, "address"));
         assertEquals("\u23F0 Monday 18:00", getLabelText(personCard, "time"));
-        assertEquals("\uD83D\uDCDD Bring notes", getLabelText(personCard, "remark"));
+        assertEquals("\u270E Bring notes", getLabelText(personCard, "remark"));
         assertFalse(hasCssClass(personCard, "time", CSS_CLASS_MISSING_FIELD));
         assertEquals(2, getTagsPane(personCard).getChildren().size());
     }
@@ -91,9 +91,9 @@ public class PersonCardTest {
 
         assertEquals("\u23F0 No time provided", getLabelText(personCard, "time"));
         assertTrue(hasCssClass(personCard, "time", CSS_CLASS_MISSING_FIELD));
-        assertEquals("\uD83D\uDCDE No phone number provided", getLabelText(personCard, "phone"));
-        assertEquals("\uD83C\uDFE0 No address provided", getLabelText(personCard, "address"));
-        assertEquals("\uD83D\uDCDD No remark provided", getLabelText(personCard, "remark"));
+        assertEquals("\u260E No phone number provided", getLabelText(personCard, "phone"));
+        assertEquals("\u2302 No address provided", getLabelText(personCard, "address"));
+        assertEquals("\u270E No remark provided", getLabelText(personCard, "remark"));
     }
 
     private PersonCard createPersonCard(Person person, int displayedIndex)
