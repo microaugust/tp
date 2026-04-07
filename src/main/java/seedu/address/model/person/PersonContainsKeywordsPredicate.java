@@ -18,6 +18,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> phoneKeywords;
     private final List<String> tagKeywords;
     private final List<String> remarkKeywords;
+    private final List<String> timeKeywords;
     private final MatchMode matchWord;
 
     /**
@@ -37,12 +38,14 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
             List<String> phoneKeywords,
             List<String> tagKeywords,
             List<String> remarkKeywords,
+            List<String> timeKeywords,
             MatchMode matchWord) {
         this.nameKeywords = nameKeywords;
         this.addressKeywords = addressKeywords;
         this.phoneKeywords = phoneKeywords;
         this.tagKeywords = tagKeywords;
         this.remarkKeywords = remarkKeywords;
+        this.timeKeywords = timeKeywords;
         this.matchWord = matchWord;
 
         // Defensive Programming
@@ -51,6 +54,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         requireNonNull(phoneKeywords);
         requireNonNull(tagKeywords);
         requireNonNull(remarkKeywords);
+        requireNonNull(timeKeywords)
         requireNonNull(matchWord);
     }
 
@@ -112,7 +116,8 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 && phoneKeywords.equals(otherPredicate.phoneKeywords)
                 && tagKeywords.equals(otherPredicate.tagKeywords)
                 && remarkKeywords.equals(otherPredicate.remarkKeywords)
-                && matchWord == otherPredicate.matchWord;
+                && matchWord == otherPredicate.matchWord
+                && timeKeywords.equals(otherPredicate.timeKeywords);
     }
 
     @Override
@@ -124,6 +129,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 .add("tagKeywords", tagKeywords)
                 .add("remarkKeywords", remarkKeywords)
                 .add("matchWord", matchWord)
+                .add("timeKeywords", timeKeywords)
                 .toString();
     }
 }
