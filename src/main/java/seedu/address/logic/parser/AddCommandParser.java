@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
 import java.util.Optional;
 import java.util.Set;
@@ -54,16 +55,16 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME,
                 PREFIX_PHONE, PREFIX_ADDRESS,
-                PREFIX_TAG, PREFIX_REMARK,
-                PREFIX_MEETING_LINK);
+                PREFIX_TIME, PREFIX_TAG,
+                PREFIX_REMARK, PREFIX_MEETING_LINK);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_REMARK,
-                PREFIX_MEETING_LINK);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_TIME,
+                PREFIX_REMARK, PREFIX_MEETING_LINK);
 
         // find the new id for the new person to be added,
         // based on the maximum id that is saved in the address book currently
@@ -78,6 +79,8 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Optional<Address> address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS));
 
+        Optional<Time> time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME));
+
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         Optional<Remark> remark = ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK));
@@ -88,11 +91,12 @@ public class AddCommandParser implements Parser<AddCommand> {
         assert name != null : "Parsed name should not be null";
         assert phone != null : "Parsed phone should not be null";
         assert address != null : "Parsed address should not be null";
+        assert time != null : "Parsed time should not be null";
         assert tagList != null : "Parsed tags should not be null";
         assert remark != null : "Parsed remark should not be null";
         assert meetingLink != null : "Parsed meeting link should not be null";
 
-        Person person = new Person(id, name, phone, address, Optional.<Time>empty(), tagList, remark, meetingLink);
+        Person person = new Person(id, name, phone, address, time, tagList, remark, meetingLink);
         assert person != null : "Parsed person should not be null";
 
         return new AddCommand(person);

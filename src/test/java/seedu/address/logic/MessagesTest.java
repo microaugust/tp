@@ -41,12 +41,13 @@ public class MessagesTest {
     }
 
     @Test
-    public void format_personWithPhoneAndTag_success() {
+    public void format_personWithoutLink_success() {
         Person person = new PersonBuilder()
                 .withName("Alice")
                 .withPhone("91234567")
                 .withAddress("123, Jurong West Ave 6")
                 .withTime(VALID_TIME_AMY)
+                .withoutMeetingLink()
                 .withTags("Student")
                 .build();
 
@@ -57,25 +58,7 @@ public class MessagesTest {
     }
 
     @Test
-    public void format_personWithoutPhone_success() {
-        Person person = new Person(
-                Id.of(1),
-                new Name("Bob"),
-                Optional.<Phone>empty(),
-                Optional.of(new Address("311, Clementi Ave 2")),
-                Optional.<Time>empty(),
-                new HashSet<Tag>(),
-                Optional.of(new Remark("Test remark 1")),
-                Optional.empty());
-
-        String formatted = Messages.format(person);
-
-        assertEquals("Bob; Phone: ; Address: 311, Clementi Ave 2; Time: ; Tags: ; Remark: Test remark 1; "
-                + "Meeting Link: ", formatted);
-    }
-
-    @Test
-    public void format_personWithoutRemark_success() {
+    public void format_personWithoutTimeRemarkAndLink_success() {
         Person person = new Person(
                 Id.of(1),
                 new Name("Bob"),
@@ -93,7 +76,25 @@ public class MessagesTest {
     }
 
     @Test
-    public void format_personWithoutAddress_success() {
+    public void format_personWithoutPhoneTimeTagAndLink_success() {
+        Person person = new Person(
+                Id.of(1),
+                new Name("Bob"),
+                Optional.<Phone>empty(),
+                Optional.of(new Address("311, Clementi Ave 2")),
+                Optional.<Time>empty(),
+                new HashSet<Tag>(),
+                Optional.of(new Remark("Test remark 1")),
+                Optional.empty());
+
+        String formatted = Messages.format(person);
+
+        assertEquals("Bob; Phone: ; Address: 311, Clementi Ave 2; Time: ; Tags: ; Remark: Test remark 1; "
+                + "Meeting Link: ", formatted);
+    }
+
+    @Test
+    public void format_personWithoutAddressTimeRemarkAndLink_success() {
         Person person = new Person(
                 Id.of(1),
                 new Name("Bob"),

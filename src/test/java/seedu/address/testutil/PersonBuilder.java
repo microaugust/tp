@@ -23,6 +23,7 @@ public class PersonBuilder {
     public static final String DEFAULT_NAME = "Amy Bee";
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_TIME = "Monday 15:00";
     public static final String DEFAULT_REMARK = "first student";
     public static final String DEFAULT_MEETING_LINK = "https://zoom.com/smt";
 
@@ -43,10 +44,10 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = Optional.of(new Phone(DEFAULT_PHONE));
         address = Optional.of(new Address(DEFAULT_ADDRESS));
-        time = Optional.empty();
+        time = Optional.of(new Time(DEFAULT_TIME));
         tags = new HashSet<>();
         remark = Optional.of(new Remark(DEFAULT_REMARK));
-        meetingLink = Optional.empty();
+        meetingLink = Optional.of(new MeetingLink(DEFAULT_MEETING_LINK));
     }
 
     /**

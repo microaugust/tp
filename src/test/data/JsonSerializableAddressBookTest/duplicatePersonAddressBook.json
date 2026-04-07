@@ -1,19 +1,21 @@
 {
   "persons": [ {
-    "id": 1,
-    "name": "Alice Pauline",
-    "phone": "94351253",
-    "address": "123, Jurong West Ave 6, #08-111",
-    "tags": [ "Student" ],
-    "remark" : "",
+    "id" : 1,
+    "name" : "Alice Pauline",
+    "phone" : "94351253",
+    "address" : "123, Jurong West Ave 6, #08-111",
+    "time" : "",
+    "tags" : [ "Student" ],
+    "remark" : "Needs special arrangements",
     "meetingLink" : ""
   }, {
     "id": 2,
     "name": "Alice Pauline",
     "phone": "94351253",
     "address": "123, Jurong West Ave 6, #08-111",
+    "time": "Saturday 10:00",
     "tags": [ ],
     "remark" : "",
-    "meetingLink" : ""
+    "meetingLink" : "https://zoom.com/1618"
   } ]
 }

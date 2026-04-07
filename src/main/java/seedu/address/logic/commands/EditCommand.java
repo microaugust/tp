@@ -60,8 +60,6 @@ public class EditCommand extends Command {
             + PREFIX_TAG + "Student "
             + PREFIX_TAG_DELETE + "Parent\n"
             + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG + "\n"
-            + "To clear the stored time, use " + COMMAND_WORD + " 1 " + PREFIX_TIME + "\n"
-            + "To clear the stored meeting link, use " + COMMAND_WORD + " 1 " + PREFIX_MEETING_LINK + "\n"
             + "Accepted time formats: Day HH:mm, Day HHmm, Day HH:mm - HH:mm, or Day HHmm - HHmm";
 
     private final Id id;

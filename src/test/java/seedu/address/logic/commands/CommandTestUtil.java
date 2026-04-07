@@ -31,8 +31,6 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
  * Contains helper methods for testing commands.
  */
 public class CommandTestUtil {
-
-    public static final String VALID_ADDRESS_EMPTY_STRING = " " + PREFIX_ADDRESS; // empty string
     public static final String VALID_TAG_STUDENT = "Student";
     public static final String VALID_TAG_PARENT = "Parent";
     public static final String VALID_TAG_TUTOR = "Tutor";
@@ -50,7 +48,6 @@ public class CommandTestUtil {
     public static final String VALID_REMARK_BOB = "2nd student";
     public static final String VALID_MEETING_LINK_AMY = "https://zoom.us/j/amy123";
     public static final String VALID_MEETING_LINK_BOB = "https://zoom.us/j/bob456";
-    public static final String INVALID_MEETING_LINK = "not-a-valid-url";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -65,7 +62,6 @@ public class CommandTestUtil {
     public static final String REMARK_DESC_BOB = " " + PREFIX_REMARK + VALID_REMARK_BOB;
     public static final String MEETING_LINK_DESC_AMY = " " + PREFIX_MEETING_LINK + VALID_MEETING_LINK_AMY;
     public static final String MEETING_LINK_DESC_BOB = " " + PREFIX_MEETING_LINK + VALID_MEETING_LINK_BOB;
-    public static final String INVALID_MEETING_LINK_DESC = " " + PREFIX_MEETING_LINK + INVALID_MEETING_LINK;
     public static final String TAG_DESC_STUDENT = " " + PREFIX_TAG + VALID_TAG_STUDENT;
     public static final String TAG_DESC_PARENT = " " + PREFIX_TAG + VALID_TAG_PARENT;
     public static final String TAG_DESC_TUTOR = " " + PREFIX_TAG + VALID_TAG_TUTOR;
@@ -75,14 +71,29 @@ public class CommandTestUtil {
     public static final String INVALID_UNLISTED_TAG_DESC = " " + PREFIX_TAG + "Friend";
     public static final String INVALID_UNLISTED_TAG_DELETE_DESC = " " + PREFIX_TAG_DELETE + "Friend";
 
-    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
-    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
-    // public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS;
+    // '&' not allowed in names
+    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&";
+
+    // 'a' not allowed in phones
+    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a";
+
+    // not a valid hour
     public static final String INVALID_TIME_DESC = " " + PREFIX_TIME + "Monday 25:00";
+
+    // duration going backwards in time
     public static final String INVALID_TIME_DURATION_DESC = " " + PREFIX_TIME + "Monday 18:00 - 17:30";
+
+    // no day in time provided
     public static final String INVALID_TIME_NO_DAY_DESC = " " + PREFIX_TIME + "1800";
-    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+
+    // '*' not allowed in tags
+    public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*";
+
+    // '*' not allowed in tags
     public static final String INVALID_TAG_DELETE_DESC = " " + PREFIX_TAG_DELETE + "hubby*";
+
+    // link does not start with http:// or https://
+    public static final String INVALID_MEETING_LINK_DESC = " " + PREFIX_MEETING_LINK + "not-a-valid-url";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
