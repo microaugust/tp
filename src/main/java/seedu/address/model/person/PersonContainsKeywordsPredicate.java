@@ -18,7 +18,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     private final List<String> phoneKeywords;
     private final List<String> tagKeywords;
     private final List<String> remarkKeywords;
-    private final List<String> timeKeywords;
+    private final List<TimeSearchKeyword> timeKeywords;
     private final MatchMode matchWord;
 
     /**
@@ -38,7 +38,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
             List<String> phoneKeywords,
             List<String> tagKeywords,
             List<String> remarkKeywords,
-            List<String> timeKeywords,
+            List<TimeSearchKeyword> timeKeywords,
             MatchMode matchWord) {
         this.nameKeywords = nameKeywords;
         this.addressKeywords = addressKeywords;
@@ -54,7 +54,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         requireNonNull(phoneKeywords);
         requireNonNull(tagKeywords);
         requireNonNull(remarkKeywords);
-        requireNonNull(timeKeywords)
+        requireNonNull(timeKeywords);
         requireNonNull(matchWord);
     }
 

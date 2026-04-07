@@ -114,6 +114,33 @@ public class Time {
         return formatDayOfWeek(dayOfWeek) + DAY_TIME_SEPARATOR + canonicalTime;
     }
 
+    /**
+     * Returns the canonical full weekday name for a day-prefix query, or {@code null} if invalid/ambiguous.
+     */
+    public static String getCanonicalDayQuery(String dayToken) {
+        requireNonNull(dayToken);
+        String trimmedDayToken = dayToken.trim();
+        // find d/t OR find d/s are not allowed
+        if (trimmedDayToken.isEmpty() || trimmedDayToken.length() <= 1) {
+            return null;
+        }
+
+        DayOfWeek matchedDayOfWeek = null;
+        String lowerCaseDayToken = trimmedDayToken.toLowerCase();
+        for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
+            String lowerCaseDay = dayOfWeek.name().toLowerCase();
+            if (!lowerCaseDay.startsWith(lowerCaseDayToken)) {
+                continue;
+            }
+            if (matchedDayOfWeek != null) {
+                return null;
+            }
+            matchedDayOfWeek = dayOfWeek;
+        }
+
+        return matchedDayOfWeek == null ? null : formatDayOfWeek(matchedDayOfWeek);
+    }
+
     private static DayOfWeek parseDayOfWeek(String dayToken) {
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
             if (dayOfWeek.name().equalsIgnoreCase(dayToken)) {
@@ -125,11 +152,11 @@ public class Time {
     }
 
     private static String formatDayOfWeek(DayOfWeek dayOfWeek) {
-        String lowerCaseDay = dayOfWeek.name().toLowerCase(Locale.ROOT);
+        String lowerCaseDay = dayOfWeek.name().toLowerCase();
         return Character.toUpperCase(lowerCaseDay.charAt(0)) + lowerCaseDay.substring(1);
     }
 
-    private static String getCanonicalLegacyTime(String time) {
+    public static String getCanonicalLegacyTime(String time) {
         String trimmedTime = time.trim();
         if (!trimmedTime.contains("-")) {
             return getCanonicalSingleTime(trimmedTime);

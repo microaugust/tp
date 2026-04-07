@@ -20,6 +20,7 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
+import seedu.address.model.person.TimeSearchKeyword;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -67,15 +68,15 @@ public class FindCommandParser implements Parser<FindCommand> {
         List<String> phoneKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_PHONE));
         List<String> tagKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_TAG));
         List<String> remarkKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_REMARK));
-        List<String> timeKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_TIME));
+        List<String> dateTimeKeywordsToBeParsed = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_TIME));
         Optional<String> modeKeywordToBeParsed = argMultimap.getValue(PREFIX_MODE);
 
-        
+        List<TimeSearchKeyword> timeKeywords = ParserUtil.parseFindTimeKeywords(dateTimeKeywordsToBeParsed);
 
         // Check if we have any searchable keywords
         if (nameKeywords.isEmpty() && addressKeywords.isEmpty()
                 && phoneKeywords.isEmpty() && tagKeywords.isEmpty()
-                && remarkKeywords.isEmpty() && timeKeywords.isEmpty()) {
+                && remarkKeywords.isEmpty() && dateTimeKeywordsToBeParsed.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
@@ -95,6 +96,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         assert phoneKeywords.stream().noneMatch(String::isBlank);
         assert tagKeywords.stream().noneMatch(String::isBlank);
         assert remarkKeywords.stream().noneMatch(String::isBlank);
+        assert timeKeywords.stream().noneMatch(keyword -> keyword.day().isBlank() && keyword.time().isBlank());
 
         return new FindCommand(new PersonContainsKeywordsPredicate(
                 nameKeywords,
@@ -102,6 +104,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                 phoneKeywords,
                 tagKeywords,
                 remarkKeywords,
+                timeKeywords,
                 modeKeyword));
     }
 

@@ -402,7 +402,7 @@ public class PersonContainsKeywordsPredicateTest {
 
         String expected = PersonContainsKeywordsPredicate.class.getCanonicalName()
                 + "{nameKeywords=" + keywords + ", addressKeywords=[], phoneKeywords=[], "
-                + "tagKeywords=[], remarkKeywords=[], matchWord=OR}";
+                + "tagKeywords=[], remarkKeywords=[], matchWord=OR, timeKeywords=[]}";
         assertEquals(expected, predicate.toString());
     }
 
