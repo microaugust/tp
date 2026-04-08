@@ -86,7 +86,9 @@ A person can have any number of tags (including 0)
 * Only `n/NAME` is required.
 * `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `l/MEETING_LINK`, and `t/TAG` are optional.
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
+* If a phone number is specified, it needs to be 8 digits long, and begin with 6, 8, or 9.
 * Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
+* If an address is specified, it cannot contain a `/` inside.
 * This behaviour is similar for remark and meeting link. `add n/John Doe r/` and `add n/John Doe l/` are both valid.
   They create a contact without a remark and meeting link respectively.
 * If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
@@ -127,9 +129,9 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETI
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * `p/PHONE` updates the stored phone number. You can remove the stored phone number by typing `p/`
-  without specifying any value after it.
+  without specifying any value after it. Similar to [add](#adding-a-person-add), the phone number specified must have 8 digits, and start with 6, 8 or 9.
 * `a/ADDRESS` updates the stored address. You can remove the stored address by typing `a/` without
-  specifying any value after it.
+  specifying any value after it. Similar to [add](#adding-a-person-add) command, the address specified cannot contain `/`.
 * `d/DAY_TIME` updates the stored meeting schedule. You can store either a single time or a duration,
   both with a weekday.
 * `d/DAY_TIME` accepts `Day HH:mm`, `Day HHmm`, `Day HH:mm - HH:mm`, and `Day HHmm - HHmm`.
