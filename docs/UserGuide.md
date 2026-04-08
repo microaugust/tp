@@ -56,16 +56,9 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 * Items with `…`​ after them can be used multiple times including zero times.<br>
   e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/Student`, `t/Student t/Parent` etc.
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
-
-* Command words are case-sensitive and must be typed in lowercase.<br>
-  e.g. `add ...` is valid, but `Add ...` is invalid.
-
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
-
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
+
+* For more shared command behavior, see [Command Rules](#command-rules).
 </div>
 
 ### Viewing help: `help`
@@ -81,21 +74,14 @@ Format: `help`
 
 Add a person to the address book.
 
-Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​`
+Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 * Only `n/NAME` is required.
-* `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `l/MEETING_LINK`, and `t/TAG` are optional.
-* `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
-* If a phone number is specified, it needs to be 8 digits long, and begin with 6, 8, or 9.
-* Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
-* If an address is specified, it cannot contain a `/` inside.
-* This behaviour is similar for remark and meeting link. `add n/John Doe r/` and `add n/John Doe l/` are both valid.
-  They create a contact without a remark and meeting link respectively.
-* EduConnect allows overlapping meeting schedules across different contacts (e.g. `4–6pm` and `5–7pm`).
+* `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `d/WEEKLY_TIMESLOT`, `l/MEETING_LINK`, and `t/TAG` are optional (see [Command Rules](#command-rules) for shared constraints and behavior such as empty values).
 * If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
 
 Examples:
@@ -107,18 +93,13 @@ The first example gives the following expected output:
 
   ![result for 'add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student'](images/AddCommandResult.png)
 
-Adding optional prefix without input will be equivalent to adding just the name.
-ie. the following will behave the same way
-* `add n/Jane Doe p/98765432`
-* `add n/Jane Doe p/`
-
 ### Listing all persons: `list`
 
 Show a list of all persons in the address book.
 
 Format: `list`
 
-* Phone number, address, meeting schedule, remark, and meeting link are optional fields.
+* Phone number, address, weekly timeslot, remark, and meeting link are optional fields.
 * If any of those fields is missing, the UI shows a missing-field indicator for that contact.
 
   ![result for 'list' with missing optional fields](images/missingPhoneNumberAddressAndRemark.png)
@@ -127,89 +108,69 @@ Format: `list`
 
 Edit an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETING_LINK] [t/TAG]… [tdel/TAG]…​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]… [tdel/TAG]…​`
 
 * `ID` specifies the person to be edited.
-* `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* `p/PHONE` updates the stored phone number. You can remove the stored phone number by typing `p/`
-  without specifying any value after it. Similar to [add](#adding-a-person-add), the phone number specified must have 8 digits, and start with 6, 8 or 9.
-* `a/ADDRESS` updates the stored address. You can remove the stored address by typing `a/` without
-  specifying any value after it. Similar to [add](#adding-a-person-add) command, the address specified cannot contain `/`.
-* `d/DAY_TIME` updates the stored meeting schedule. You can store either a single time or a duration,
-  both with a weekday.
-* `d/DAY_TIME` accepts `Day HH:mm`, `Day HHmm`, `Day HH:mm - HH:mm`, and `Day HHmm - HHmm`.
-* `d/DAY_TIME` accepts the weekday values `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`,
-  `Saturday`, and `Sunday`.
-* You can remove the stored meeting schedule by typing `d/` without specifying any value after it.
-* Schedules are displayed in EduConnect in normalized form. For example, `monday 1800` is shown as `Monday 18:00`, while
-  `wednesday 1800 - 1930` is shown as `Wednesday 18:00 - 19:30`.
-* `r/REMARK` updates the stored remark. You can remove the stored remark by typing `r/` without
-  specifying any value after it.
-* `l/MEETING_LINK` updates the stored meeting link. The value must be a valid URL starting with
-  `http://` or `https://`. You can remove the stored meeting link by typing `l/` without specifying
-  any value after it.
-* Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
-* `t/TAG` appends the provided tags to the person’s existing tags.
-* `tdel/TAG` removes the provided tags from the person’s existing tags.
-* Only valid tags may be used: `Student`, `Parent`, `Tutor`.
-* Repeating an existing tag has no effect because duplicate tags are not stored.
-* Deleting a tag that the person does not currently have has no effect.
-* You can remove all the person’s tags by typing `t/` without specifying any tag after it.
-* When used to clear tags, bare `t/` must not be combined with tag values or `tdel/` values in the same command.
-  It may still be combined with non-tag edits such as `n/`, `p/`, `a/`, `d/`, `r/`, or `l/`.
-* The same tag cannot be added and deleted in the same command.
+* Existing values will be updated to the input values (see [Command Rules](#command-rules) for shared constraints and how to clear fields using empty values such as `p/`, `d/`, or `t/`).
 * Editing a contact such that it becomes identical to an existing contact is not allowed. Each contact must be unique.
 
+**Tag rules**
+* Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
+* `t/TAG` adds tags; `tdel/TAG` removes tags.
+* Only valid tags may be used: `Student`, `Parent`, `Tutor` (case-insensitive).
+* Repeating an existing tag has no effect; deleting a tag that the person does not have has no effect.
+* To clear all tags, use `t/` by itself (do not combine it with any `t/TAG` or `tdel/TAG` in the same command).
+* The same tag cannot be added and deleted in the same command.
+
 Examples:
-*  `edit 1 p/91234567`: Edit the phone number of the person with `ID` 1, changing it to `91234567`.
-*  `edit 1 d/Monday 18:00`: Update the stored meeting time of the person with `ID` 1 to `Monday 18:00`.
-*  `edit 1 d/Wednesday 1800 - 1930`: Update the stored meeting time of the person with `ID` 1 to `Wednesday 18:00 - 19:30`.
-*  `edit 1 l/https://zoom.us/j/123456789`: Update the stored meeting link of the person with `ID` 1.
-*  `edit 1 t/Parent`: Append the tag `Parent` to the person with `ID` 1.
-*  `edit 1 t/Parent t/Tutor`: Append both `Parent` and `Tutor` to the person with `ID` 1.
-*  `edit 1 tdel/Student`: Delete the tag `Student` from the person with `ID` 1.
-*  `edit 1 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Tutor tdel/Student`: Update the stored meeting
-   time, update the stored meeting link, append the tag `Tutor`, and delete the tag `Student` for the
-   person with `ID` 1.
-*  `edit 2 n/Betsy Crower t/`: Edit the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
-*  `edit 2 d/`: Clear the stored time of the person with `ID` 2.
-*  `edit 2 l/`: Clear the stored meeting link of the person with `ID` 2.
+* `edit 1 p/91234567`: Set the phone number of contact 1.
+* `edit 1 d/Monday 18:00`: Set the weekly timeslot of contact 1.
+* `edit 1 d/`: Clear the weekly timeslot of contact 1.
+* `edit 1 t/Parent t/Tutor`: Add `Parent` and `Tutor` tags to contact 1.
+* `edit 1 tdel/Student`: Remove the `Student` tag from contact 1.
+* `edit 2 t/`: Clear all tags of contact 2.
+* `edit 1 d/Wednesday 1800 - 1930 l/https://zoom.us/j/123456789 t/Tutor tdel/Student`: Set weekly timeslot + meeting link, add `Tutor` tag, and remove `Student` tag.
+
+Expected behavior:
+* When using edit, if the input matches the existing values (e.g., same name or same tag), it still shows a success message even though nothing has changed.
 
 ### Locating persons: `find`
 
 Find persons whose specified fields match the given keywords.
 
-Format: `find [m/MODE] [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]... [d/TIME]...`
+Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`
 
-* At least one prefixed keyword must be provided; unprefixed input is not allowed (e.g. `find Ali` is invalid).
-* `m/` is optional: `m/and` requires all provided conditions to match; `m/or` (or omitting `m/`) uses OR. `m/` is case-insensitive and only accepts `and` or `or`.
-* `n/`, `a/`, `t/`, `r/` are case-insensitive substring matches.
-* `p/` is digit-based substring matching (non-number input is allowed, but will not match any phone numbers).
-* A keyword will not match contacts missing that field (e.g. `p/` will not match contacts with no phone field).
-* `d/` searches meeting time (day/time):
-  * day: `d/tue` (day prefix, at least 2 letters)
-  * single time: `d/1200` or `d/12:00` (24-hour `HHmm` or `HH:mm`)
-  * range time: `d/1500-1600` or `d/15:00 - 1600`
-  * day + time: `d/Wed 1500` or `d/Tue 1500-1600`
-* Time matching behavior:
-  * Single time query (e.g. `d/1200`) matches a stored single time `12:00`, or a stored range that contains `12:00` (e.g. `11:00 - 13:00`).
-  * Range query (e.g. `d/1500-1600`) matches a stored range only if it is an exact match (e.g. `15:00 - 16:00`), but it can match a stored single time if that time falls within the query range.
-* Repeating the same prefix is allowed (including multiple `d/`); contacts still appear only once in the results list.
+* At least one prefixed keyword must be provided; unprefixed keywords are not allowed (e.g. `find Alex` is invalid).
+* Repeating prefixes is allowed; a contact will appear at most once in the results.
+* Contacts missing a field never match that field (e.g. contacts without a phone number never match `p/…`).
 
-Examples:
-* `find n/aleX a/119224` returns persons whose name contains `alex` or whose address contains `119224`.
-* `find m/and t/student n/Clement` returns persons tagged `student` whose name contains `clement`.
-* `find d/tue d/1200` returns persons who match Tuesday or 12:00.
-* `find d/Wed 1500` returns persons who have a time field on Wednesday at 15:00, or a time field range that contains 15:00.
-* `find d/1630-1730` will return persons who have a time field within 16:30 to 17:30 (e.g. 17:00).
+**Mode rules**
+* `m/` is optional, case-insensitive, and accepts only `and` or `or` (at most once).
+*  Without this prefix, the default is OR semantics.
+* `m/and` requires all provided keywords to match.
+* `m/or` requires at least one provided condition to match
+
+**Weekly timeslot rules (`d/`)**
+* `d/` supports day-only, time-only, range, and day+time queries (see [Command Rules](#command-rules) → Field constraints → `d/WEEKLY_TIMESLOT`).
+* For day+time queries, day must come before time (e.g. `d/tue 1500`, not `d/1500 tue`).
+* Day-only queries match contacts whose weekly timeslot is on that day.
+* Time-only queries match a stored single time, or a stored range containing that time.
+* Range queries match an exact stored range, and can also match a stored single time within the query range.
+* The d/ prefix in FindCommand is less strict (since it is used for searching); formats like DD:HH - DDHH or reversed ranges are allowed.
+
+Examples (Find people whose):
+* `find n/alex a/119224`: Name contains `alex` OR address contains `119224`.
+* `find m/and t/student n/clement`: Tagged `Student` AND name contains `clement`.
+* `find p/9`: Phone contains `9` (contacts without phone are excluded).
+* `find d/tue`: Weekly timeslot is on Tuesday.
+* `find d/1200 d/thu`: Weekly timeslot is `12:00` (or within a stored time range that includes `12:00`) or is on Thursday.
+* `find d/tue 1500-1600`: Tuesday timeslot is exactly `15:00 - 16:00` (or a stored single time within that range).
 
 Expected behavior:
 * `find p/ben` will not return an error, but will return no results (since phone numbers contain digits only).
 * `find p/9` will not match contacts with no phone field (missing phone never matches `p/`).
 * `find d/1500-1600` will not match a person whose time is `14:00 - 17:00` (range queries require an exact stored range match).
-
 
 ### Deleting a person: `del`
 
@@ -218,7 +179,6 @@ Delete one or more specified persons from the address book.
 Format: `del ID [ID]…​`
 
 * Deletes the persons with the specified `ID`s.
-* Each `ID` **must be a positive integer** 1, 2, 3, …​
 * Multiple IDs can be provided, separated by spaces.
 * If any of the given IDs does not exist, none of the contacts will be deleted.
 
@@ -235,7 +195,7 @@ Copy a specified field of a person from the address book to the user clipboard.
 Format: `copy ID FIELD`
 
 * Possible fields include `n/` for name, `p/` for phone number, `a/` for address, and `l/` for meeting link.
-* Copy is not supported for the meeting schedule, tags, or remark fields. The `d/`, `t/`, `tdel/`, and `r/`
+* Copy is not supported for the weekly timeslot, tags, or remark fields. The `d/`, `t/`, `tdel/`, and `r/`
   fields are invalid for this command.
 * If the person's field is empty, then nothing will be copied to the clipboard.
 
@@ -279,11 +239,83 @@ If your changes to the data file makes its format invalid, EduConnect will disca
 Furthermore, certain edits can cause EduConnect to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
-### Archiving data files `[coming in v2.0]`
+## Command Rules
 
-_Details coming soon ..._
+These rules apply across multiple commands in EduConnect:
 
---------------------------------------------------------------------------------------------------------------------
+### Command syntax
+
+* Command words and prefixes are case-sensitive and must be typed in lowercase.<br>
+  e.g. `add n/Alex` is valid, but `Add n/Alex` and `add N/Alex` are invalid.
+
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) are ignored.<br>
+  e.g. `help 123` is interpreted as `help`.
+
+* Parameters can be in any order (unless stated otherwise).<br>
+  e.g. `add p/98765432 n/Alex` is accepted.
+
+* Leading and trailing spaces around prefixed values are ignored.<br>
+  e.g. `add n/   Alex` is interpreted as `add n/Alex`.
+
+* `ID` must be a positive integer 1, 2, 3, …​. Leading zeroes are accepted and ignored.<br>
+  e.g. `edit 001 n/Ali` is interpreted as `edit 1 n/Ali`.
+
+* Empty values:
+  * For `add`, providing an optional prefix with no value creates the contact with that field missing.<br>
+    e.g. `add n/Jane Doe p/` creates a contact with no phone number.
+  * For `edit`, providing a prefix with no value clears that field on the contact.<br>
+    e.g. `edit 1 p/` clears the phone number of contact 1.
+  * Exception (tags):
+    * `add ... t/` is invalid. Omit `t/` to add a contact with no tags.
+    * In `edit`, `t/` by itself clears all tags.
+    * `tdel/` must be followed by a tag value (e.g. `tdel/Student`).
+
+### Field constraints
+
+* `n/NAME`:
+  * Must not be blank.
+  * Must contain only alphabets, `-`, `,`, and spaces.
+  * Names that contain special characters like / may need to be stored in an alternative format (e.g., A/P can be written as AP or Anak Perempuan).
+
+* `p/PHONE_NUMBER`:
+  * Must contain digits only.
+  * Must start with `6`, `8`, or `9`.
+  * Must be exactly 8 digits long.
+  * Rationale (Singapore): `8`/`9` are typically mobile numbers, and `6` is typically fixed-line.
+  * Reference: [IMDA National Numbering Plan (PDF)](https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/frameworks-and-policies/numbering/national-numbering-plan-and-allocation-process/imda-national-numbering-plan.pdf)
+
+* `a/ADDRESS`:
+  * Must not be blank.
+  * Must not contain `/` (to avoid ambiguity with prefixes such as `n/` and `p/`).
+  * Reference: [Singapore address format (example)](https://frasermclean.com/posts/singapore-address-format)
+
+* `t/TAG`:
+  * Must be one of `Student`, `Parent`, or `Tutor` (case-insensitive).
+  * Repeating an existing tag has no effect because duplicate tags are not stored.
+
+* `d/WEEKLY_TIMESLOT`:
+  * Represents a weekly day/time (tuition sessions or recurring parent-tutor check-ins).
+  * For `add` / `edit`, the weekday must be the full name (e.g. `Monday`) and is case-insensitive.
+  * For `find`, weekday-only queries accept an unambiguous prefix with at least 2 letters (e.g. `d/mo`, `d/tue`).
+  * Accepted input forms:
+    * single time: `Day HH:mm` or `Day HHmm`
+    * time range: `Day HH:mm - HH:mm` or `Day HHmm - HHmm` (spaces around `-` are optional)
+  * Valid weekdays: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`.
+  * Valid time: 24-hour time (`00:00` to `23:59`). A duration must not end before it starts.
+  * Display is normalized (e.g. `monday 1800` → `Monday 18:00`).
+  * Overlapping weekly timeslots across different contacts are allowed (e.g. staggered lessons for different students).
+
+* `r/REMARK`:
+  * Must not contain tabs or newlines.
+
+* `l/MEETING_LINK`:
+  * If provided, it must be a valid URL starting with `http://` or `https://` (no spaces).
+
+### Special case: Non-English characters in input
+* Non-English (Unicode) characters are supported only in `a/ADDRESS`. Other fields restrict input due to validation rules.
+  * Example: `add n/adi a/爱德华七世宿舍` is accepted.
+  * `find a/爱德华` can match partial non-English address text (substring match).
+  * However, this is not recommended, as the system assumes English input.
 
 ## FAQ
 
@@ -298,6 +330,7 @@ _Details coming soon ..._
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 3. **Only one running app instance can access the data file at a time**. If you open multiple app windows at the same time, data may not be saved properly. The remedy is to keep only one instance of EduConnect running at any time.
 4. **When clicking between contacts in the list**, the displayed text may shift slightly, and the list may not auto-scroll to fully show the newly selected contact even if it was fully visible before. This is expected UI behavior.
+5. **If the user adds too many contacts and the ID overflows**, this exception is handled and the user is not allowed to add new contacts. In this case, the user must clear all data and start a new address book.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -305,11 +338,11 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/89761234 a/123, Clementi Rd, 1234665 r/new student l/https://zoom.us/j/123456789 t/Parent t/Tutor`, `add n/James Ho l/https://zoom.us/j/123456789`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho d/Monday 1800`, `add n/James Ho p/89761234 a/123, Clementi Rd, 1234665 r/new student d/Wednesday 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Parent t/Tutor`
 **Clear** | `clear` (run twice)
 **Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
-**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`<br> e.g., `find n/James t/Student`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
+**Find** | `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`<br> e.g., `find n/James t/Student`, `find d/tue d/1200`
 **List** | `list`
 **Copy** | `copy ID FIELD`<br> e.g., `copy 1 l/`
 **Exit** | `exit`
