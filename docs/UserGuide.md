@@ -306,7 +306,7 @@ These rules apply across multiple commands in EduConnect:
   * Overlapping weekly timeslots across different contacts are allowed (e.g. staggered lessons for different students).
 
 * `r/REMARK`:
-  * Must not contain tabs or newlines.
+  * Only standard characters (no emojis) are allowed.
 
 * `l/MEETING_LINK`:
   * If provided, it must be a valid URL starting with `http://` or `https://` (no spaces).
