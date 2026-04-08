@@ -123,7 +123,7 @@ public class ModelManagerTest {
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredPersonList(new PersonContainsKeywordsPredicate(Arrays.asList(keywords),
                 Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), MatchMode.OR));
+                Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests

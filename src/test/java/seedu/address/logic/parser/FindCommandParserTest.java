@@ -23,17 +23,21 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
+import seedu.address.model.person.Time;
+import seedu.address.model.person.TimeSearchKeyword;
 
 public class FindCommandParserTest {
 
@@ -49,7 +53,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Arrays.asList(VALID_NAME_AMY, VALID_NAME_BOB),
                         Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                                Collections.emptyList(), MatchMode.OR));
+                                Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB, expectedFindCommand);
 
         assertParseSuccess(parser, " " + PREFIX_NAME + "  " + VALID_NAME_AMY + NAME_DESC_BOB + "  \t",
@@ -61,7 +65,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
                         Collections.singletonList(VALID_PHONE_AMY), Collections.emptyList(),
-                                Collections.emptyList(), MatchMode.OR));
+                                Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, PHONE_DESC_AMY, expectedFindCommand);
     }
 
@@ -70,7 +74,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Arrays.asList(VALID_NAME_AMY),
                         Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                                Collections.emptyList(), MatchMode.OR));
+                                Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY, expectedFindCommand);
     }
 
@@ -80,7 +84,7 @@ public class FindCommandParserTest {
                 new PersonContainsKeywordsPredicate(Collections.emptyList(),
                         Collections.singletonList(VALID_ADDRESS_AMY),
                                 Collections.emptyList(), Collections.emptyList(),
-                                        Collections.emptyList(), MatchMode.OR));
+                                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, ADDRESS_DESC_AMY, expectedFindCommand);
     }
 
@@ -89,7 +93,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
                         Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT),
-                                Collections.emptyList(), MatchMode.OR));
+                                Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, TAG_DESC_STUDENT, expectedFindCommand);
     }
 
@@ -98,7 +102,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.emptyList(),
-                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY,
                 expectedFindCommand);
     }
@@ -108,7 +112,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
-                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, PHONE_DESC_AMY + ADDRESS_DESC_AMY,
                 expectedFindCommand);
     }
@@ -118,7 +122,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY), Collections.emptyList(),
                         Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT),
-                                Collections.emptyList(), MatchMode.OR));
+                                Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + TAG_DESC_STUDENT,
                 expectedFindCommand);
     }
@@ -128,7 +132,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
                         Collections.emptyList(), Arrays.asList(VALID_TAG_STUDENT, VALID_TAG_PARENT),
-                        Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, TAG_DESC_STUDENT + TAG_DESC_PARENT,
                 expectedFindCommand);
     }
@@ -138,7 +142,8 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
-                                Collections.singletonList(VALID_TAG_STUDENT), Collections.emptyList(), MatchMode.OR));
+                                Collections.singletonList(VALID_TAG_STUDENT), Collections.emptyList(),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
                 expectedFindCommand);
     }
@@ -148,7 +153,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Arrays.asList(VALID_NAME_AMY, VALID_NAME_BOB),
                         Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                        Collections.emptyList(), MatchMode.AND));
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.AND));
         assertParseSuccess(parser, " " + PREFIX_MODE + "and" + NAME_DESC_AMY + NAME_DESC_BOB, expectedFindCommand);
     }
 
@@ -157,7 +162,8 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
-                        Collections.singletonList(VALID_TAG_STUDENT), Collections.emptyList(), MatchMode.AND));
+                        Collections.singletonList(VALID_TAG_STUDENT), Collections.emptyList(),
+                        Collections.emptyList(), MatchMode.AND));
         assertParseSuccess(parser,
                 " " + PREFIX_MODE + "and" + NAME_DESC_AMY + ADDRESS_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
                 expectedFindCommand);
@@ -169,11 +175,11 @@ public class FindCommandParserTest {
         FindCommand expectedOrFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                        Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         FindCommand expectedAndFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                        Collections.emptyList(), MatchMode.AND));
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.AND));
 
         assertParseSuccess(parser, NAME_DESC_AMY, expectedOrFindCommand);
         assertParseSuccess(parser, " " + PREFIX_MODE + "  oR " + NAME_DESC_AMY, expectedOrFindCommand);
@@ -239,6 +245,7 @@ public class FindCommandParserTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.singletonList(VALID_REMARK_AMY),
+                Collections.emptyList(),
                 MatchMode.OR
         );
         FindCommand expectedFindCommand = new FindCommand(predicate);
@@ -254,6 +261,7 @@ public class FindCommandParserTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.singletonList(VALID_REMARK_AMY),
+                Collections.emptyList(),
                 MatchMode.AND
         );
         FindCommand expectedFindCommand = new FindCommand(predicate);
@@ -269,6 +277,7 @@ public class FindCommandParserTest {
                 Collections.singletonList(VALID_PHONE_AMY),
                 Collections.emptyList(),
                 Collections.singletonList(VALID_REMARK_AMY),
+                Collections.emptyList(),
                 MatchMode.OR
         );
         FindCommand expectedFindCommand = new FindCommand(predicate);
@@ -300,5 +309,79 @@ public class FindCommandParserTest {
 
         assertParseFailure(parser, " \n Alice \n \t Bob  \t",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_timePrefixVariants_returnsFindCommand() {
+        assertParseSuccess(parser, " " + PREFIX_TIME + "Wed 1500",
+                expectedTimeFindCommand(List.of(new TimeSearchKeyword("Wednesday", "15:00")), MatchMode.OR));
+
+        assertParseSuccess(parser, " " + PREFIX_TIME + "tue",
+                expectedTimeFindCommand(List.of(new TimeSearchKeyword("Tuesday", "")), MatchMode.OR));
+
+        assertParseSuccess(parser, " " + PREFIX_TIME + "1200",
+                expectedTimeFindCommand(List.of(new TimeSearchKeyword("", "12:00")), MatchMode.OR));
+
+        assertParseSuccess(parser, " " + PREFIX_TIME + "fRi 1500-1600",
+                expectedTimeFindCommand(List.of(new TimeSearchKeyword("Friday", "15:00 - 16:00")), MatchMode.OR));
+    }
+
+    @Test
+    public void parse_multipleTimePrefixesOrMode_returnsFindCommand() {
+        List<TimeSearchKeyword> dateTimeKeywords = List.of(
+                new TimeSearchKeyword("Wednesday", "15:00"),
+                new TimeSearchKeyword("Friday", "15:00 - 16:00"));
+
+        assertParseSuccess(parser, " " + PREFIX_TIME + "Wed 1500 " + PREFIX_TIME + "Fri 1500-1600",
+                expectedTimeFindCommand(dateTimeKeywords, MatchMode.OR));
+    }
+
+    @Test
+    public void parse_multipleTimePrefixesAndMode_returnsFindCommand() {
+        List<TimeSearchKeyword> dateTimeKeywords = List.of(
+                new TimeSearchKeyword("Wednesday", "15:00"),
+                new TimeSearchKeyword("Friday", "15:00 - 16:00"));
+
+        assertParseSuccess(parser, " " + PREFIX_MODE + "and " + PREFIX_TIME + "Wed 1500 "
+                        + PREFIX_TIME + "Fri 1500-1600",
+                expectedTimeFindCommand(dateTimeKeywords, MatchMode.AND));
+    }
+
+    @Test
+    public void parse_invalidTimeQueries_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_TIME + "f",
+                invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "fi",
+                invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "150",
+                invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "1400 Wed",
+                invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "tue wed",
+                invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "tue 2100 2300",
+                invalidTimeQueryMessage());
+    }
+
+    @Test
+    public void parse_timeQueriesWithFlexibleRangeSpacing_returnsFindCommand() {
+        assertParseSuccess(parser, " " + PREFIX_TIME + "1600-17:54",
+                expectedTimeFindCommand(List.of(new TimeSearchKeyword("", "16:00 - 17:54")), MatchMode.OR));
+
+        assertParseSuccess(parser, " " + PREFIX_TIME + "1600 - 17:54",
+                expectedTimeFindCommand(List.of(new TimeSearchKeyword("", "16:00 - 17:54")), MatchMode.OR));
+
+        assertParseSuccess(parser, " " + PREFIX_TIME + "Wed 1400",
+                expectedTimeFindCommand(List.of(new TimeSearchKeyword("Wednesday", "14:00")), MatchMode.OR));
+    }
+
+    private FindCommand expectedTimeFindCommand(List<TimeSearchKeyword> dateTimeKeywords, MatchMode matchMode) {
+        return new FindCommand(new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), dateTimeKeywords,
+                matchMode));
+    }
+
+    private String invalidTimeQueryMessage() {
+        return Time.MESSAGE_CONSTRAINTS;
     }
 }

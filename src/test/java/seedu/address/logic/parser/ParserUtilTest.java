@@ -20,6 +20,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Time;
+import seedu.address.model.person.TimeSearchKeyword;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -213,6 +214,18 @@ public class ParserUtilTest {
     @Test
     public void parseTime_emptyStringInOptional_returnsOptionalEmpty() throws Exception {
         assertEquals(Optional.empty(), ParserUtil.parseTime(Optional.of("")));
+    }
+
+    @Test
+    public void parseFindTimeKeyword_validDayOnly_returnsTimeSearchKeyword() throws Exception {
+        assertEquals(new TimeSearchKeyword("Tuesday", ""),
+                ParserUtil.parseFindTimeKeyword("tue"));
+    }
+
+    @Test
+    public void parseFindTimeKeyword_invalidMixedRange_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1700-16:00"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1700-aaaa"));
     }
 
     @Test

@@ -90,11 +90,15 @@ public class PersonContainsKeywordsPredicateTest {
 
         PersonContainsKeywordsPredicate differentTagFlag = new PersonContainsKeywordsPredicate(
                 firstPredicateKeywordList, Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList(), MatchMode.AND);
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.AND);
         assertFalse(firstPredicate.equals(differentTagFlag));
 
         PersonContainsKeywordsPredicate differentRemarkFlag = remarkPredicate(firstPredicateKeywordList);
         assertFalse(firstPredicate.equals(differentRemarkFlag));
+
+        PersonContainsKeywordsPredicate differentDateTimeFlag = predicateWithDateTimeKeywords(
+                List.of(new TimeSearchKeyword("Friday", "16:00")), MatchMode.OR);
+        assertFalse(firstPredicate.equals(differentDateTimeFlag));
     }
 
     @Test
@@ -396,13 +400,99 @@ public class PersonContainsKeywordsPredicateTest {
     }
 
     @Test
+    public void test_timeKeywords_singleStoredTimeBehavesAsExpected() {
+        Person fridayAtFour = new PersonBuilder().withTime("Friday 16:00").build();
+        Person fridayAtFive = new PersonBuilder().withTime("Friday 17:00").build();
+
+        PersonContainsKeywordsPredicate predicate = predicateWithDateTimeKeywords(
+                List.of(new TimeSearchKeyword("", "16:30 - 17:30")), MatchMode.OR);
+        assertFalse(predicate.test(fridayAtFour));
+        assertTrue(predicate.test(fridayAtFive));
+
+        predicate = predicateWithDateTimeKeywords(List.of(new TimeSearchKeyword("", "16:30")), MatchMode.OR);
+        assertFalse(predicate.test(fridayAtFour));
+
+        predicate = predicateWithDateTimeKeywords(List.of(new TimeSearchKeyword("Friday", "16:00")), MatchMode.OR);
+        assertTrue(predicate.test(fridayAtFour));
+
+        predicate = predicateWithDateTimeKeywords(List.of(new TimeSearchKeyword("Saturday", "16:00")), MatchMode.OR);
+        assertFalse(predicate.test(fridayAtFour));
+    }
+
+    @Test
+    public void test_timeKeywords_durationStoredTimeBehavesAsExpected() {
+        Person sundayDuration = new PersonBuilder().withTime("Sunday 15:00 - 15:56").build();
+
+        PersonContainsKeywordsPredicate predicate = predicateWithDateTimeKeywords(
+                List.of(new TimeSearchKeyword("", "16:30 - 17:30")), MatchMode.OR);
+        assertFalse(predicate.test(sundayDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(new TimeSearchKeyword("", "15:00 - 15:56")),
+                MatchMode.OR);
+        assertTrue(predicate.test(sundayDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(new TimeSearchKeyword("", "15:30")), MatchMode.OR);
+        assertTrue(predicate.test(sundayDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(new TimeSearchKeyword("", "16:30")), MatchMode.OR);
+        assertFalse(predicate.test(sundayDuration));
+    }
+
+    @Test
+    public void test_timeKeywords_multipleDateTimeQueriesOrMode() {
+        Person sundayDuration = new PersonBuilder().withTime("Sunday 15:00 - 15:56").build();
+
+        PersonContainsKeywordsPredicate predicate = predicateWithDateTimeKeywords(List.of(
+                new TimeSearchKeyword("Monday", "10:00"),
+                new TimeSearchKeyword("", "15:30")), MatchMode.OR);
+        assertTrue(predicate.test(sundayDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(
+                new TimeSearchKeyword("Monday", "10:00"),
+                new TimeSearchKeyword("", "16:30")), MatchMode.OR);
+        assertFalse(predicate.test(sundayDuration));
+    }
+
+    @Test
+    public void test_timeKeywords_multipleDateTimeQueriesAndMode() {
+        Person sundayDuration = new PersonBuilder().withTime("Sunday 15:00 - 15:56").build();
+
+        PersonContainsKeywordsPredicate predicate = predicateWithDateTimeKeywords(List.of(
+                new TimeSearchKeyword("Sunday", ""),
+                new TimeSearchKeyword("", "15:30")), MatchMode.AND);
+        assertTrue(predicate.test(sundayDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(
+                new TimeSearchKeyword("Sunday", ""),
+                new TimeSearchKeyword("", "16:30")), MatchMode.AND);
+        assertFalse(predicate.test(sundayDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(
+                new TimeSearchKeyword("Sunday", ""),
+                new TimeSearchKeyword("", "15:00 - 15:56")), MatchMode.AND);
+        assertTrue(predicate.test(sundayDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(
+                new TimeSearchKeyword("Sunday", ""),
+                new TimeSearchKeyword("", "16:30 - 17:30")), MatchMode.AND);
+        assertFalse(predicate.test(sundayDuration));
+    }
+
+    @Test
+    public void test_noTime_false() {
+        PersonContainsKeywordsPredicate predicate = predicateWithDateTimeKeywords(
+                List.of(new TimeSearchKeyword("Wednesday", "15:00")), MatchMode.OR);
+        assertFalse(predicate.test(new PersonBuilder().withoutTime().build()));
+    }
+
+    @Test
     public void toStringMethod() {
         List<String> keywords = List.of("keyword1", "keyword2");
         PersonContainsKeywordsPredicate predicate = namePredicate(keywords);
 
         String expected = PersonContainsKeywordsPredicate.class.getCanonicalName()
                 + "{nameKeywords=" + keywords + ", addressKeywords=[], phoneKeywords=[], "
-                + "tagKeywords=[], remarkKeywords=[], matchWord=OR}";
+                + "tagKeywords=[], remarkKeywords=[], matchWord=OR, dateTimeKeywords=[]}";
         assertEquals(expected, predicate.toString());
     }
 
@@ -414,7 +504,14 @@ public class PersonContainsKeywordsPredicateTest {
     private PersonContainsKeywordsPredicate predicate(List<String> nameKeywords, List<String> addressKeywords,
             List<String> phoneKeywords, List<String> tagKeywords, List<String> remarkKeywords, MatchMode matchMode) {
         return new PersonContainsKeywordsPredicate(nameKeywords, addressKeywords, phoneKeywords, tagKeywords,
-                remarkKeywords, matchMode);
+                remarkKeywords, Collections.emptyList(), matchMode);
+    }
+
+    private PersonContainsKeywordsPredicate predicateWithDateTimeKeywords(List<TimeSearchKeyword> dateTimeKeywords,
+            MatchMode matchMode) {
+        return new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), dateTimeKeywords,
+                matchMode);
     }
 
     private PersonContainsKeywordsPredicate namePredicate(List<String> keywords) {

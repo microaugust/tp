@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -33,10 +34,11 @@ public class FindCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE]... "
             + "[" + PREFIX_ADDRESS + "ADDRESS]... "
             + "[" + PREFIX_REMARK + "REMARK]... "
+            + "[" + PREFIX_TIME + "DAY_TIME]... "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example:\n"
             + "\t" + COMMAND_WORD + " " + PREFIX_NAME + "Ali " + PREFIX_NAME + "August "
-            + PREFIX_ADDRESS + "119224\n"
+            + PREFIX_ADDRESS + "119224" + PREFIX_TIME + "Mon\n"
             + "\t" + COMMAND_WORD + " " + PREFIX_MODE + MATCH_MODE_AND_KEYWORD + " " + PREFIX_TAG + "Student "
             + PREFIX_NAME + "Clement " + PREFIX_PHONE + "9234\n"
             + "\t" + COMMAND_WORD + " " + PREFIX_REMARK + "new student\n";

@@ -7,6 +7,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_MODE;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.Time;
+import seedu.address.model.person.TimeSearchKeyword;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -135,6 +137,91 @@ public class ParserUtil {
                 .orElseThrow(() -> new ParseException(Time.MESSAGE_CONSTRAINTS));
 
         return Optional.of(parsedTime);
+    }
+
+    /**
+     * Parses {@code List<String>} time-search queries into canonical forms for find command matching.
+     *
+     * @throws ParseException if any time query is invalid.
+     */
+    public static List<TimeSearchKeyword> parseFindTimeKeywords(List<String> rawTimeKeywords) throws ParseException {
+        requireNonNull(rawTimeKeywords);
+
+        List<TimeSearchKeyword> timeKeywords = new java.util.ArrayList<>();
+        for (String rawTimeKeyword : rawTimeKeywords) {
+            timeKeywords.add(parseFindTimeKeyword(rawTimeKeyword));
+        }
+        return timeKeywords;
+    }
+
+    /**
+     * Parses a single find-command time query into a canonical form.
+     * Accepted inputs include day-only, time-only, and day+time queries.
+     *
+     * @throws ParseException if the given query is invalid.
+     */
+    public static TimeSearchKeyword parseFindTimeKeyword(String rawTimeKeyword) throws ParseException {
+        requireNonNull(rawTimeKeyword);
+
+        String trimmedTimeKeyword = rawTimeKeyword.trim();
+        String canonicalWholeTime = getCanonicalFindTime(trimmedTimeKeyword);
+        if (canonicalWholeTime != null) {
+            return new TimeSearchKeyword("", canonicalWholeTime);
+        }
+
+        String[] dayAndTimeParts = trimmedTimeKeyword.split("\\s+", 2);
+
+        if (dayAndTimeParts.length == 1) {
+            String token = dayAndTimeParts[0];
+
+            String canonicalTime = getCanonicalFindTime(token);
+            if (canonicalTime != null) {
+                return new TimeSearchKeyword("", canonicalTime);
+            }
+
+            String canonicalDay = Time.getCanonicalDayQuery(token);
+            if (canonicalDay != null) {
+                return new TimeSearchKeyword(canonicalDay, "");
+            }
+
+            throw new ParseException(Time.MESSAGE_CONSTRAINTS);
+        }
+
+        String canonicalDay = Time.getCanonicalDayQuery(dayAndTimeParts[0]);
+        String canonicalTime = getCanonicalFindTime(dayAndTimeParts[1]);
+        // find d/1300 Wed will be rejected
+        if (canonicalDay == null || canonicalTime == null) {
+            throw new ParseException(Time.MESSAGE_CONSTRAINTS);
+        }
+
+        String candidateTime = canonicalDay + " " + canonicalTime;
+        if (!Time.isValidTime(candidateTime)) {
+            throw new ParseException(Time.MESSAGE_CONSTRAINTS);
+        }
+
+        Time parsedTime = new Time(candidateTime);
+        String[] canonicalDayAndTime = parsedTime.value.split("\\s+", 2);
+        return new TimeSearchKeyword(canonicalDayAndTime[0], canonicalDayAndTime[1]);
+    }
+
+    private static String getCanonicalFindTime(String rawTimeKeyword) {
+        String canonicalTime = Time.getCanonicalLegacyTime(rawTimeKeyword);
+        if (canonicalTime != null) {
+            return canonicalTime;
+        }
+
+        String[] timeParts = rawTimeKeyword.trim().split("\\s*-\\s*", 2);
+        if (timeParts.length != 2) {
+            return null;
+        }
+
+        String canonicalStartTime = Time.getCanonicalLegacyTime(timeParts[0]);
+        String canonicalEndTime = Time.getCanonicalLegacyTime(timeParts[1]);
+        if (canonicalStartTime == null || canonicalEndTime == null) {
+            return null;
+        }
+
+        return canonicalStartTime + " - " + canonicalEndTime;
     }
 
     /**

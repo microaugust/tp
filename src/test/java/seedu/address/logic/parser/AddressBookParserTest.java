@@ -131,7 +131,7 @@ public class AddressBookParserTest {
                 currentMaxId);
         assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
                 keywords, Collections.emptyList(), Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList(), MatchMode.OR)), command);
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR)), command);
     }
 
     @Test
@@ -141,7 +141,8 @@ public class AddressBookParserTest {
                 currentMaxId);
         assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
                 Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                Collections.singletonList("Student"), Collections.emptyList(), MatchMode.OR)), command);
+                Collections.singletonList("Student"), Collections.emptyList(),
+                Collections.emptyList(), MatchMode.OR)), command);
     }
 
     @Test
@@ -152,7 +153,8 @@ public class AddressBookParserTest {
                 currentMaxId);
         assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
                 Collections.singletonList("Benson"), Collections.emptyList(), Collections.emptyList(),
-                Collections.singletonList("Parent"), Collections.emptyList(), MatchMode.AND)), command);
+                Collections.singletonList("Parent"), Collections.emptyList(),
+                Collections.emptyList(), MatchMode.AND)), command);
     }
 
     @Test

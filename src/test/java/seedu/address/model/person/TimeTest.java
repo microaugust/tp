@@ -94,4 +94,21 @@ public class TimeTest {
         assertTrue(Time.isValidTimeOrEmptyString("Monday 18:00"));
         assertFalse(Time.isValidTimeOrEmptyString("25:00"));
     }
+
+    @Test
+    public void getCanonicalDayQuery() {
+        assertEquals("Friday", Time.getCanonicalDayQuery("fr"));
+        assertEquals("Wednesday", Time.getCanonicalDayQuery("wed"));
+        assertEquals(null, Time.getCanonicalDayQuery("f"));
+        assertEquals(null, Time.getCanonicalDayQuery("fi"));
+        assertEquals(null, Time.getCanonicalDayQuery("s"));
+    }
+
+    @Test
+    public void getDayPartAndGetTimePart_legacyStoredValue_assertionError() {
+        Time legacyTime = Time.fromStoredValue("1800");
+
+        assertThrows(AssertionError.class, legacyTime::getDayPart);
+        assertThrows(AssertionError.class, legacyTime::getTimePart);
+    }
 }
