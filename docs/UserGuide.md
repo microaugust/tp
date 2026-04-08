@@ -168,32 +168,37 @@ Examples:
 
 ### Locating persons: `find`
 
-Find persons whose specified fields contain any of the given keywords.
+Find persons whose specified fields match the given keywords.
 
-Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`
+Format: `find [m/MODE] [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]... [d/TIME]...`
 
-* At least one prefixed keyword must be provided.
-* Unprefixed input is not allowed. e.g. `find Ali` is invalid.
-* `n/` searches names, `a/` searches addresses, `p/` searches phone numbers, `t/` searches tags and `r/` searches remarks.
-* The search is case-insensitive for names, addresses, tags and remarks. e.g. `n/hans` will match `Hans` and `t/student` will match `Student`
-* Phone matching is digit-based substring matching. e.g. `p/9435` will match a phone number containing `9435`
-* Partial matches are supported. e.g. `n/Han` will match `Hans`
-* Persons matching at least one prefixed keyword will be returned (i.e. `OR` search across all provided fields and keywords).
-* Repeating the same prefix is allowed. e.g. `find n/Ali n/August`
+* At least one prefixed keyword must be provided; unprefixed input is not allowed (e.g. `find Ali` is invalid).
+* `m/` is optional: `m/and` requires all provided conditions to match; `m/or` (or omitting `m/`) uses OR. `m/` is case-insensitive and only accepts `and` or `or`.
+* `n/`, `a/`, `t/`, `r/` are case-insensitive substring matches.
+* `p/` is digit-based substring matching (non-number input is allowed, but will not match any phone numbers).
+* A keyword will not match contacts missing that field (e.g. `p/` will not match contacts with no phone field).
+* `d/` searches meeting time (day/time):
+  * day: `d/tue` (day prefix, at least 2 letters)
+  * single time: `d/1200` or `d/12:00` (24-hour `HHmm` or `HH:mm`)
+  * range time: `d/1500-1600` or `d/15:00 - 1600`
+  * day + time: `d/Wed 1500` or `d/Tue 1500-1600`
+* Time matching behavior:
+  * Single time query (e.g. `d/1200`) matches a stored single time `12:00`, or a stored range that contains `12:00` (e.g. `11:00 - 13:00`).
+  * Range query (e.g. `d/1500-1600`) matches a stored range only if it is an exact match (e.g. `15:00 - 16:00`), but it can match a stored single time if that time falls within the query range.
+* Repeating the same prefix is allowed (including multiple `d/`); contacts still appear only once in the results list.
 
 Examples:
-* `find a/119224` returns persons whose address contains `119224`
-* `find n/Clement` returns persons whose name contains `Clement`
-* `find p/9435` returns persons whose phone number contains `9435`
-* `find n/aleX a/seran` returns persons whose name contains `aleX` or whose address contains `seran`
-* `find t/student` returns persons whose tags contain `student`
-* `find n/Ali n/August` returns persons whose names contain `Ali` or `August`
-* `find r/first` returns persons whose remarks contain `first` or `First` (note that the search in case-insensitive)
+* `find n/aleX a/119224` returns persons whose name contains `alex` or whose address contains `119224`.
+* `find m/and t/student n/Clement` returns persons tagged `student` whose name contains `clement`.
+* `find d/tue d/1200` returns persons who match Tuesday or 12:00.
+* `find d/Wed 1500` returns persons who have a time field on Wednesday at 15:00, or a time field range that contains 15:00.
+* `find d/1630-1730` will return persons who have a time field within 16:30 to 17:30 (e.g. 17:00).
 
-Notes:
-- Every search term must be attached to a prefix.
-- Contacts matching multiple keywords still appear only once in the filtered list.
-- Contacts without an address will not match `a/` keywords.
+Expected behavior:
+* `find p/ben` will not return an error, but will return no results (since phone numbers contain digits only).
+* `find p/9` will not match contacts with no phone field (missing phone never matches `p/`).
+* `find d/1500-1600` will not match a person whose time is `14:00 - 17:00` (range queries require an exact stored range match).
+
 
 ### Deleting a person: `del`
 

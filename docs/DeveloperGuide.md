@@ -497,14 +497,14 @@ Extensions:
 Actor: User
 
 Guarantees:
-* On successful completion, EduConnect shows only those contacts which have a field (ie. name / address / phone number / tags) matching at least one provided keyword, for that corresponding field. EduConnect also displays the number of contacts found.
+* On successful completion, EduConnect shows only those contacts which match the provided field keywords (i.e. name / address / phone number / tags / remark / day_time). EduConnect also displays the number of contacts found.
 * Each matching contact appears at most once in the filtered results.
 * If no contacts match, EduConnect shows an empty filtered result.
 * If the operation fails, the currently displayed contacts remain unchanged.
 
 MSS:
 1. User requests to search contacts by entering one or more keywords, each marked with a specific field.
-2. EduConnect finds contacts which has a field that correspondingly matches at least one of the keywords, associated with that field.
+2. EduConnect finds contacts whose fields match the given keywords according to the selected match mode.
 3. EduConnect shows the filtered results and match count.
 Use case ends.
 
@@ -545,6 +545,7 @@ Extensions:
 * **Tutor**: Refers to a private tutor, which is a user of the EduConnect application
 * **Student**: Refers to a student whom the tutor is teaching
 * **Parent**: Refers to a parent of a student whom the tutor is teaching
+* **Day_Time**: A contact's stored meeting time, represented as a `Time` value in the canonical format `Day HH:mm` or `Day HH:mm - HH:mm`
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number and address
 
@@ -592,6 +593,21 @@ testers are expected to do more *exploratory* testing.
       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
+
+### Finding contacts
+
+1. Finding contacts by meeting schedule (`d/`)
+
+   1. Prerequisites: Ensure there is at least one contact with a stored meeting schedule, e.g. `edit 1 d/Friday 17:00`.
+
+   1. Test case: `find d/fri`<br>
+      Expected: Shows contacts whose stored meeting schedule is on Friday.
+
+   1. Test case: `find d/1630-1730`<br>
+      Expected: Shows contacts whose stored meeting schedule is a single time within `16:30 - 17:30` (e.g. `17:00`).
+
+   1. Test case: `find d/1500-1600` (when a contact has `Sunday 15:00 - 15:56` stored)<br>
+      Expected: Shows the contact only if the stored duration is an exact match (`15:00 - 16:00`); a stored duration like `15:00 - 15:56` will not match.
 
 ### Saving data
 
