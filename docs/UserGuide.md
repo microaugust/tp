@@ -99,10 +99,7 @@ Show a list of all persons in the address book.
 
 Format: `list`
 
-* Phone number, address, weekly timeslot, remark, and meeting link are optional fields.
-* If any of those fields is missing, the UI shows a missing-field indicator for that contact.
-
-  ![result for 'list' with missing optional fields](images/missingPhoneNumberAddressAndRemark.png)
+* The number of people currently in the contact list will also be shown.
 
 ### Editing a person: `edit`
 
@@ -147,9 +144,9 @@ Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REM
 
 **Mode rules**
 * `m/` is optional, case-insensitive, and accepts only `and` or `or` (at most once).
-*  Without this prefix, the default is OR semantics.
+* Without this prefix, the default is OR semantics.
 * `m/and` requires all provided keywords to match.
-* `m/or` requires at least one provided condition to match
+* `m/or` requires at least one provided condition to match.
 
 **Weekly timeslot rules (`d/`)**
 * `d/` supports day-only, time-only, range, and day+time queries (see [Command Rules](#command-rules) → Field constraints → `d/WEEKLY_TIMESLOT`).
@@ -306,7 +303,7 @@ These rules apply across multiple commands in EduConnect:
   * Overlapping weekly timeslots across different contacts are allowed (e.g. staggered lessons for different students).
 
 * `r/REMARK`:
-  * Only standard characters (no emojis) are allowed.
+  * Only printable ASCII characters are allowed (i.e. no emojis).
 
 * `l/MEETING_LINK`:
   * If provided, it must be a valid URL starting with `http://` or `https://` (no spaces).
