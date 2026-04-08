@@ -331,6 +331,7 @@ These rules apply across multiple commands in EduConnect:
 3. **Only one running app instance can access the data file at a time**. If you open multiple app windows at the same time, data may not be saved properly. The remedy is to keep only one instance of EduConnect running at any time.
 4. **When clicking between contacts in the list**, the displayed text may shift slightly, and the list may not auto-scroll to fully show the newly selected contact. This is expected UI behavior.
 5. **If the user adds too many contacts and the ID overflows**, this exception is handled and the user is not allowed to add new contacts. In this case, the user must clear all data and start a new address book.
+6. **The interface has a minimum window size**. EduConnect cannot be resized below a certain size; this is expected UI behavior.
 
 --------------------------------------------------------------------------------------------------------------------
 
