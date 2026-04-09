@@ -139,22 +139,25 @@ Find persons whose specified fields match the given keywords.
 Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`
 
 * At least one prefixed keyword must be provided; unprefixed keywords are not allowed (e.g. `find Alex` is invalid).
-* Repeating prefixes is allowed; a contact will appear at most once in the results.
+* See [Command Rules](#command-rules) for shared constraints and behavior.
+* Repeating prefixes are allowed. Users can perform either an OR search or an AND search.
+* Each contact will appear at most once in the results, even if multiple fields match.
 * Contacts missing a field never match that field (e.g. contacts without a phone number never match `p/…`).
 
-**Mode rules**
+**Mode rules (`m`)**
 * `m/` is optional, case-insensitive, and accepts only `and` or `or` (at most once).
 * Without this prefix, the default is OR semantics.
 * `m/and` requires all provided keywords to match.
 * `m/or` requires at least one provided condition to match.
 
 **Weekly timeslot rules (`d/`)**
-* `d/` supports day-only, time-only, range, and day+time queries (see [Command Rules](#command-rules) → Field constraints → `d/WEEKLY_TIMESLOT`).
-* For day+time queries, day must come before time (e.g. `d/tue 1500`, not `d/1500 tue`).
-* Day-only queries match contacts whose weekly timeslot is on that day.
-* Time-only queries match a stored single time, or a stored range containing that time.
-* Range queries match an exact stored range, and can also match a stored single time within the query range.
-* The d/ prefix in FindCommand is less strict (since it is used for searching); formats like DD:HH - DDHH or reversed ranges are allowed.
+* The `d/` prefix in `FindCommand` is less strict, as it is used for searching. See [Field constraints](#field-constraints) → `d/WEEKLY_TIMESLOT` for general behavior.
+* `d/` supports day-only, time-only, and day + time queries.
+* Day queries match contacts whose weekly timeslot falls on that day.
+* Single time queries match either an exact stored time or a stored range containing that time.
+* Range time queries match an exact stored range and may also match a stored single time within the query range.
+* Day + time/range queries must match both the day and the specified time or range.
+* Flexible formats (e.g., `DD:HH–DDHH` or similar variations) are allowed.
 
 Examples (Find people whose):
 * `find n/alex a/119224`: Name contains `alex` OR address contains `119224`.
@@ -162,12 +165,13 @@ Examples (Find people whose):
 * `find p/9`: Phone contains `9` (contacts without phone are excluded).
 * `find d/tue`: Weekly timeslot is on Tuesday.
 * `find d/1200 d/thu`: Weekly timeslot is `12:00` (or within a stored time range that includes `12:00`) or is on Thursday.
-* `find d/tue 1500-1600`: Tuesday timeslot is exactly `15:00 - 16:00` (or a stored single time within that range).
+* `find d/tue 1500-1600`: Weekly timeslot is on Tuesday and is exactly `15:00 - 16:00` (or a stored single time within that range).
 
 Expected behavior:
 * `find p/ben` will not return an error, but will return no results (since phone numbers contain digits only).
 * `find p/9` will not match contacts with no phone field (missing phone never matches `p/`).
 * `find d/1500-1600` will not match a person whose time is `14:00 - 17:00` (range queries require an exact stored range match).
+* `find t/best friend` will not return an error, but will return no results (as this is not a valid tag).
 
 ### Deleting a person: `del`
 
@@ -257,6 +261,10 @@ These rules apply across multiple commands in EduConnect:
 * `ID` must be a positive integer 1, 2, 3, …​. Leading zeroes are accepted and ignored.<br>
   e.g. `edit 001 n/Ali` is interpreted as `edit 1 n/Ali`.
 
+* ID is unique and not reused. Deleting a contact does not free its ID.  
+  e.g., if the current ID is 10 and you delete contact 9, the next added contact will have ID 11.  
+  Exception: If the latest contact (e.g., ID 10) is deleted, the next added contact will reuse ID 10.
+
 * Empty values:
   * For `add`, providing an optional prefix with no value creates the contact with that field missing.<br>
     e.g. `add n/Jane Doe p/` creates a contact with no phone number.
@@ -282,7 +290,6 @@ These rules apply across multiple commands in EduConnect:
   * Reference: [IMDA National Numbering Plan (PDF)](https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/frameworks-and-policies/numbering/national-numbering-plan-and-allocation-process/imda-national-numbering-plan.pdf)
 
 * `a/ADDRESS`:
-  * Must not be blank.
   * Must not contain `/` (to avoid ambiguity with prefixes such as `n/` and `p/`).
   * Reference: [Singapore address format (example)](https://frasermclean.com/posts/singapore-address-format)
 
@@ -292,11 +299,11 @@ These rules apply across multiple commands in EduConnect:
 
 * `d/WEEKLY_TIMESLOT`:
   * Represents a weekly day/time (tuition sessions or recurring parent-tutor check-ins).
-  * For `add` / `edit`, the weekday must be the full name (e.g. `Monday`) and is case-insensitive.
-  * For `find`, weekday-only queries accept an unambiguous prefix with at least 2 letters (e.g. `d/mo`, `d/tue`).
-  * Accepted input forms:
+  * Accepted input forms (case insensitive):
+    * day: accepts any unambiguous prefix with at least 2 letters (e.g., `d/mo`, `d/tue`)
     * single time: `Day HH:mm` or `Day HHmm`
     * time range: `Day HH:mm - HH:mm` or `Day HHmm - HHmm` (spaces around `-` are optional)
+    * day must come before time (e.g. `d/tue 1500`, not `d/1500 tue`)
   * Valid weekdays: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`.
   * Valid time: 24-hour time (`00:00` to `23:59`). A duration must not end before it starts.
   * Display is normalized (e.g. `monday 1800` → `Monday 18:00`).
