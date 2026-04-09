@@ -145,6 +145,22 @@ Examples:
 * `edit 1 d/Wednesday 1800 - 1930 l/https://zoom.us/j/123456789 t/Tutor tdel/Student`: Set weekly timeslot + meeting link, add `Tutor` tag, and remove `Student` tag.
 * `edit 2 t/`: Clear all tags of contact 2.
 
+The first example gives the following expected output:
+
+![result for 'edit 1 p/91234567'](images/EditCommandResult1.png)
+
+The second example gives the following expected output:
+
+![result for 'edit 1 d/Monday 18:00'](images/EditCommandResult2.png)
+
+The third example gives the following expected output:
+
+![result for 'edit 1 d/Wednesday 1800 - 1930 l/https://zoom.us/j/123456789 t/Tutor tdel/Student'](images/EditCommandResult3.png)
+
+The fourth example gives the following expected output:
+
+![result for 'edit 2 t/'](images/EditCommandResult4.png)
+
 Expected behavior:
 * The `edit` command succeeds even if the provided values are identical to the existing ones (i.e., no changes are made).
 
