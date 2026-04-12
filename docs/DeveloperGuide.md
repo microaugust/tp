@@ -447,6 +447,7 @@ Actor: User
 Guarantees:
 * On successful completion, EduConnect shows only those contacts which match the provided field keywords (i.e. name / address / phone number / tags / remark / weekly timeslot). EduConnect also displays the number of contacts found.
 * Each matching contact appears at most once in the filtered results.
+* Matching is case-insensitive across all supported fields.
 * If no contacts match, EduConnect shows an empty filtered result.
 * If the operation fails, the currently displayed contacts remain unchanged.
 

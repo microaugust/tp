@@ -9,15 +9,16 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Remark {
 
-    public static final String MESSAGE_CONSTRAINTS = "Remark must not include tabs or newlines, "
+    public static final String MESSAGE_CONSTRAINTS = "Remark must not include tabs, newlines or forward slashes (/), "
         + "and should use standard characters only (no emojis).";
 
     /*
-     * Requires at least one non-whitespace character, and allows only printable ASCII characters.
-     * This rejects empty strings, strings containing only spaces, and control characters
-     * such as tabs and newlines.
+     * Requires at least one non-whitespace character, allows only printable ASCII characters,
+     * and disallows forward slashes (/).
+     * This rejects empty strings, strings containing only spaces, control characters
+     * such as tabs and newlines, and non-ASCII characters such as emojis.
      */
-    public static final String VALIDATION_REGEX = "^(?=.*\\S)[\\x20-\\x7E]+$";
+    public static final String VALIDATION_REGEX = "^(?=.*\\S)(?!.*\\/)[\\x20-\\x7E]+$";
 
     private static final String EMPTY_STRING = "";
 

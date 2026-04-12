@@ -93,7 +93,6 @@ public class AddressBookParser {
 
         case ListCommand.COMMAND_WORD:
             isAwaitingClearConfirmation = false;
-            verifyNoModePrefix(arguments);
             return new ListCommand();
 
         case CopyCommand.COMMAND_WORD:
@@ -102,12 +101,10 @@ public class AddressBookParser {
 
         case ExitCommand.COMMAND_WORD:
             isAwaitingClearConfirmation = false;
-            verifyNoModePrefix(arguments);
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
             isAwaitingClearConfirmation = false;
-            verifyNoModePrefix(arguments);
             return new HelpCommand();
 
         default:

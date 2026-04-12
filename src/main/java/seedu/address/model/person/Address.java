@@ -12,8 +12,9 @@ public class Address {
     public static final String MESSAGE_CONSTRAINTS = "Addresses should not contain forward slashes (/).";
 
     /**
-     * The first character of the address must be non-whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
+     * Requires the address to start with a non-whitespace character
+     * and disallows forward slashes (/).
+     * This rejects blank inputs and addresses that begin with whitespace.
      */
     public static final String VALIDATION_REGEX = "[^\\s/][^/]*";
 
