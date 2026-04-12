@@ -10,13 +10,13 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should not be blank, and should only contain alphabets, \"-\", \",\", and \" \".";
+            "Names should not be blank, and should only contain alphabets, \"-\", \",\", \".\", \"'\", and \" \".";
 
     /*
      * The first character of the name must be alphabetical,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String VALIDATION_REGEX = "[A-Za-z][A-Za-z ,\\-]*";
+    public static final String VALIDATION_REGEX = "[A-Za-z][A-Za-z ,.'\\-]*";
 
     public final String fullName;
 

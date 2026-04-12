@@ -161,6 +161,7 @@ Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REM
 </div>
 
 * At least one prefixed keyword must be provided; unprefixed keywords are not allowed (e.g. `find Alex` is invalid).
+* The search is case-insensitive for all fields.
 * See [Command Rules](#command-rules) for shared constraints and behavior.
 * Repeating prefixes are allowed. Users can perform either an OR search or an AND search.
 * Each contact will appear at most once in the results, even if multiple fields match.
@@ -293,8 +294,8 @@ These rules apply across multiple commands in EduConnect:
 * Command words and prefixes are case-sensitive and must be typed in lowercase.<br>
   e.g. `add n/Alex` is valid, but `Add n/Alex` and `add N/Alex` are invalid.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) are ignored.<br>
-  e.g. `help 123` is interpreted as `help`.
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) are ignored, including any prefixes (e.g. m/).<br>
+  e.g. `help 123 m/` is interpreted as `help`.
 
 * Parameters can be in any order (unless stated otherwise).<br>
   e.g. `add p/98765432 n/Alex` is accepted.
@@ -305,7 +306,8 @@ These rules apply across multiple commands in EduConnect:
 * `ID` must be a positive integer 1, 2, 3, …​. Leading zeroes are accepted and ignored.<br>
   e.g. `edit 001 n/Ali` is interpreted as `edit 1 n/Ali`.
 
-* `ID` is unique and not reused. Deleting a contact does not free its `ID`.  
+* `ID` is unique and generally not reused, except in one scenario (see below). 
+  In most cases, deleting a contact does not free its `ID`.  
   e.g., if the current `ID` is 10 and you delete contact 9, the next added contact will have `ID` 11.  
   Exception: If the latest contact (e.g., `ID` 10) is deleted, the next added contact will reuse `ID` 10.
 
@@ -329,8 +331,8 @@ These rules apply across multiple commands in EduConnect:
 
 * `n/NAME`:
   * Must not be blank.
-  * Must contain only alphabets, `-`, `,`, and spaces.
-  * Names that contain special characters like / may need to be stored in an alternative format (e.g., A/P can be written as AP or Anak Perempuan).
+  * Must contain only alphabets, `-`, `,`, `.`, `'` and spaces.
+  * Names that contain special characters like / may need to be stored in an alternative format (e.g., A/P can be written as AP or Anak Perempuan, S/O can be written as son of ).
 
 * `p/PHONE_NUMBER`:
   * Must contain digits only.
@@ -340,7 +342,9 @@ These rules apply across multiple commands in EduConnect:
   * Reference: [IMDA National Numbering Plan (PDF)](https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/frameworks-and-policies/numbering/national-numbering-plan-and-allocation-process/imda-national-numbering-plan.pdf)
 
 * `a/ADDRESS`:
-  * Must not contain `/` (to avoid ambiguity with prefixes such as `n/` and `p/`).
+  * Should generally follow Singapore address format.
+  * Unusual symbols or emojis are not prohibited, but are discouraged.
+  * Must not contain forward slashes (`/`).
   * Reference: [Singapore address format](https://frasermclean.com/posts/singapore-address-format)
 
 * `t/TAG`:
@@ -360,10 +364,14 @@ These rules apply across multiple commands in EduConnect:
   * Overlapping weekly timeslots across different contacts are allowed (e.g. staggered lessons for different students).
 
 * `r/REMARK`:
-  * Only printable ASCII characters are allowed (i.e. no emojis).
+  * Remark must not include:
+    * tabs
+    * newlines
+    * forward slashes (`/`)
+    * emojis
 
 * `l/MEETING_LINK`:
-  * If provided, it must be a valid URL starting with `http://` or `https://` (no spaces).
+  * If provided, it must be a valid URL starting with `http://` or `https://`, with no spaces in between.
 
 ### <span style="color:#d9730d;">Special case: Non-English characters in input</span>
 * Non-English (Unicode) characters are supported only in `a/ADDRESS`. Other fields restrict input due to validation rules.

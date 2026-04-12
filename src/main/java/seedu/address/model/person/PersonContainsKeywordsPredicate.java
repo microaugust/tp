@@ -84,7 +84,8 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                         .anyMatch(tag -> tag.tagName.toLowerCase().contains(keyword.toLowerCase())),
                 isAndMode);
 
-        boolean matchesRemark = matchesKeywords(remarkKeywords, remark::contains, isAndMode);
+        boolean matchesRemark = matchesKeywords(remarkKeywords,
+                keyword -> remark.contains(keyword.toLowerCase()), isAndMode);
 
         boolean matchesDateTime = matchesDateTimeKeywords(person, isAndMode);
 

@@ -67,7 +67,7 @@ public class AddressBookParserTest {
     public void parseCommand_clear() throws Exception {
         assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD,
                 currentMaxId) instanceof ClearCommand);
-        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3",
+        assertTrue(parser.parseCommand(ClearCommand.COMMAND_WORD + " 3 tdel/student",
                 currentMaxId) instanceof ClearCommand);
     }
 
@@ -118,7 +118,7 @@ public class AddressBookParserTest {
     public void parseCommand_exit() throws Exception {
         assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD,
                 currentMaxId) instanceof ExitCommand);
-        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3",
+        assertTrue(parser.parseCommand(ExitCommand.COMMAND_WORD + " 3 tdel/ ",
                 currentMaxId) instanceof ExitCommand);
     }
 
@@ -163,13 +163,15 @@ public class AddressBookParserTest {
                 currentMaxId) instanceof HelpCommand);
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3",
                 currentMaxId) instanceof HelpCommand);
+        assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3 m/ ",
+                currentMaxId) instanceof HelpCommand);
     }
 
     @Test
     public void parseCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD,
                 currentMaxId) instanceof ListCommand);
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
+        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3 m/ and",
                 currentMaxId) instanceof ListCommand);
     }
 
@@ -177,22 +179,12 @@ public class AddressBookParserTest {
     public void parseCommand_nonFindCommandWithModePrefix_throwsParseException() {
         assertThrows(ParseException.class,
                 MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
-                    ClearCommand.COMMAND_WORD + " " + PREFIX_MODE + "and",
+                    AddCommand.COMMAND_WORD + " " + PREFIX_MODE + "and",
                         currentMaxId));
 
         assertThrows(ParseException.class,
                 MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
-                    ListCommand.COMMAND_WORD + " " + PREFIX_MODE + "xor",
-                        currentMaxId));
-
-        assertThrows(ParseException.class,
-                MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
-                    HelpCommand.COMMAND_WORD + " " + PREFIX_MODE + "foo",
-                        currentMaxId));
-
-        assertThrows(ParseException.class,
-                MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
-                    ExitCommand.COMMAND_WORD + " " + PREFIX_MODE + "or",
+                    EditCommand.COMMAND_WORD + " " + PREFIX_MODE + "xor",
                         currentMaxId));
     }
 

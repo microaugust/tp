@@ -38,6 +38,7 @@ public class RemarkTest {
         assertFalse(Remark.isValidRemark(" \t "));
         assertFalse(Remark.isValidRemark("Hello \n John!")); // contains not only newline
         assertFalse(Remark.isValidRemark("Hello \t John!")); // contains not only tab
+        assertFalse(Remark.isValidRemark("needs / extra help")); // contains forward slash
         assertFalse(Remark.isValidRemark("Hello John! \uD83D\uDE03")); // contains emojis
 
         // valid remark
@@ -66,6 +67,7 @@ public class RemarkTest {
         assertFalse(Remark.isValidRemarkOrEmptyString(" ")); // spaces only
         assertFalse(Remark.isValidRemarkOrEmptyString("\n")); // newline only
         assertFalse(Remark.isValidRemarkOrEmptyString("\t")); // tab only
+        assertFalse(Remark.isValidRemarkOrEmptyString("needs / extra help")); // contains forward slash
         assertFalse(Remark.isValidRemarkOrEmptyString("Hello \n John!")); // contains newline
         assertFalse(Remark.isValidRemarkOrEmptyString("Hello \t John!")); // contains tab
 

@@ -38,6 +38,8 @@ public class NameTest {
         assertTrue(Name.isValidName("Capital Tan")); // with capital letters
         assertTrue(Name.isValidName("Lim Zhuo Xuan, Brian")); // with a comma
         assertTrue(Name.isValidName("Jamie-Lee Smith")); // with a dash
+        assertTrue(Name.isValidName("John D. Doe")); // with a full stop
+        assertTrue(Name.isValidName("O'Connor")); // with an apostrophe
         assertTrue(Name.isValidName("Charles III")); // with Roman numerals
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr")); // long names
         assertTrue(Name.isValidName("Leroy Jenkins   ")); // trailing whitespace
