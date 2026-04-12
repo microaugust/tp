@@ -365,6 +365,10 @@ These rules apply across multiple commands in EduConnect:
     * In `edit`, `t/` by itself clears all tags.
     * `tdel/` must be followed by a tag value (e.g. `tdel/Student`).
 
+* Invalid prefixes:
+  * If you use an unrecognised prefix (e.g. `add n/Alice f/tue 23:00-01:00`), the application will not flag `f/` as invalid. Instead, it will treat everything after `n/` as part of the name.
+  * If you see an unexpected validation error, double-check that all your prefixes are spelled correctly.
+
 ### <span style="color:#d9730d;">Duplicate contacts</span>
 * Two contacts are considered duplicates if they have the same name, phone number, and address. Name and address are compared case-insensitively.
 * EduConnect does not allow duplicate contacts.
