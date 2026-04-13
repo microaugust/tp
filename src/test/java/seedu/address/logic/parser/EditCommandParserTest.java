@@ -72,8 +72,12 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_missingParts_failure() {
-        assertParseFailure(parser, VALID_NAME_AMY, Id.MESSAGE_CONSTRAINTS);
+        // nothing provided alongside "edit" - invalid input format
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
+
+        // id missing, only a string is provided alongside "edit"
+        // this string cannot be parsed into an id, so we treat it as an invalid id
+        assertParseFailure(parser, VALID_NAME_AMY, Id.MESSAGE_CONSTRAINTS);
     }
 
     @Test
