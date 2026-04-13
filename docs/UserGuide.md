@@ -247,7 +247,7 @@ The fourth example gives the following expected output:
 
 ### <span style="color:#d9730d;">Clearing all entries: <code>clear</code></span>
 
-💡 Clear all entries from the address book with a two-step confirmation
+💡 Clear all entries from the address book with a two-step confirmation.
 
 <div class="alert alert-light" role="alert">
 Format: clear
@@ -256,6 +256,7 @@ Format: clear
 * The first `clear` shows a warning and does not delete anything.
 * The second consecutive `clear` deletes all contacts.
 * If any other command is entered in between (including an invalid command), the confirmation resets.
+* If the address book is already empty to begin with, the execution of the clear command will still proceed successfully - though no contacts will be cleared.
 
 Examples:
 * `clear` then `clear` clears the address book.
@@ -360,7 +361,7 @@ These rules apply across multiple commands in EduConnect:
   * If the contact with the highest `ID` is deleted, that `ID` may be reused by the next added contact.
       * e.g., if the current highest `ID` is `10` and contact `9` is deleted, the next added contact will have `ID` `11`.
       * e.g., if contact `10` is deleted, the next added contact will reuse `ID` `10`.
-  * `ID` must be a positive integer (`1`, `2`, `3`, …).
+  * `ID` must be a positive integer that does not lead to an integer overflow (`1`, `2`, `3`, …, `2147483647`).
 
 * Empty values:
   * For `add`, providing an optional prefix with no value creates the contact with that field missing.<br>
