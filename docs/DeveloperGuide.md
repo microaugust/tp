@@ -499,12 +499,13 @@ Use case ends.
 
 Extensions:
 * 3a. The user types any command other than `clear` after the warning.
-  * 3a1. EduConnect processes that command normally and resets the confirmation state.
-  * 3a2. If the user later types `clear` again, EduConnect shows the warning again as if it were the first time.
-  * Use case resumes from step 2.
+  * 3a1. EduConnect resets the confirmation state and handles the other command.
+  * 3a2. The user types `clear` again later.
+  * Use case resumes from step 1.
 * 3b. The user types an invalid command after the warning.
   * 3b1. EduConnect shows the usual error message for the invalid command and resets the confirmation state.
-  * Use case resumes from step 2.
+  * 3b2. The user types `clear` again later.
+  * Use case resumes from step 3.
 
 ### Non-Functional Requirements
 
@@ -512,13 +513,13 @@ Extensions:
 2. Should respond to all commands within 1 second when up to 1000 contacts are loaded, on a machine with at least 4GB of RAM available.
 3. Should not require more than 200MB of total disk space, including the application and all stored data, for up to 1000 contacts.
 4. Should respond to any user command within 1 second on a machine with at least 1GB of RAM available.
-5. A user typing at 60 WPM or above should be able to complete common tasks such as adding, editing, or deleting a contact in under 5 seconds.
+5. A user typing at 60 words per minute or above should be able to complete common tasks such as adding, editing, or deleting a contact in under 5 seconds, excluding tasks that require typing a meeting link URL.
 6. Should not require internet connection to function.
 7. A user should be able to transfer all contact data to another computer by transferring a single contact data file.
 8. Should ensure no data is lost by saving all changes to disk after every command that modifies contact data.
 9. The program should not crash upon reading from a corrupted contact data file.
-10. The program should be able start up within 3 seconds on a machine with at least 4GB of RAM available.
-11. A new user should be able to perform basic tasks such as add, delete, find a contact within 5 minutes of reading the User Guide without any prior training.
+10. The program should be able to start up within 3 seconds on a machine with at least 4GB of RAM available.
+11. A new user should be able to perform basic tasks(eg. add, delete, find) within 5 minutes of reading the User Guide without any prior training.
 
 ### Glossary
 
