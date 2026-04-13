@@ -220,7 +220,8 @@ MSS:
 1. User requests to add a contact by providing a name (required) and any optional fields (phone number, address, weekly timeslot, remark, meeting link, tags).
 2. EduConnect adds the contact.
 3. EduConnect shows a success message with the added contact details.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User omits a required detail, or provides an empty required detail.
@@ -256,7 +257,8 @@ MSS:
 1. User requests to delete one or more contacts by specifying one or more contact IDs.
 2. EduConnect deletes the specified contacts.
 3. EduConnect shows a success message with the deleted contact details.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User provides no IDs.
@@ -286,7 +288,8 @@ Guarantees:
 MSS:
 1. User requests to view contact information.
 2. EduConnect displays each contact's name and any available optional fields.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. There are no contacts.
@@ -310,7 +313,8 @@ MSS:
 1. User requests to edit a contact by specifying the contact ID, and one or more fields to update.
 2. EduConnect updates the selected contact.
 3. EduConnect shows a success message with the updated contact details.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User omits the contact ID or all editable fields.
@@ -361,7 +365,8 @@ MSS:
 1. User requests to copy a field of a contact by specifying the contact ID and the field to copy.
 2. EduConnect retrieves the field value of the specified contact.
 3. EduConnect copies the value to the clipboard and shows a success message.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User omits the contact ID or the field to copy.
@@ -402,7 +407,8 @@ MSS:
 1. User requests to search contacts by entering one or more keywords, each marked with a specific field.
 2. EduConnect finds contacts whose fields match the given keywords according to the selected match mode.
 3. EduConnect shows the filtered results and match count.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User provides no keyword.
