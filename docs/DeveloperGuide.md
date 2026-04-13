@@ -437,51 +437,28 @@ Extensions:
   * 2d1. EduConnect normalizes the query before matching.
   * Use case resumes from step 3.
 
-### Use case: UC07 - Clearing All Contacts
+#### Use case: UC07 - Clearing All Contacts
 Actor: User
 
 Guarantees:
 * On successful completion, EduConnect removes all contacts from the address book.
 * A two-step confirmation is employed. Upon issuing the command, the user is required to confirm their intention again, before EduConnect proceeds with the clearing of the address book.
-* If the user does not confirm that they wish to proceed with the command, the address book remains unchanged.
+* If the user does not confirm that they wish to proceed with the command, no contacts are deleted and the address book remains unchanged.
 
 MSS:
 1. User requests to clear all contacts from the address book.
 2. EduConnect requests for confirmation.
 3. User confirms their intention to clear all contacts.
 4. EduConnect removes all existing contacts in the address book, resulting in an empty contact list.
-5. EduConnect shows a success message indicating that all contact data has been purged.  
-Use case ends.
+5. EduConnect shows a success message indicating that all contact data has been purged.
+
+   Use case ends.
 
 Extensions:
 * 3a. User chooses to cancel the removal of contacts by executing another command.
   * 3a1. EduConnect resets the two-step confirmation.
   * 3a2. EduConnect proceeds to handle the latest command issued.
   * Use case ends.
-
-#### Use case: UC08 - Clear All Contacts
-Actor: User
-
-Guarantees:
-* On successful completion, all contacts are removed from the address book.
-* If the user does not confirm, no contacts are deleted and the address book contacts list stay the same.
-
-MSS:
-1. User types `clear`.
-2. EduConnect shows a warning message asking the user to type `clear` again to confirm.
-3. User types `clear` again.
-4. EduConnect deletes all contacts and shows a success message.
-Use case ends.
-
-Extensions:
-* 3a. The user types any command other than `clear` after the warning.
-  * 3a1. EduConnect resets the confirmation state and handles the other command.
-  * 3a2. The user types `clear` again later.
-  * Use case resumes from step 1.
-* 3b. The user types an invalid command after the warning.
-  * 3b1. EduConnect shows the usual error message for the invalid command and resets the confirmation state.
-  * 3b2. The user types `clear` again later.
-  * Use case resumes from step 3.
 
 ### Non-Functional Requirements
 
