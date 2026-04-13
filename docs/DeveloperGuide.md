@@ -450,8 +450,9 @@ MSS:
 2. EduConnect requests for confirmation.
 3. User confirms their intention to clear all contacts.
 4. EduConnect removes all existing contacts in the address book, resulting in an empty contact list.
-5. EduConnect shows a success message indicating that all contact data has been purged.  
-Use case ends.
+5. EduConnect shows a success message indicating that all contact data has been purged.
+
+   Use case ends.
 
 Extensions:
 * 3a. User chooses to cancel the removal of contacts by executing another command.
