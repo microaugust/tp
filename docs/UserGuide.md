@@ -453,6 +453,7 @@ These rules apply across multiple commands in EduConnect:
 4. **When clicking between contacts in the list**, the displayed text may shift slightly, and the list may not auto-scroll to fully show the newly selected contact. This is expected UI behavior.
 5. **If the user adds too many contacts and the ID overflows**, this exception is handled and the user is not allowed to add new contacts. In this case, the user must clear all data and start a new address book.
 6. **The interface has a minimum window size**. EduConnect cannot be resized below a certain size; this is expected UI behavior.
+7. **Tutors who meet the same student multiple times per week cannot be fully shown in the timeslot**. Each contact supports only one weekly timeslot, and duplicate contacts are not allowed. As a workaround, you can store the additional timeslots in the `r/REMARK` field of the existing contact (e.g. `edit 1 r/Also meets Friday 06:00 - 07:00`).
 
 --------------------------------------------------------------------------------------------------------------------
 
