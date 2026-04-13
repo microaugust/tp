@@ -483,17 +483,42 @@ Extensions:
   * 2e1. EduConnect performs the usual substring match.
   * Use case resumes from step 3.
 
+#### Use case: UC08 - Clear All Contacts
+Actor: User
+
+Guarantees:
+* On successful completion, all contacts are removed from the address book.
+* If the user does not confirm, no contacts are deleted and the address book contacts list stay the same.
+
+MSS:
+1. User types `clear`.
+2. EduConnect shows a warning message asking the user to type `clear` again to confirm.
+3. User types `clear` again.
+4. EduConnect deletes all contacts and shows a success message.
+Use case ends.
+
+Extensions:
+* 3a. The user types any command other than `clear` after the warning.
+  * 3a1. EduConnect processes that command normally and resets the confirmation state.
+  * 3a2. If the user later types `clear` again, EduConnect shows the warning again as if it were the first time.
+  * Use case resumes from step 2.
+* 3b. The user types an invalid command after the warning.
+  * 3b1. EduConnect shows the usual error message for the invalid command and resets the confirmation state.
+  * Use case resumes from step 2.
+
 ### Non-Functional Requirements
 
 1. Should work on any Mainstream OS (Windows, macOS, Linux) as long as it has Java 17 installed.
-2. Should be able to hold up to 1000 contacts without a noticeable drop in performance for typical usage.
+2. Should respond to all commands within 1 second when up to 1000 contacts are loaded, on a machine with at least 4GB of RAM available.
 3. Should not require more than 200MB of total disk space, including the application and all stored data, for up to 1000 contacts.
 4. Should respond to any user command within 1 second on a machine with at least 1GB of RAM available.
-5. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+5. A user typing at 60 WPM or above should be able to complete common tasks such as adding, editing, or deleting a contact in under 5 seconds.
 6. Should not require internet connection to function.
 7. A user should be able to transfer all contact data to another computer by transferring a single contact data file.
 8. Should ensure no data is lost by saving all changes to disk after every command that modifies contact data.
 9. The program should not crash upon reading from a corrupted contact data file.
+10. The program should be able start up within 3 seconds on a machine with at least 4GB of RAM available.
+11. A new user should be able to perform basic tasks such as add, delete, find a contact within 5 minutes of reading the User Guide without any prior training.
 
 ### Glossary
 
